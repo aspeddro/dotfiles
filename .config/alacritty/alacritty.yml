@@ -1,0 +1,132 @@
+env:
+  TERM: xterm-256color
+
+window:
+  padding:
+    x: 0
+    y: 0
+
+  dimensions:
+    columns: 0
+    lines: 0
+
+font:
+  normal:
+    family: JetBrainsMono Nerd Font
+    style: Regular
+
+  bold:
+    family: JetBrainsMono Nerd Font
+    style: Bold
+
+  italic:
+    family: JetBrainsMono Nerd Font
+    style: Italic
+
+  bold_italic:
+    family: JetBrainsMono Nerd Font
+    style: Bold Italic
+
+  size: 7.4
+
+  offset:
+    x: 0
+    y: 0
+
+  glyph_offset:
+    x: 0
+    y: 0
+
+key_bindings:
+  - { key: N,   mods: Control|Shift, action: SpawnNewInstance }
+
+schemes:
+  night-owl: &night-owl
+    primary:
+      background: "#011627"
+      foreground: "#d6deeb"
+
+    # Cursor colors
+    cursor:
+      text: CellBackground
+      cursor: CellForeground
+
+    # Vi mode cursor colors
+    vi_mode_cursor:
+      text: CellBackground
+      cursor: "#22da6e"
+
+    # Selection colors
+    selection:
+      text: "#ffffff"
+      background: "#0d486e"
+
+    # Search colors
+    search:
+      matches:
+        foreground: "#000000"
+        background: "#22da6e"
+
+        focused_match:
+          foreground: "#ffffff"
+          background: "#22da6e"
+
+      bar:
+        foreground: "#ffffff"
+        background: "#1d3b53"
+
+    # Normal colors
+    normal:
+      black: "#011627"
+      red: "#EF5350"
+      green: "#22da6e"
+      yellow: "#c5e478"
+      blue: "#82AAFF"
+      magenta: "#C792EA"
+      cyan: "#21c7a8"
+      white: "#ffffff"
+
+    # Bright colors
+    bright:
+      black: "#575656"
+      red: "#EF5350"
+      green: "#22da6e"
+      yellow: "#ffeb95"
+      blue: "#82AAFF"
+      magenta: "#C792EA"
+      cyan: "#7fdbca"
+      white: "#ffffff"
+  
+  material-theme: &material-theme
+
+    cursor:
+      text: '0x000000'
+      cursor: '0xffffff'
+
+    primary:
+      background: '#151515'
+      foreground: '#eeffff'
+
+    # Normal colors
+    normal:
+      black:   '#666666'
+      red:     '#f07178'
+      green:   '#c3e88d'
+      yellow:  '#ffc857'
+      blue:    '#82aaff'
+      magenta: '#C08DE1'
+      cyan:    '#89ddff'
+      white:   '#ffffff'
+
+    # Bright colors
+    bright:
+      black:   '#666666'
+      red:     '#EF5350'
+      green:   '#c3e88d'
+      yellow:  '#ffeb95'
+      blue:    '#82AAFF'
+      magenta: '#C792EA'
+      cyan:    '#89ddff'
+      white:   '#ffffff'
+
+colors: *material-theme

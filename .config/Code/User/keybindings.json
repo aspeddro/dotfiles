@@ -1,0 +1,51 @@
+// Place your key bindings in this file to override the defaultsauto[]
+[
+  {
+    "key": "ctrl+k ctrl+/",
+    "command": "-editor.foldAllBlockComments",
+    "when": "editorTextFocus && foldingEnabled"
+  },
+  {
+    "key": "ctrl+;",
+    "command": "editor.action.commentLine",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "ctrl+/",
+    "command": "-editor.action.commentLine",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "alt+-",
+    "command": "type",
+    "when": "editorLangId == r || editorLangId == rmd && editorTextFocus",
+    "args": { "text": " <- " }
+  },
+  {
+    "key": "ctrl+shift+m",
+    "command": "type",
+    "when": "editorLangId == r || editorLangId == rmd && editorTextFocus",
+    "args": { "text": " %>% " }
+  },
+  {
+    "key": "ctrl+shift+i",
+    "command": "type",
+    "when": "editorLangId == r || editorLangId == rmd && editorTextFocus",
+    "args": { "text": " %in% " }
+  },
+  {
+    "key": "ctrl+shift+enter",
+    "command": "r.runCurrentChunk",
+    "when": "editorTextFocus && editorLangId == rmd"
+  },
+  {
+    "key": "ctrl+enter",
+    "command": "r.runSelection",
+    "when": "editorLangId == r || editorLangId == rmd & editorTextFocus"
+  },
+  {
+    "key": "ctrl+enter",
+    "command": "rust-analyzer.run",
+    "when": "editorLangId == rust",
+  },
+]
