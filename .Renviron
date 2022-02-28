@@ -1,0 +1,6 @@
+billing_project_id = "basedosdados-312117"
+#LANGUAGE="pt_BR.utf8"
+
+# Generate locale-gen with pt
+#LC_TIME = "pt_BR.utf8"
+R_LIBS_USER = "~/.R"
