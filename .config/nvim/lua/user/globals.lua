@@ -18,16 +18,6 @@ R = function(name)
   return require(name)
 end
 
--- FN = setmetatable({}, {
---   __index = function(t, key)
---     local function _fn(...)
---       return vim.api.nvim_call_function(key, { ... })
---     end
---     t[key] = _fn
---     return _fn
---   end,
--- })
-
 -- T = function()
 --   local langtree = vim.treesitter.get_parser(0)
 --   local cursor = vim.api.nvim_win_get_cursor(0)

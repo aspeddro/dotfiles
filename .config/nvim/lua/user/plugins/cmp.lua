@@ -1,14 +1,4 @@
 local cmp = require 'cmp'
-local cmp_api = require 'cmp.utils.api'
-
--- local check_back_space = function()
---   local col = vim.fn.col '.' - 1
---   if col == 0 or vim.fn.getline('.'):sub(col, col):match '%s' then
---     return true
---   else
---     return false
---   end
--- end
 
 cmp.setup {
   documentation = {
@@ -26,7 +16,8 @@ cmp.setup {
     ['<Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item {
-          behavior = cmp_api.is_cmdline_mode() and cmp.SelectBehavior.Insert
+          behavior = require('cmp.utils.api').is_cmdline_mode()
+              and cmp.SelectBehavior.Insert
             or cmp.SelectBehavior.Select,
         }
       else
@@ -96,11 +87,11 @@ cmp.setup {
   },
 }
 
-cmp.setup.filetype('markdown', {
-  sources = {
-    { name = 'emoji' },
-  },
-})
+-- cmp.setup.filetype('markdown', {
+--   sources = {
+--     { name = 'emoji' },
+--   },
+-- })
 
 -- Use buffer source for `/`.
 -- stylua: ignore

@@ -47,16 +47,16 @@ vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
 )
 
 local rust_analyser = function(params)
-  local arguments = params.arguments[1].args.cargoArgs
-  local directory = params.arguments[1].args.workspaceRoot
-
-  local Term = require('toggleterm.terminal').Terminal:new {
-    dir = directory,
+  local Term = require('user.modules.terminal').new {
+    dir = params.arguments[1].args.workspaceRoot,
   }
 
   Term:open()
 
-  local command = table.concat(vim.tbl_flatten { 'cargo', arguments }, ' ')
+  local command = table.concat(
+    vim.tbl_flatten { 'cargo', params.arguments[1].args.cargoArgs },
+    ' '
+  )
 
   Term:send(command)
 end
@@ -179,6 +179,15 @@ local on_attach = function(client, bufnr)
   --   )
   -- end
 
+  -- Testings
+  require('lsp_signature').on_attach({
+    bind = true, -- This is mandatory, otherwise border config won't get registered.
+    hint_enable = false,
+    fix_pos = false,
+    handler_opts = {
+      border = 'rounded',
+    },
+  }, bufnr)
   if client.supports_method 'textDocument/codeLens' then
     require('virtualtypes').on_attach()
   end

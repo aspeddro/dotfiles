@@ -3,6 +3,7 @@ require('filetype').setup {
     extensions = {
       scm = 'query',
       fs = 'fsharp',
+      tex = 'tex',
     },
   },
 }

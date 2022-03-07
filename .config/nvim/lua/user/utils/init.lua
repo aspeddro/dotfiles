@@ -1,32 +1,14 @@
 -- local bufferline = require 'bufferline'
-local nest = require 'nest'
 
 local buffer = {}
 local keymapping = {}
 local events = {}
 
-keymapping.register = function(tbl)
-  nest.applyKeymaps(tbl)
-end
+keymapping.register = function(tbl) end
 
-keymapping.set = function(modes, key, value)
-  nest.applyKeymaps {
-    {
-      mode = table.concat(modes),
-      {
-        { key, value },
-      },
-    },
-  }
-end
+keymapping.set = function(modes, key, value) end
 
-keymapping.set = {
-  n = function(tbl)
-    nest.applyKeymaps {
-      { mode = 'n', { tbl } },
-    }
-  end,
-}
+keymapping.set = {}
 
 events.resize = function(direction)
   local commands_resize = {

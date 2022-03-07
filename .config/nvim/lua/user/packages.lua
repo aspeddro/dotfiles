@@ -2,9 +2,14 @@ local install_path = vim.fn.stdpath 'data'
   .. '/site/pack/packer/start/packer.nvim'
 
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-  vim.fn.execute(
-    '!git clone https://github.com/wbthomason/packer.nvim ' .. install_path
-  )
+  packer_bootstrap = vim.fn.system {
+    'git',
+    'clone',
+    '--depth',
+    '1',
+    'https://github.com/wbthomason/packer.nvim',
+    install_path,
+  }
 end
 
 require('packer').init {
@@ -15,18 +20,16 @@ require('packer').init {
     open_fn = function()
       return require('packer.util').float { border = 'rounded' }
     end,
-    keybindings = { -- Keybindings for the display window
+    keybindings = {
       quit = '<Esc>',
     },
   },
 }
 
 require('packer').startup(function(use)
-  local local_use = function(opts)
-    local opts = type(opts) == 'table' and opts or { opts }
-    local dir_plugins = vim.fn.expand '~/Desktop/Plugins/'
-    opts[1] = dir_plugins .. opts[1]
-    use(opts)
+  -- NOTE: local plugins
+  local here = function(name)
+    return vim.fn.expand '~/Desktop/Plugins/' .. name
   end
 
   -- Fast detect filetype
@@ -63,7 +66,7 @@ require('packer').startup(function(use)
     end,
   }
 
-  use { 'LionC/nest.nvim' }
+  -- use { 'LionC/nest.nvim' }
   use {
     'rcarriga/nvim-notify',
     config = function()
@@ -71,27 +74,13 @@ require('packer').startup(function(use)
     end,
   }
 
-  local_use {
-    'bufferhandler.nvim',
+  use {
+    here 'bufferhandler.nvim',
   }
 
-  local_use 'blueberry.nvim'
-  -- use {
-  --   '~/Desktop/blueberry.nvim',
-  -- }
-  -- use {
-  --   'folke/tokyonight.nvim',
-  -- }
-  -- use 'tiagovla/tokyodark.nvim'
-  -- use {
-  --   'projekt0n/github-nvim-theme',
-  --   config = function()
-  --     require('github-theme').setup { theme_style = 'dark' }
-  --   end,
-  -- }
-  -- use {
-  --   'marko-cerovac/material.nvim',
-  -- }
+  use {
+    here 'blueberry.nvim',
+  }
 
   use {
     'kyazdani42/nvim-tree.lua',
@@ -99,33 +88,6 @@ require('packer').startup(function(use)
       require 'user.plugins.nvimtree'
     end,
   }
-
-  -- use {
-  --   '~/Desktop/sidebar.nvim',
-  --   config = function()
-  --     require('sidebar-nvim').setup {
-  --       hide_statusline = false,
-  --       -- TODO: new version
-  --       keybindings = {
-  --         disable_default = true,
-  --         bindings = {
-  --           ['<Esc>'] = require('sidebar-nvim').close,
-  --         },
-  --       },
-  --       -- TODO: old version
-  --       disable_default_keybindings = 1,
-  --       bindings = {
-  --         -- NOTE: <Esc> key is not supported
-  --         ['<Esc>'] = require('sidebar-nvim').close,
-  --       },
-  --       sections = { 'files', 'git', 'diagnostics' },
-  --       files = {
-  --         icon = '',
-  --         show_hidden = true,
-  --       },
-  --     }
-  --   end,
-  -- }
 
   use {
     'nvim-treesitter/nvim-treesitter',
@@ -158,40 +120,6 @@ require('packer').startup(function(use)
   }
 
   -- use { 'nvim-lua/lsp-status.nvim' }
-
-  -- use {
-  --   'famiu/feline.nvim',
-  --   config = function()
-  --     require 'plugins.feline'
-  --   end,
-  -- }
-
-  -- use {
-  --   'tjdevries/express_line.nvim',
-  --   requires = {
-  --     { 'nvim-lua/plenary.nvim' },
-  --   },
-  --   config = function()
-  --     -- require('el').setup()
-  --     require 'plugins.express_line'
-  --   end,
-  -- }
-
-  -- use {
-  --   'hoob3rt/lualine.nvim',
-  --   requires = {'kyazdani42/nvim-web-devicons', opt = true},
-  --   config = function()
-  --     require'plugins.lualine'
-  --   end,
-  -- }
-
-  -- use {
-  --   'glepnir/galaxyline.nvim',
-  --   branch = 'main',
-  --   config = function ()
-  --     require'plugins.galaxyline'
-  --   end
-  -- }
 
   use {
     'nvim-telescope/telescope.nvim',
@@ -242,36 +170,6 @@ require('packer').startup(function(use)
   --   end,
   -- }
 
-  -- TODO: break nvim-tree.lua on back to session
-  -- use {
-  --   'rmagatti/auto-session',
-  --   -- requires = {
-  --   --   {
-  --   --     'rmagatti/session-lens',
-  --   --     after = 'telescope.nvim'
-  --   --   }
-  --   -- },
-  --   config = function()
-  --     require 'plugins.autosession'
-  --   end,
-  -- }
-
-  -- use {
-  --   'Shatur/neovim-session-manager',
-  --   config = function()
-  --     require('session_manager').setup()
-  --   end,
-  -- }
-
-  -- use {
-  --    "nvim-telescope/telescope-frecency.nvim",
-  --    requires = {'tami5/sql.nvim'},
-  --    after = 'telescope.nvim'
-  -- }
-  -- use {
-  --   "nvim-telescope/telescope-media-files.nvim",
-  --   cmd = "Telescope"
-  -- }
   -- use {
   --   'kdheepak/lazygit.nvim',
   -- }
@@ -285,20 +183,6 @@ require('packer').startup(function(use)
       'nvim-lua/plenary.nvim',
     },
   }
-
-  -- use {
-  --   'sindrets/diffview.nvim',
-  --   cmd = {
-  --     'DiffviewOpen',
-  --     'DiffviewClose',
-  --     'DiffviewToggleFiles',
-  --     'DiffviewFocusFiles',
-  --     'DiffviewFileHistory',
-  --   },
-  --   config = function()
-  --     require 'plugins.diffview'
-  --   end,
-  -- }
 
   use {
     'windwp/nvim-autopairs',
@@ -321,35 +205,12 @@ require('packer').startup(function(use)
   --   end
   -- }
 
-  -- use {
-  --   'folke/todo-comments.nvim',
-  --   event = 'BufReadPost',
-  --   requires = "nvim-lua/plenary.nvim",
-  --   config = function()
-  --     require 'plugins.todo_comments'
-  --   end,
-  -- }
-
-  -- use {
-  --   'b3nj5m1n/kommentary',
-  --   config = function ()
-  --     require'plugins.kommentary'
-  --   end
-  -- }
-
   use {
     'numToStr/Comment.nvim',
     config = function()
       require 'user.plugins.comment'
     end,
   }
-
-  -- use {
-  --   "terrortylor/nvim-comment",
-  --   config = function ()
-  --     require'plugins.comment'
-  --   end
-  -- }
 
   -- Preserve buffer width/height when resize neovim window
   -- use {
@@ -375,7 +236,7 @@ require('packer').startup(function(use)
   -- }
 
   use {
-    'akinsho/nvim-toggleterm.lua',
+    here 'toggleterm.nvim',
     config = function()
       require 'user.plugins.toggleterm'
     end,
@@ -412,6 +273,9 @@ require('packer').startup(function(use)
         -- JSON LSP
         'b0o/schemastore.nvim',
       },
+      -- {
+      --   'weilbith/nvim-code-action-menu',
+      -- },
     },
   }
 
@@ -463,9 +327,11 @@ require('packer').startup(function(use)
       -- use 'f3fora/cmp-spell'
       { 'hrsh7th/cmp-cmdline' },
       { 'onsails/lspkind-nvim' },
+      { 'ray-x/lsp_signature.nvim' },
+      -- { 'mjlbach/lsp_signature.nvim' },
     },
   }
-  local_use 'cmp-pandoc.nvim'
+  use { here 'cmp-pandoc.nvim' }
 
   -- LSP Utils
   -- use {
@@ -477,6 +343,23 @@ require('packer').startup(function(use)
   --   end,
   --   branch = 'master',
   --   requires = { { 'nvim-lua/plenary.nvim' } },
+  -- }
+
+  use {
+    here 'detect-indent.nvim',
+    config = function()
+      require('detect-indent').setup()
+    end,
+  }
+
+  -- use {
+  --   'nmac427/guess-indent.nvim',
+  --   config = function()
+  --     require('guess-indent').setup {
+  --       autocmd = true,
+  --       verbose = 2,
+  --     }
+  --   end,
   -- }
 
   -- use {
@@ -507,14 +390,6 @@ require('packer').startup(function(use)
   }
 
   -- use {
-  --   'tanvirtin/vgit.nvim',
-  --   requires = 'nvim-lua/plenary.nvim',
-  --   config = function ()
-  --     require('vgit').setup()
-  --   end
-  -- }
-
-  -- use {
   --   "lukas-reineke/indent-blankline.nvim",
   --   config = function ()
   --     require 'plugins.indent'
@@ -526,10 +401,6 @@ require('packer').startup(function(use)
   --   config = function ()
   --     require('indent_guides').setup()
   --   end
-  -- }
-
-  -- use {
-  --   'romgrk/barbar.nvim'
   -- }
 
   use {
@@ -552,40 +423,7 @@ require('packer').startup(function(use)
     end,
   }
 
-  -- use {
-  --   'beauwilliams/statusline.lua',
-  --   config = function()
-  --     local statusline = require 'statusline'
-  --     statusline.tabline = false
-  --     statusline.ale_diagnostics = false
-  --     statusline.lsp_diagnostics = true
-  --   end,
-  -- }
-  -- use {
-  --   'ojroques/nvim-bufdel',
-  --   config = function ()
-  --     require('bufdel').setup {
-  --       next = 'cycle',  -- or 'alternate'
-  --       quit = false,
-  --     }
-  --   end
-  -- }
-  -- use {
-  --   "beauwilliams/focus.nvim",
-  --   config = function()
-  --     require("focus").setup{}
-  --   end
-  -- }
-
-  -- use {
-  --   'edluffy/specs.nvim',
-  --   config = function ()
-  --     require('specs').setup{show_jumps  = true}
-  --   end
-  -- }
-
   -- Utils editings
-
   use {
     'max397574/better-escape.nvim',
     config = function()
@@ -595,7 +433,6 @@ require('packer').startup(function(use)
     end,
   }
 
-  -- Remove space
   -- use {
   --   'lewis6991/spaceless.nvim',
   --   config = function()
@@ -637,13 +474,6 @@ require('packer').startup(function(use)
   --   end,
   -- }
 
-  -- use {
-  --   'lukas-reineke/headlines.nvim',
-  --   config = function()
-  --     require('headlines').setup()
-  --   end
-  -- }
-
   -- Langs
   -- use {
   --  '~/Desktop/rescript.nvim',
@@ -657,10 +487,10 @@ require('packer').startup(function(use)
     end,
   }
 
-  local_use {
-    'rlang.nvim',
+  use {
+    here 'rlang.nvim',
     config = function()
-      require 'user.plugins.rlang'
+      -- require 'user.plugins.rlang'
     end,
     after = 'nvim-treesitter',
     -- wants = {'nvim-treesitter'},
@@ -669,8 +499,8 @@ require('packer').startup(function(use)
     },
   }
 
-  local_use {
-    'pandoc.nvim',
+  use {
+    here 'pandoc.nvim',
     -- ft = { 'markdown' },
     requires = {
       'nvim-lua/plenary.nvim',
@@ -682,6 +512,8 @@ require('packer').startup(function(use)
           args = {
             { '--standalone' },
             { '--number-sections' },
+            { '--biblatex' },
+            { '--pdf-engine', 'tectonic' },
             { '--filter', 'pandoc-crossref' },
           },
         },
@@ -696,8 +528,8 @@ require('packer').startup(function(use)
   --   end
   -- }
 
-  local_use {
-    'tex.nvim',
+  use {
+    here 'tex.nvim',
     -- ft = { 'tex', 'bib' },
     config = function()
       require('tex').setup {
@@ -726,22 +558,30 @@ require('packer').startup(function(use)
 
   use 'folke/lua-dev.nvim'
 
-  local_use {
-    'gitui.nvim',
+  use {
+    here 'gitui.nvim',
     config = function()
       require('gitui').setup()
     end,
   }
 
-  local_use {
-    'filestyle.nvim',
-    config = function()
-      require 'user.plugins.filestyle'
-    end,
+  -- use {
+  --   here 'filestyle.nvim',
+  --   config = function()
+  --     require 'user.plugins.filestyle'
+  --   end,
+  -- }
+
+  use {
+    here 'repl.nvim',
   }
 
   -- F# support
-  use {
-    'PhilT/vim-fsharp',
-  }
+  -- use {
+  --   'PhilT/vim-fsharp',
+  -- }
+
+  if packer_bootstrap then
+    require('packer').sync()
+  end
 end)

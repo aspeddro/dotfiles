@@ -1,10 +1,12 @@
-require 'impatient'
-require('impatient').enable_profile()
+local ok, impatient = pcall(require, 'impatient')
+if ok then
+  impatient.enable_profile()
+end
 
 -- Do not source the default filetype.vim
 vim.g.did_load_filetypes = 1
 -- Disable filetype plugin
-vim.g.did_load_ftplugin = 1
+-- vim.g.did_load_ftplugin = 1
 -- -- Stop loading built in plugins
 vim.g.loaded_matchit = 1
 vim.g.loaded_remote_plugins = 1
@@ -31,13 +33,10 @@ vim.g.loaded_spec = 1
 vim.g.mapleader = '\\'
 vim.g.maplocalleader = ','
 
-local utils = require 'user.utils'
-
 require 'user.options'
-require 'user.globals'
 require 'user.packages'
+require 'user.globals'
 require 'user.autocommands'
 require 'user.mappings'
--- utils.keymapping.register(require 'user.keymapping')
 
 vim.cmd [[colorscheme blueberry]]

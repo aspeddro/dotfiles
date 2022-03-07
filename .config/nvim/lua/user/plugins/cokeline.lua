@@ -1,5 +1,7 @@
 local cokeline = require 'cokeline'
 local colors = require('blueberry').colors
+local get_hex = require('cokeline.utils').get_hex
+
 cokeline.setup {
 
   -- show_if_buffers_are_at_least = 2,
@@ -7,33 +9,20 @@ cokeline.setup {
   mappings = {
     cycle_prev_next = true,
   },
-
   default_hl = {
-    focused = {
-      fg = colors.fg,
-      bg = 'NONE',
-      style = 'bold',
-    },
-    unfocused = {
-      fg = colors.gray,
-      bg = 'bold',
-    },
+    bg = colors.bg,
+    fg = function(buffer)
+      return buffer.is_focused and colors.fg or colors.gray
+    end,
   },
-
-  rendering = {
-    left_sidebar = {
-      filetype = 'NvimTree',
-      components = {
-        {
-          text = function(a)
-            return ''
-          end,
-          hl = {
-            fg = colors.bg_alt,
-            bg = colors.bg_alt,
-            style = 'bold',
-          },
-        },
+  sidebar = {
+    filetype = 'NvimTree',
+    components = {
+      {
+        text = ' ',
+        fg = colors.fg,
+        bg = colors.bg_alt,
+        style = 'bold',
       },
     },
   },
@@ -43,17 +32,8 @@ cokeline.setup {
       text = function(buffer)
         return buffer.index ~= 1 and '| ' or ''
       end,
+      fg = colors.cyan,
     },
-    -- {
-    --   text = function(buffer)
-    --     return buffer.index .. ': '
-    --   end,
-    --   hl = {
-    --     style = function(buffer)
-    --       return buffer.is_focused and 'bold' or nil
-    --     end,
-    --   },
-    -- },
     {
       text = '  ',
     },
@@ -61,43 +41,27 @@ cokeline.setup {
       text = function(buffer)
         return buffer.devicon.icon
       end,
-      hl = {
-        fg = function(buffer)
-          return buffer.devicon.color
-        end,
-      },
+      fg = function(buffer)
+        return buffer.devicon.color
+      end,
     },
     {
       text = function(buffer)
         return buffer.unique_prefix
       end,
-      -- hl = {
-      --   fg = function(buffer)
-      --     return buffer.is_focused and colors.purple or colors.gray
-      --   end,
-      --   style = 'italic',
-      -- },
     },
-
     {
       text = function(buffer)
         return buffer.filename .. ' '
       end,
-      -- hl = {
-      --   style = function(buffer)
-      --     return buffer.is_focused and 'bold' or nil
-      --   end,
-      -- },
     },
     {
       text = function(buffer)
         return buffer.is_modified and '• ' or ''
       end,
-      hl = {
-        fg = function(buffer)
-          return buffer.is_focused and colors.red
-        end,
-      },
+      fg = function(buffer)
+        return buffer.is_focused and colors.red
+      end,
     },
     {
       text = '',

@@ -1,5 +1,5 @@
 # If you come from bash you might have to change your $PATH.
-export PATH="$HOME/bin:/usr/local/bin:$HOME/.local/bin:$HOME/.local/share/gem/ruby/3.0.0/bin:$HOME/.cargo/bin:$HOME/.dotnet/tools:$PATH"
+export PATH="$HOME/bin:/usr/local/bin:$HOME/.local/bin:$HOME/.local/share/gem/ruby/3.0.0/bin:$HOME/.cargo/bin:$PATH"
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -101,9 +101,6 @@ export NNN_PLUG='f:finder;o:fzopen;p:mocplay;d:diffs;t:nmount;v:imgviu'
 # else
 #   export EDITOR='mvim'
 # fi
-
-# Disable Telemetry dotnet https://wiki.archlinux.org/title/.NET
-export DOTNET_CLI_TELEMETRY_OPTOUT=1
 
 export ARCH=x86_64
 

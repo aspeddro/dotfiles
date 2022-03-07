@@ -1,5 +1,5 @@
 local tree_cb = require('nvim-tree.config').nvim_tree_callback
-
+vim.g.nvim_tree_highlight_opened_files = 2
 require('nvim-tree').setup {
   disable_netrw = true,
   hijack_netrw = false,
@@ -8,7 +8,7 @@ require('nvim-tree').setup {
   auto_reload_on_write = true,
   auto_close = false,
   open_on_tab = false,
-  hijack_cursor = false,
+  hijack_cursor = true,
   update_cwd = false,
   hijack_directories = {
     enable = false,
@@ -28,8 +28,8 @@ require('nvim-tree').setup {
     },
   },
   update_focused_file = {
-    enable = false,
-    update_cwd = false,
+    enable = true,
+    update_cwd = true,
     ignore_list = {},
   },
   system_open = {

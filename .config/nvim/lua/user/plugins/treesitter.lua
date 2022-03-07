@@ -1,4 +1,5 @@
 local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
+local ft_to_parser = require('nvim-treesitter.parsers').filetype_to_parsername
 local query = require 'vim.treesitter.query'
 local install = require 'nvim-treesitter.install'
 
@@ -6,22 +7,15 @@ local color = require('blueberry').colors
 
 install.prefer_git = true
 
--- parser_config.r = {
---   install_info = {
---     url = '~/Desktop/tree-sitter-r',
---     -- branch = 'fix/pipe',
---     files = { 'src/parser.c' },
---   },
---   filetype = 'r',
--- }
+ft_to_parser.rmd = 'markdown'
 
--- parser_config.markdown = {
+-- parser_config.rmd = {
 --   install_info = {
---     url = 'https://github.com/MDeiml/tree-sitter-markdown',
+--     url = '~/Desktop/Plugins/tree-sitter-markdown',
 --     branch = 'main',
 --     files = { 'src/parser.c', 'src/scanner.cc' },
 --   },
---   filetype = 'markdown',
+--   filetype = 'rmd',
 -- }
 
 local read_query = function(filename)
@@ -198,5 +192,9 @@ require('nvim-treesitter.configs').setup {
   },
 }
 
-require('mapx').nmap('<leader>tp', ':TSPlaygroundToggle<cr>')
-require('mapx').nmap('<leader>th', ':TSHighlightCapturesUnderCursor<cr>')
+require('mapx').nmap('<leader>tp', ':TSPlaygroundToggle<cr>', 'silent')
+require('mapx').nmap(
+  '<leader>th',
+  ':TSHighlightCapturesUnderCursor<cr>',
+  'silent'
+)

@@ -147,6 +147,12 @@ _G.packer_plugins = {
     path = "/home/pedro/.local/share/nvim/site/pack/packer/start/cmp_luasnip",
     url = "https://github.com/saadparwaiz1/cmp_luasnip"
   },
+  ["detect-indent.nvim"] = {
+    config = { "\27LJ\2\n;\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\18detect-indent\frequire\0" },
+    loaded = true,
+    path = "/home/pedro/.local/share/nvim/site/pack/packer/start/detect-indent.nvim",
+    url = "/home/pedro/Desktop/Plugins/detect-indent.nvim"
+  },
   ["editorconfig.nvim"] = {
     config = { "\27LJ\2\n»\1\0\0\3\0\3\0\0056\0\0\0009\0\1\0'\2\2\0B\0\2\1K\0\1\0›\1          augroup editorconfig\n            autocmd!\n            autocmd BufEnter * lua require('editorconfig').config()\n          augroup END\n        \bcmd\bvim\0" },
     loaded = true,
@@ -164,12 +170,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/pedro/.local/share/nvim/site/pack/packer/start/fidget.nvim",
     url = "https://github.com/j-hui/fidget.nvim"
-  },
-  ["filestyle.nvim"] = {
-    config = { "\27LJ\2\n6\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\27user.plugins.filestyle\frequire\0" },
-    loaded = true,
-    path = "/home/pedro/.local/share/nvim/site/pack/packer/start/filestyle.nvim",
-    url = "/home/pedro/Desktop/Plugins/filestyle.nvim"
   },
   ["filetype.nvim"] = {
     config = { "\27LJ\2\n5\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\26user.plugins.filetype\frequire\0" },
@@ -213,6 +213,11 @@ _G.packer_plugins = {
     path = "/home/pedro/.local/share/nvim/site/pack/packer/start/impatient.nvim",
     url = "https://github.com/lewis6991/impatient.nvim"
   },
+  ["lsp_signature.nvim"] = {
+    loaded = true,
+    path = "/home/pedro/.local/share/nvim/site/pack/packer/start/lsp_signature.nvim",
+    url = "https://github.com/ray-x/lsp_signature.nvim"
+  },
   ["lspkind-nvim"] = {
     loaded = true,
     path = "/home/pedro/.local/share/nvim/site/pack/packer/start/lspkind-nvim",
@@ -224,7 +229,7 @@ _G.packer_plugins = {
     url = "https://github.com/folke/lua-dev.nvim"
   },
   ["mapx.nvim"] = {
-    config = { "\27LJ\2\nH\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\2\ndebug\1\vglobal\2\nsetup\tmapx\frequire\0" },
+    config = { "\27LJ\2\nH\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\2\vglobal\2\ndebug\1\nsetup\tmapx\frequire\0" },
     loaded = true,
     path = "/home/pedro/.local/share/nvim/site/pack/packer/start/mapx.nvim",
     url = "https://github.com/b0o/mapx.nvim"
@@ -233,11 +238,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/pedro/.local/share/nvim/site/pack/packer/start/nabla.nvim",
     url = "https://github.com/jbyuki/nabla.nvim"
-  },
-  ["nest.nvim"] = {
-    loaded = true,
-    path = "/home/pedro/.local/share/nvim/site/pack/packer/start/nest.nvim",
-    url = "https://github.com/LionC/nest.nvim"
   },
   ["null-ls.nvim"] = {
     config = { "\27LJ\2\n4\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\25user.plugins.null-ls\frequire\0" },
@@ -300,12 +300,6 @@ _G.packer_plugins = {
     path = "/home/pedro/.local/share/nvim/site/pack/packer/start/nvim-notify",
     url = "https://github.com/rcarriga/nvim-notify"
   },
-  ["nvim-toggleterm.lua"] = {
-    config = { "\27LJ\2\n7\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\28user.plugins.toggleterm\frequire\0" },
-    loaded = true,
-    path = "/home/pedro/.local/share/nvim/site/pack/packer/start/nvim-toggleterm.lua",
-    url = "https://github.com/akinsho/nvim-toggleterm.lua"
-  },
   ["nvim-tree.lua"] = {
     config = { "\27LJ\2\n5\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\26user.plugins.nvimtree\frequire\0" },
     loaded = true,
@@ -354,7 +348,7 @@ _G.packer_plugins = {
     url = "https://github.com/wbthomason/packer.nvim"
   },
   ["pandoc.nvim"] = {
-    config = { "\27LJ\2\n·\1\0\0\6\0\n\0\0176\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\b\0005\3\6\0004\4\4\0005\5\3\0>\5\1\0045\5\4\0>\5\2\0045\5\5\0>\5\3\4=\4\a\3=\3\t\2B\0\2\1K\0\1\0\fdefault\1\0\0\targs\1\0\0\1\3\0\0\r--filter\20pandoc-crossref\1\2\0\0\22--number-sections\1\2\0\0\17--standalone\nsetup\vpandoc\frequire\0" },
+    config = { "\27LJ\2\nð\1\0\0\6\0\f\0\0216\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\n\0005\3\b\0004\4\6\0005\5\3\0>\5\1\0045\5\4\0>\5\2\0045\5\5\0>\5\3\0045\5\6\0>\5\4\0045\5\a\0>\5\5\4=\4\t\3=\3\v\2B\0\2\1K\0\1\0\fdefault\1\0\0\targs\1\0\0\1\3\0\0\r--filter\20pandoc-crossref\1\3\0\0\17--pdf-engine\rtectonic\1\2\0\0\15--biblatex\1\2\0\0\22--number-sections\1\2\0\0\17--standalone\nsetup\vpandoc\frequire\0" },
     loaded = true,
     path = "/home/pedro/.local/share/nvim/site/pack/packer/start/pandoc.nvim",
     url = "/home/pedro/Desktop/Plugins/pandoc.nvim"
@@ -374,8 +368,13 @@ _G.packer_plugins = {
     path = "/home/pedro/.local/share/nvim/site/pack/packer/start/popup.nvim",
     url = "https://github.com/nvim-lua/popup.nvim"
   },
+  ["repl.nvim"] = {
+    loaded = true,
+    path = "/home/pedro/.local/share/nvim/site/pack/packer/start/repl.nvim",
+    url = "/home/pedro/Desktop/Plugins/repl.nvim"
+  },
   ["rlang.nvim"] = {
-    config = { "\27LJ\2\n2\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\23user.plugins.rlang\frequire\0" },
+    config = { "\27LJ\2\n\v\0\0\1\0\0\0\1K\0\1\0\0" },
     load_after = {},
     loaded = true,
     needs_bufread = false,
@@ -417,15 +416,16 @@ _G.packer_plugins = {
     url = "https://github.com/nvim-telescope/telescope.nvim"
   },
   ["tex.nvim"] = {
-    config = { "\27LJ\2\nV\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\2\vviewer\vevince\vengine\rtectonic\nsetup\btex\frequire\0" },
+    config = { "\27LJ\2\nV\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\2\vengine\rtectonic\vviewer\vevince\nsetup\btex\frequire\0" },
     loaded = true,
     path = "/home/pedro/.local/share/nvim/site/pack/packer/start/tex.nvim",
     url = "/home/pedro/Desktop/Plugins/tex.nvim"
   },
-  ["vim-fsharp"] = {
+  ["toggleterm.nvim"] = {
+    config = { "\27LJ\2\n7\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\28user.plugins.toggleterm\frequire\0" },
     loaded = true,
-    path = "/home/pedro/.local/share/nvim/site/pack/packer/start/vim-fsharp",
-    url = "https://github.com/PhilT/vim-fsharp"
+    path = "/home/pedro/.local/share/nvim/site/pack/packer/start/toggleterm.nvim",
+    url = "/home/pedro/Desktop/Plugins/toggleterm.nvim"
   },
   ["virtual-types.nvim"] = {
     loaded = true,
@@ -439,78 +439,70 @@ time([[Defining packer_plugins]], false)
 time([[Config for nvim-web-devicons]], true)
 try_loadstring("\27LJ\2\n?\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\22nvim-web-devicons\frequire\0", "config", "nvim-web-devicons")
 time([[Config for nvim-web-devicons]], false)
--- Config for: telescope.nvim
-time([[Config for telescope.nvim]], true)
-try_loadstring("\27LJ\2\n6\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\27user.plugins.telescope\frequire\0", "config", "telescope.nvim")
-time([[Config for telescope.nvim]], false)
--- Config for: tex.nvim
-time([[Config for tex.nvim]], true)
-try_loadstring("\27LJ\2\nV\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\2\vviewer\vevince\vengine\rtectonic\nsetup\btex\frequire\0", "config", "tex.nvim")
-time([[Config for tex.nvim]], false)
--- Config for: null-ls.nvim
-time([[Config for null-ls.nvim]], true)
-try_loadstring("\27LJ\2\n4\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\25user.plugins.null-ls\frequire\0", "config", "null-ls.nvim")
-time([[Config for null-ls.nvim]], false)
+-- Config for: pandoc.nvim
+time([[Config for pandoc.nvim]], true)
+try_loadstring("\27LJ\2\nð\1\0\0\6\0\f\0\0216\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\n\0005\3\b\0004\4\6\0005\5\3\0>\5\1\0045\5\4\0>\5\2\0045\5\5\0>\5\3\0045\5\6\0>\5\4\0045\5\a\0>\5\5\4=\4\t\3=\3\v\2B\0\2\1K\0\1\0\fdefault\1\0\0\targs\1\0\0\1\3\0\0\r--filter\20pandoc-crossref\1\3\0\0\17--pdf-engine\rtectonic\1\2\0\0\15--biblatex\1\2\0\0\22--number-sections\1\2\0\0\17--standalone\nsetup\vpandoc\frequire\0", "config", "pandoc.nvim")
+time([[Config for pandoc.nvim]], false)
+-- Config for: toggleterm.nvim
+time([[Config for toggleterm.nvim]], true)
+try_loadstring("\27LJ\2\n7\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\28user.plugins.toggleterm\frequire\0", "config", "toggleterm.nvim")
+time([[Config for toggleterm.nvim]], false)
 -- Config for: nvim-treesitter
 time([[Config for nvim-treesitter]], true)
 try_loadstring("\27LJ\2\n7\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\28user.plugins.treesitter\frequire\0", "config", "nvim-treesitter")
 time([[Config for nvim-treesitter]], false)
--- Config for: pandoc.nvim
-time([[Config for pandoc.nvim]], true)
-try_loadstring("\27LJ\2\n·\1\0\0\6\0\n\0\0176\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\b\0005\3\6\0004\4\4\0005\5\3\0>\5\1\0045\5\4\0>\5\2\0045\5\5\0>\5\3\4=\4\a\3=\3\t\2B\0\2\1K\0\1\0\fdefault\1\0\0\targs\1\0\0\1\3\0\0\r--filter\20pandoc-crossref\1\2\0\0\22--number-sections\1\2\0\0\17--standalone\nsetup\vpandoc\frequire\0", "config", "pandoc.nvim")
-time([[Config for pandoc.nvim]], false)
--- Config for: LuaSnip
-time([[Config for LuaSnip]], true)
-try_loadstring("\27LJ\2\n4\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\25user.plugins.luasnip\frequire\0", "config", "LuaSnip")
-time([[Config for LuaSnip]], false)
--- Config for: numb.nvim
-time([[Config for numb.nvim]], true)
-try_loadstring("\27LJ\2\n2\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\tnumb\frequire\0", "config", "numb.nvim")
-time([[Config for numb.nvim]], false)
--- Config for: nvim-toggleterm.lua
-time([[Config for nvim-toggleterm.lua]], true)
-try_loadstring("\27LJ\2\n7\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\28user.plugins.toggleterm\frequire\0", "config", "nvim-toggleterm.lua")
-time([[Config for nvim-toggleterm.lua]], false)
--- Config for: better-escape.nvim
-time([[Config for better-escape.nvim]], true)
-try_loadstring("\27LJ\2\n_\0\0\4\0\6\0\t6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\4\0005\3\3\0=\3\5\2B\0\2\1K\0\1\0\fmapping\1\0\0\1\4\0\0\ajk\ajj\akj\nsetup\18better_escape\frequire\0", "config", "better-escape.nvim")
-time([[Config for better-escape.nvim]], false)
--- Config for: editorconfig.nvim
-time([[Config for editorconfig.nvim]], true)
-try_loadstring("\27LJ\2\n»\1\0\0\3\0\3\0\0056\0\0\0009\0\1\0'\2\2\0B\0\2\1K\0\1\0›\1          augroup editorconfig\n            autocmd!\n            autocmd BufEnter * lua require('editorconfig').config()\n          augroup END\n        \bcmd\bvim\0", "config", "editorconfig.nvim")
-time([[Config for editorconfig.nvim]], false)
--- Config for: heirline.nvim
-time([[Config for heirline.nvim]], true)
-try_loadstring("\27LJ\2\n5\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\26user.plugins.heirline\frequire\0", "config", "heirline.nvim")
-time([[Config for heirline.nvim]], false)
--- Config for: telescope-fzf-native.nvim
-time([[Config for telescope-fzf-native.nvim]], true)
-try_loadstring("\27LJ\2\nH\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0'\2\3\0B\0\2\1K\0\1\0\bfzf\19load_extension\14telescope\frequire\0", "config", "telescope-fzf-native.nvim")
-time([[Config for telescope-fzf-native.nvim]], false)
--- Config for: nvim-cmp
-time([[Config for nvim-cmp]], true)
-try_loadstring("\27LJ\2\n0\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\21user.plugins.cmp\frequire\0", "config", "nvim-cmp")
-time([[Config for nvim-cmp]], false)
--- Config for: faster.nvim
-time([[Config for faster.nvim]], true)
-try_loadstring("\27LJ\2\nÙ\1\0\0\4\0\t\0\0296\0\0\0'\2\1\0B\0\2\0029\0\2\0'\2\3\0'\3\4\0B\0\3\0016\0\0\0'\2\1\0B\0\2\0029\0\2\0'\2\5\0'\3\6\0B\0\3\0016\0\0\0'\2\1\0B\0\2\0029\0\a\0'\2\5\0'\3\b\0B\0\3\0016\0\0\0'\2\1\0B\0\2\0029\0\a\0'\2\5\0'\3\b\0B\0\3\1K\0\1\0\27<Plug>(faster_vmove_k)\tvmap\26<Plug>(faster_move_k)\6k\26<Plug>(faster_move_j)\6j\tnmap\tmapx\frequire\0", "config", "faster.nvim")
-time([[Config for faster.nvim]], false)
--- Config for: nvim-autopairs
-time([[Config for nvim-autopairs]], true)
-try_loadstring("\27LJ\2\n6\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\27user.plugins.autopairs\frequire\0", "config", "nvim-autopairs")
-time([[Config for nvim-autopairs]], false)
--- Config for: nvim-cokeline
-time([[Config for nvim-cokeline]], true)
-try_loadstring("\27LJ\2\n5\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\26user.plugins.cokeline\frequire\0", "config", "nvim-cokeline")
-time([[Config for nvim-cokeline]], false)
 -- Config for: slides.nvim
 time([[Config for slides.nvim]], true)
 try_loadstring("\27LJ\2\n8\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\nsetup\vslides\frequire\0", "config", "slides.nvim")
 time([[Config for slides.nvim]], false)
+-- Config for: faster.nvim
+time([[Config for faster.nvim]], true)
+try_loadstring("\27LJ\2\nÙ\1\0\0\4\0\t\0\0296\0\0\0'\2\1\0B\0\2\0029\0\2\0'\2\3\0'\3\4\0B\0\3\0016\0\0\0'\2\1\0B\0\2\0029\0\2\0'\2\5\0'\3\6\0B\0\3\0016\0\0\0'\2\1\0B\0\2\0029\0\a\0'\2\5\0'\3\b\0B\0\3\0016\0\0\0'\2\1\0B\0\2\0029\0\a\0'\2\5\0'\3\b\0B\0\3\1K\0\1\0\27<Plug>(faster_vmove_k)\tvmap\26<Plug>(faster_move_k)\6k\26<Plug>(faster_move_j)\6j\tnmap\tmapx\frequire\0", "config", "faster.nvim")
+time([[Config for faster.nvim]], false)
+-- Config for: nvim-cokeline
+time([[Config for nvim-cokeline]], true)
+try_loadstring("\27LJ\2\n5\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\26user.plugins.cokeline\frequire\0", "config", "nvim-cokeline")
+time([[Config for nvim-cokeline]], false)
+-- Config for: nvim-lspconfig
+time([[Config for nvim-lspconfig]], true)
+try_loadstring("\27LJ\2\nD\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\27user.plugins.lspconfig\frequire\0", "config", "nvim-lspconfig")
+time([[Config for nvim-lspconfig]], false)
+-- Config for: better-escape.nvim
+time([[Config for better-escape.nvim]], true)
+try_loadstring("\27LJ\2\n_\0\0\4\0\6\0\t6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\4\0005\3\3\0=\3\5\2B\0\2\1K\0\1\0\fmapping\1\0\0\1\4\0\0\ajk\ajj\akj\nsetup\18better_escape\frequire\0", "config", "better-escape.nvim")
+time([[Config for better-escape.nvim]], false)
 -- Config for: fidget.nvim
 time([[Config for fidget.nvim]], true)
 try_loadstring("\27LJ\2\n4\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\vfidget\frequire\0", "config", "fidget.nvim")
 time([[Config for fidget.nvim]], false)
+-- Config for: nvim-colorizer.lua
+time([[Config for nvim-colorizer.lua]], true)
+try_loadstring("\27LJ\2\nX\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\5\0\0\6*\t!vim\f!packer\14!NvimTree\nsetup\14colorizer\frequire\0", "config", "nvim-colorizer.lua")
+time([[Config for nvim-colorizer.lua]], false)
+-- Config for: telescope-fzf-native.nvim
+time([[Config for telescope-fzf-native.nvim]], true)
+try_loadstring("\27LJ\2\nH\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0'\2\3\0B\0\2\1K\0\1\0\bfzf\19load_extension\14telescope\frequire\0", "config", "telescope-fzf-native.nvim")
+time([[Config for telescope-fzf-native.nvim]], false)
+-- Config for: detect-indent.nvim
+time([[Config for detect-indent.nvim]], true)
+try_loadstring("\27LJ\2\n;\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\18detect-indent\frequire\0", "config", "detect-indent.nvim")
+time([[Config for detect-indent.nvim]], false)
+-- Config for: filetype.nvim
+time([[Config for filetype.nvim]], true)
+try_loadstring("\27LJ\2\n5\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\26user.plugins.filetype\frequire\0", "config", "filetype.nvim")
+time([[Config for filetype.nvim]], false)
+-- Config for: heirline.nvim
+time([[Config for heirline.nvim]], true)
+try_loadstring("\27LJ\2\n5\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\26user.plugins.heirline\frequire\0", "config", "heirline.nvim")
+time([[Config for heirline.nvim]], false)
+-- Config for: telescope-github.nvim
+time([[Config for telescope-github.nvim]], true)
+try_loadstring("\27LJ\2\nG\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0'\2\3\0B\0\2\1K\0\1\0\agh\19load_extension\14telescope\frequire\0", "config", "telescope-github.nvim")
+time([[Config for telescope-github.nvim]], false)
+-- Config for: mapx.nvim
+time([[Config for mapx.nvim]], true)
+try_loadstring("\27LJ\2\nH\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\2\vglobal\2\ndebug\1\nsetup\tmapx\frequire\0", "config", "mapx.nvim")
+time([[Config for mapx.nvim]], false)
 -- Config for: nvim-tree.lua
 time([[Config for nvim-tree.lua]], true)
 try_loadstring("\27LJ\2\n5\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\26user.plugins.nvimtree\frequire\0", "config", "nvim-tree.lua")
@@ -519,48 +511,56 @@ time([[Config for nvim-tree.lua]], false)
 time([[Config for nvim-notify]], true)
 try_loadstring("\27LJ\2\n2\0\0\4\0\3\0\0066\0\0\0006\1\2\0'\3\1\0B\1\2\2=\1\1\0K\0\1\0\frequire\vnotify\bvim\0", "config", "nvim-notify")
 time([[Config for nvim-notify]], false)
--- Config for: nvim-colorizer.lua
-time([[Config for nvim-colorizer.lua]], true)
-try_loadstring("\27LJ\2\nX\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\5\0\0\6*\t!vim\f!packer\14!NvimTree\nsetup\14colorizer\frequire\0", "config", "nvim-colorizer.lua")
-time([[Config for nvim-colorizer.lua]], false)
--- Config for: Comment.nvim
-time([[Config for Comment.nvim]], true)
-try_loadstring("\27LJ\2\n4\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\25user.plugins.comment\frequire\0", "config", "Comment.nvim")
-time([[Config for Comment.nvim]], false)
--- Config for: nvim-lspconfig
-time([[Config for nvim-lspconfig]], true)
-try_loadstring("\27LJ\2\nD\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\27user.plugins.lspconfig\frequire\0", "config", "nvim-lspconfig")
-time([[Config for nvim-lspconfig]], false)
--- Config for: filetype.nvim
-time([[Config for filetype.nvim]], true)
-try_loadstring("\27LJ\2\n5\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\26user.plugins.filetype\frequire\0", "config", "filetype.nvim")
-time([[Config for filetype.nvim]], false)
--- Config for: filestyle.nvim
-time([[Config for filestyle.nvim]], true)
-try_loadstring("\27LJ\2\n6\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\27user.plugins.filestyle\frequire\0", "config", "filestyle.nvim")
-time([[Config for filestyle.nvim]], false)
+-- Config for: telescope.nvim
+time([[Config for telescope.nvim]], true)
+try_loadstring("\27LJ\2\n6\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\27user.plugins.telescope\frequire\0", "config", "telescope.nvim")
+time([[Config for telescope.nvim]], false)
+-- Config for: nvim-autopairs
+time([[Config for nvim-autopairs]], true)
+try_loadstring("\27LJ\2\n6\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\27user.plugins.autopairs\frequire\0", "config", "nvim-autopairs")
+time([[Config for nvim-autopairs]], false)
+-- Config for: editorconfig.nvim
+time([[Config for editorconfig.nvim]], true)
+try_loadstring("\27LJ\2\n»\1\0\0\3\0\3\0\0056\0\0\0009\0\1\0'\2\2\0B\0\2\1K\0\1\0›\1          augroup editorconfig\n            autocmd!\n            autocmd BufEnter * lua require('editorconfig').config()\n          augroup END\n        \bcmd\bvim\0", "config", "editorconfig.nvim")
+time([[Config for editorconfig.nvim]], false)
 -- Config for: gitui.nvim
 time([[Config for gitui.nvim]], true)
 try_loadstring("\27LJ\2\n3\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\ngitui\frequire\0", "config", "gitui.nvim")
 time([[Config for gitui.nvim]], false)
+-- Config for: null-ls.nvim
+time([[Config for null-ls.nvim]], true)
+try_loadstring("\27LJ\2\n4\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\25user.plugins.null-ls\frequire\0", "config", "null-ls.nvim")
+time([[Config for null-ls.nvim]], false)
+-- Config for: Comment.nvim
+time([[Config for Comment.nvim]], true)
+try_loadstring("\27LJ\2\n4\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\25user.plugins.comment\frequire\0", "config", "Comment.nvim")
+time([[Config for Comment.nvim]], false)
 -- Config for: gitsigns.nvim
 time([[Config for gitsigns.nvim]], true)
 try_loadstring("\27LJ\2\n5\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\26user.plugins.gitsings\frequire\0", "config", "gitsigns.nvim")
 time([[Config for gitsigns.nvim]], false)
--- Config for: telescope-github.nvim
-time([[Config for telescope-github.nvim]], true)
-try_loadstring("\27LJ\2\nG\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0'\2\3\0B\0\2\1K\0\1\0\agh\19load_extension\14telescope\frequire\0", "config", "telescope-github.nvim")
-time([[Config for telescope-github.nvim]], false)
--- Config for: mapx.nvim
-time([[Config for mapx.nvim]], true)
-try_loadstring("\27LJ\2\nH\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\2\ndebug\1\vglobal\2\nsetup\tmapx\frequire\0", "config", "mapx.nvim")
-time([[Config for mapx.nvim]], false)
+-- Config for: nvim-cmp
+time([[Config for nvim-cmp]], true)
+try_loadstring("\27LJ\2\n0\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\21user.plugins.cmp\frequire\0", "config", "nvim-cmp")
+time([[Config for nvim-cmp]], false)
+-- Config for: numb.nvim
+time([[Config for numb.nvim]], true)
+try_loadstring("\27LJ\2\n2\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\tnumb\frequire\0", "config", "numb.nvim")
+time([[Config for numb.nvim]], false)
+-- Config for: LuaSnip
+time([[Config for LuaSnip]], true)
+try_loadstring("\27LJ\2\n4\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\25user.plugins.luasnip\frequire\0", "config", "LuaSnip")
+time([[Config for LuaSnip]], false)
+-- Config for: tex.nvim
+time([[Config for tex.nvim]], true)
+try_loadstring("\27LJ\2\nV\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\2\vengine\rtectonic\vviewer\vevince\nsetup\btex\frequire\0", "config", "tex.nvim")
+time([[Config for tex.nvim]], false)
 -- Load plugins in order defined by `after`
 time([[Sequenced loading]], true)
 vim.cmd [[ packadd rlang.nvim ]]
 
 -- Config for: rlang.nvim
-try_loadstring("\27LJ\2\n2\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\23user.plugins.rlang\frequire\0", "config", "rlang.nvim")
+try_loadstring("\27LJ\2\n\v\0\0\1\0\0\0\1K\0\1\0\0", "config", "rlang.nvim")
 
 time([[Sequenced loading]], false)
 

@@ -14,7 +14,7 @@ mapx.nnoremap([[<C-j>]], [[<C-w>j]])
 mapx.nnoremap([[<C-k>]], [[<C-w>k]])
 mapx.nnoremap([[<C-l>]], [[<C-w>l]])
 
-mapx.nnoremap('<c-s>', ':w!<cr>')
+mapx.nnoremap('<c-s>', ':w!<cr>', 'silent')
 
 -- resize
 mapx.nnoremap('<c-left>', function()

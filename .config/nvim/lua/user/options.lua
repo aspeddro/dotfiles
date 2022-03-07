@@ -43,17 +43,18 @@ vim.opt.wrapmargin = 2
 
 vim.opt.autoindent = true
 -- vim.opt.cindent = true
--- vim.opt.tabstop = 2
+vim.opt.tabstop = 4
 vim.opt.shiftwidth = 2
--- vim.opt.expandtab = true
+vim.opt.expandtab = true
 -- vim.opt.softtabstop = 2
 -- vim.opt.smarttab = true
 -- vim.opt.shiftround = true
 vim.opt.smartindent = true
 -- vim.opt.smartcase = true
 
-vim.opt.list = false
--- FIXME: raise a error
+vim.opt.list = true
+vim.opt.listchars = 'tab:» '
+-- BUG: raise a error
 -- vim.opt.listchars = {
 --   eol = '⏎ ',
 --   tab = '│ ',

@@ -2,16 +2,27 @@ local util = require 'lspconfig.util'
 
 local M = {}
 
-M.sumneko_lua = {
-  settings = require('lua-dev').setup({
-    library = {
-      vimruntime = true,
-      types = true,
-      plugins = false,
-    },
-    runtime_path = false,
-  }).settings,
+local sumneko_lua = require('lua-dev').setup {
+  library = { runtime = true, plugins = true, types = true },
+  runtime_path = true,
 }
+sumneko_lua.settings.Lua.completion.callSnippet = 'Disable'
+M.sumneko_lua = sumneko_lua
+
+-- M.sumneko_lua = {
+--   settings = {
+--     Lua = {
+--       diagnostics = { globals = { 'vim' } },
+--       runtime = { version = 'LuaJIT', path = vim.split(package.path, ';') },
+--       workspace = {
+--         library = {
+--           [vim.fn.expand '$VIMRUNTIME/lua'] = true,
+--           [vim.fn.expand '$VIMRUNTIME/lua/vim/lsp'] = true,
+--         },
+--       },
+--     },
+--   },
+-- }
 
 M.r_language_server = {}
 
