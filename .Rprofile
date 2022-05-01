@@ -4,13 +4,14 @@
 # options(device = "X11")
 
 options(
-  tinytex.latexmk.emulation = FALSE,
+  # tinytex.latexmk.emulation = FALSE,
   repos = c(CRAN = "https://cloud.r-project.org"),
   # LSP
-  languageserver.lint_cache = FALSE,
+  languageserver.diagnostics = FALSE,
+  languageserver.lint_cache = TRUE,
   languageserver.max_completions = 100,
   languageserver.rich_documentation = FALSE,
-  languageserver.formatting_style = function(options) {
-    styler::tidyverse_style(scope = "indention", indent_by = 2)
-  }
+  languageserver.server_capabilities = list(
+    documentFormattingProvider = FALSE
+  )
 )
