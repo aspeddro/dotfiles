@@ -1,11 +1,16 @@
 env:
   TERM: xterm-256color
+  
+  # This is to fix weird font scaling on X11
+  # Solution: https://github.com/alacritty/alacritty/issues/1501#issuecomment-614867213
+  WINIT_X11_SCALE_FACTOR: "1.0"
 
 window:
   padding:
     x: 0
     y: 0
-
+  dynamic_padding: true
+  decorations: full
   dimensions:
     columns: 0
     lines: 0
@@ -27,7 +32,7 @@ font:
     family: JetBrainsMono Nerd Font
     style: Bold Italic
 
-  size: 7.4
+  size: 11.5
 
   offset:
     x: 0
@@ -37,66 +42,16 @@ font:
     x: 0
     y: 0
 
+scrolling:
+  history: 20000
+
+cursor:
+  style: Block
+
 key_bindings:
   - { key: N,   mods: Control|Shift, action: SpawnNewInstance }
 
 schemes:
-  night-owl: &night-owl
-    primary:
-      background: "#011627"
-      foreground: "#d6deeb"
-
-    # Cursor colors
-    cursor:
-      text: CellBackground
-      cursor: CellForeground
-
-    # Vi mode cursor colors
-    vi_mode_cursor:
-      text: CellBackground
-      cursor: "#22da6e"
-
-    # Selection colors
-    selection:
-      text: "#ffffff"
-      background: "#0d486e"
-
-    # Search colors
-    search:
-      matches:
-        foreground: "#000000"
-        background: "#22da6e"
-
-        focused_match:
-          foreground: "#ffffff"
-          background: "#22da6e"
-
-      bar:
-        foreground: "#ffffff"
-        background: "#1d3b53"
-
-    # Normal colors
-    normal:
-      black: "#011627"
-      red: "#EF5350"
-      green: "#22da6e"
-      yellow: "#c5e478"
-      blue: "#82AAFF"
-      magenta: "#C792EA"
-      cyan: "#21c7a8"
-      white: "#ffffff"
-
-    # Bright colors
-    bright:
-      black: "#575656"
-      red: "#EF5350"
-      green: "#22da6e"
-      yellow: "#ffeb95"
-      blue: "#82AAFF"
-      magenta: "#C792EA"
-      cyan: "#7fdbca"
-      white: "#ffffff"
-  
   material-theme: &material-theme
 
     cursor:
