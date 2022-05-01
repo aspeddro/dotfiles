@@ -32,7 +32,7 @@
         "**/.git": true,
         "node_modules": false,
         // Rust
-        "**/target": true,
+        // "**/target": true,
         // TeX Files
         "**/*.aux": true,
         "**/*.fdb_latexmk": true,
@@ -87,6 +87,8 @@
         "```(\\w|\\W|\\d|\\D)+```" // ignore chucnk code
     ],
     "cSpell.enabled": false,
+    "typescript.inlayHints.parameterNames.enabled": "all",
+    "typescript.inlayHints.variableTypes.enabled": true,
     // OCaml
     "ocaml.trace.server": "verbose",
     // Lua
@@ -135,6 +137,7 @@
     // Rust
     "rust-analyzer.cargo.allFeatures": true,
     "rust-analyzer.checkOnSave.enable": false,
+    "rust-analyzer.trace.server": "verbose",
     "editor.suggestSelection": "first",
     
     "javascript.updateImportsOnFileMove.enabled": "always",
@@ -155,5 +158,5 @@
     ],
     "python.analysis.completeFunctionParens": true,
     "julia.symbolCacheDownload": true,
-    "workbench.colorTheme": "Material Theme Darker High Contrast"
+    "rust-analyzer.inlayHints.enable": true
 }
