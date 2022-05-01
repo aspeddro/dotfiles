@@ -10,8 +10,8 @@
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
 set $mod Mod4
-set $term kitty
-# set $term alacritty
+# set $term kitty
+set $term alacritty
 set $menu bemenu-run --prompt "" --fn "JetBrainsMonoMedium Nerd Font 9" --tf "#ffffff" --ff "#ffffff" --nf "#666666" --hf "#89ddff" --line-height 21
 set $font JetBrainsMonoMedium Nerd Font 9
 # Font for window titles. Will also be used by the bar unless a different font
@@ -42,8 +42,8 @@ exec --no-startup-id feh --bg-fill $HOME/Pictures/wallpaper.jpg
 exec --no-startup-id nm-applet
 
 # Open nnn (terminal file manager)
-# bindsym $mod+n exec alacritty -e nnn -cCdDEFnQrux
-bindsym $mod+n exec kitty sh -c "nnn -cCdDEFnQrux"
+bindsym $mod+n exec alacritty -e nnn -cCdDEFnQrux
+# bindsym $mod+n exec kitty sh -c "nnn -cCdDEFnQrux"
 
 # Screenshot
 bindsym $mod+Print exec maim --select --hidecursor | xclip -selection clipboard -t image/png
@@ -59,6 +59,7 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 bindsym XF86AudioPlay exec playerctl play-pause
 bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
+
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
