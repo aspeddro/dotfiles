@@ -9,4 +9,5 @@ application/postscript=org.gnome.Evince.desktop
 image/vnd.djvu=org.gnome.Evince.desktop
 text/plain=nvim.desktop
 x-scheme-handler/postman=Postman.desktop
+x-scheme-handler/msteams=teams.desktop
 
