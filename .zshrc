@@ -92,6 +92,7 @@ export GPG_TTY=$(tty)
 export STARSHIP_CONFIG=${XDG_CONFIG_HOME}/starship/starship.toml
 export NNN_PLUG='f:finder;o:fzopen;p:mocplay;d:diffs;t:nmount;v:imgviu'
 
+export RSTUDIO_CHROMIUM_ARGUMENTS="--disable-seccomp-filter-sandbox" 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
