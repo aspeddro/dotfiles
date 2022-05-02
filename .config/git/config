@@ -2,13 +2,13 @@
   email = aspeddro@gmail.com
   name = Pedro Castro
   username = aspeddro
-	signingkey = BB62E669F95A854C
+  signingkey = BB62E669F95A854C
 
 [color]
   ui = true
 
 [core]
-  pager = delta 
+  pager = delta
 
 [interactive]
   diffFilter = delta --color-only
@@ -25,19 +25,19 @@
   colorMoved = default
 
 [color "status"]
-	added = yellow
-	changed = green
-	untracked = cyan
-	unmerged = red
+  added = yellow
+  changed = green
+  untracked = cyan
+  unmerged = red
 
 [filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
 
 [credential]
-	helper = cache
+  helper = cache
 
 [init]
   defaultBranch = main
@@ -56,10 +56,10 @@
   user = aspeddro
 
 [commit]
-	gpgsign = true
+  gpgsign = true
 
 [gpg]
-	program = gpg
+  program = gpg
 
 [alias]
   s = status
