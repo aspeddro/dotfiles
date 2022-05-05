@@ -5,7 +5,7 @@
  (while_expression)
  (if_expression)
  (let_binding)
- (switch_expression)
+ ; (switch_expression)
  (expression_statement)
  (array)
  (call_expression)
@@ -29,6 +29,8 @@
 
 (type_declaration) @auto
 ; (switch_match) @auto
+
+(switch_expression) @auto
 
 [
  "}"

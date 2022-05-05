@@ -42,10 +42,10 @@ require('telescope').setup {
         ['<esc>'] = actions.close,
         ['<c-j>'] = actions.move_selection_next,
         ['<c-k>'] = actions.move_selection_previous,
-        ['<CR>'] = select,
+        -- ['<CR>'] = select,
       },
       n = {
-        ['<CR>'] = select,
+        -- ['<CR>'] = select,
       },
     },
     prompt_prefix = '➜ ',
@@ -54,7 +54,6 @@ require('telescope').setup {
   },
   pickers = {
     find_files = {
-      -- previewer = true,
       find_command = {
         'rg',
         '--hidden',
@@ -76,13 +75,14 @@ require('telescope').setup {
   },
 }
 
-require('mapx').nmap('<c-p>', function()
+vim.keymap.set('n', '<c-p>', function()
   require('telescope.builtin').find_files()
 end)
 
-require('mapx').nmap('<c-o>', function()
+vim.keymap.set('n', '<c-o>', function()
   require('telescope.builtin').live_grep()
 end)
-require('mapx').nmap('<c-f>', function()
+
+vim.keymap.set('n', '<c-f>', function()
   require('telescope.builtin').current_buffer_fuzzy_find()
 end)

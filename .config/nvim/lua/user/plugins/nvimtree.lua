@@ -1,20 +1,20 @@
 local tree_cb = require('nvim-tree.config').nvim_tree_callback
 vim.g.nvim_tree_highlight_opened_files = 2
+vim.g.nvim_tree_special_files = {
+  ['README.md'] = false,
+  ['Makefile'] = false,
+  ['MAKEFILE'] = false,
+}
 require('nvim-tree').setup {
   disable_netrw = true,
   hijack_netrw = false,
   open_on_setup = false,
   ignore_ft_on_setup = {},
   auto_reload_on_write = true,
-  auto_close = false,
   open_on_tab = false,
   hijack_cursor = true,
   update_cwd = false,
   hijack_directories = {
-    enable = false,
-    auto_open = false,
-  },
-  update_to_buf_dir = {
     enable = false,
     auto_open = false,
   },
@@ -29,7 +29,7 @@ require('nvim-tree').setup {
   },
   update_focused_file = {
     enable = true,
-    update_cwd = true,
+    update_cwd = false,
     ignore_list = {},
   },
   system_open = {
@@ -38,7 +38,7 @@ require('nvim-tree').setup {
   },
   git = {
     enable = false,
-    ignore = true,
+    ignore = false,
     timeout = 500,
   },
   trash = {
@@ -55,11 +55,16 @@ require('nvim-tree').setup {
         enable = true,
         chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',
         exclude = {
+          -- buftype = { 'nofile', 'terminal', 'help', 'NvimTree', 'toggleterm', 'DiffviewFileHistory' },
           filetype = {
+            'NvimTree',
             'notify',
             'packer',
             'qf',
+            'nofile',
             'toggleterm',
+            'terminal',
+            'DiffviewFileHistory',
           },
         },
       },
@@ -67,11 +72,10 @@ require('nvim-tree').setup {
   },
   view = {
     -- width of the window, can be either a number (columns) or a string in `%`
-    width = 35,
+    width = 40,
     -- side of the tree, can be one of 'left' | 'right' | 'top' | 'bottom'
     side = 'left',
-    -- if true the tree will resize itself after opening a file
-    auto_resize = true,
+    preserve_window_proportions = true,
     hide_root_folder = true,
     mappings = {
       -- custom only false will merge the list with the default mappings
@@ -116,6 +120,6 @@ require('nvim-tree').setup {
   },
 }
 
-require('mapx').nmap('<c-n>', function()
+vim.keymap.set('n', '<c-n>', function()
   require('nvim-tree').toggle()
-end)
+end, { desc = 'Toggle NvimTree' })

@@ -22,4 +22,4 @@
 ;  (link_destination)
 ; ] @text.uri
 
-(block_quote (paragraph) @text.reference)
+; (block_quote (paragraph) @text.reference)

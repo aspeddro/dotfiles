@@ -1,39 +1,98 @@
-local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
-local ft_to_parser = require('nvim-treesitter.parsers').filetype_to_parsername
-local query = require 'vim.treesitter.query'
 local install = require 'nvim-treesitter.install'
+local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
 
-local color = require('blueberry').colors
+local color = require 'user.color'
 
 install.prefer_git = true
 
-ft_to_parser.rmd = 'markdown'
+-- local read_query = function(filename)
+--   return table.concat(vim.fn.readfile(vim.fn.expand(filename)), '\n')
+-- end
 
--- parser_config.rmd = {
+-- parser_config.rdoc = {
 --   install_info = {
---     url = '~/Desktop/Plugins/tree-sitter-markdown',
---     branch = 'main',
---     files = { 'src/parser.c', 'src/scanner.cc' },
+--     url = '~/Desktop/Projects/tree-sitter-rdoc',
+--     -- branch = 'main',
+--     files = { 'src/parser.c', 'src/scanner.c' },
 --   },
---   filetype = 'rmd',
 -- }
 
-local read_query = function(filename)
-  return table.concat(vim.fn.readfile(vim.fn.expand(filename)), '\n')
-end
+-- parser_config.rescript = {
+--   install_info = {
+--     url = '~/Desktop/Projects/tree-sitter-rescript',
+--     -- branch = 'main',
+--     files = { 'src/parser.c', 'src/scanner.c' },
+--   },
+--   filetype = { "rescript" }
+-- }
+
+parser_config.r = {
+  install_info = {
+    url = '~/Desktop/Projects/tree-sitter-r',
+    -- branch = 'main',
+    files = { 'src/parser.c' },
+  },
+  filetype = 'r',
+}
+-- parser_config.r = {
+--   install_info = {
+--     url = '~/Desktop/Projects/tree-sitter-r',
+--     -- branch = 'main',
+--     files = { 'src/parser.c' },
+--   },
+--   filetype = 'r',
+-- }
 
 -- query.set_query(
 --   'r',
 --   'highlights',
---   read_query '~/.config/nvim/my_queries/r/highlights.scm'
+--   read_query '~/.config/nvim/__queries/r/highlights.scm'
 -- )
+
+-- @see https://github.com/nvim-treesitter/nvim-treesitter/issues/1708
+local disable = function(_, bufnr)
+  local name = vim.api.nvim_buf_get_name(bufnr)
+  local filetype = vim.api.nvim_buf_get_option(bufnr, 'filetype')
+  local is_valid = vim.tbl_contains({ '.min.js' }, name:match '.min.js')
+    and vim.tbl_contains({ 'javascript' }, filetype)
+
+  if is_valid then
+    return true
+  end
+
+  local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, true)
+
+  if #lines > 10000 then
+    return true
+  end
+
+  for _, line in ipairs(lines) do
+    if line:len() > 5000 then
+      return true
+    end
+  end
+
+  return false
+end
+
 require('nvim-treesitter.configs').setup {
   ensure_installed = {
     'bash',
+    'c',
+    'clojure',
+    'commonlisp',
+    'cpp',
     'css',
+    'erlang',
+    'elixir',
+    'fennel',
+    'teal',
+    'scss',
+    'dockerfile',
     'html',
     'javascript',
     'json',
+    'jsonc',
     'julia',
     'query',
     'haskell',
@@ -41,8 +100,19 @@ require('nvim-treesitter.configs').setup {
     'bibtex',
     'lua',
     'ocaml',
+    'ocaml_interface',
+    'ocamllex',
     'python',
     'r',
+    'go',
+    'gomod',
+    'graphql',
+    'ruby',
+    'perl',
+    'java',
+    'php',
+    'phpdoc',
+    'kotlin',
     'regex',
     'scss',
     'toml',
@@ -50,20 +120,25 @@ require('nvim-treesitter.configs').setup {
     'tsx',
     'make',
     'markdown',
+    'svelte',
     'vim',
     'typescript',
     'yaml',
-    'comment', -- TODO comments and DOC comment
+    'scheme',
+    'comment',
     'jsdoc',
+    'zig',
+    'cmake',
+    'prisma',
   },
   highlight = {
     enable = true,
-    -- use_languagetree = false,
-    -- disable = { 'json', 'latex', 'bibtex' },
     additional_vim_regex_highlighting = false,
+    disable = disable,
   },
   rainbow = {
     enable = true,
+    disable = disable,
     -- disable = { 'latex' }, -- list of languages you want to disable the plugin for
     extended_mode = {
       latex = false,
@@ -81,8 +156,7 @@ require('nvim-treesitter.configs').setup {
     -- termcolors = {} -- table of colour name strings
   },
   indent = {
-    enable = true,
-    -- disable = { 'yaml' },
+    disable = { 'yaml' },
   },
   autopairs = {
     enable = true, -- check for autopairs (see nvim-autopairs)
@@ -124,10 +198,8 @@ require('nvim-treesitter.configs').setup {
   textobjects = {
     select = {
       enable = true,
-
       -- Automatically jump forward to textobj, similar to targets.vim
       lookahead = true,
-
       keymaps = {
         -- You can use the capture groups defined in textobjects.scm
         ['af'] = '@function.outer',
@@ -140,14 +212,6 @@ require('nvim-treesitter.configs').setup {
         ['lo'] = '@loop.outer',
         ['pi'] = '@parameter.inner',
         ['po'] = '@parameter.outer',
-        -- NOTE: this config break rainbow
-        -- Or you can define your own textobjects like this
-        -- ['iF'] = {
-        --   python = '(function_definition) @function',
-        --   cpp = '(function_definition) @function',
-        --   c = '(function_definition) @function',
-        --   java = '(method_declaration) @function',
-        -- },
       },
     },
   },
@@ -166,7 +230,7 @@ require('nvim-treesitter.configs').setup {
     set_jumps = true, -- whether to set jumps in the jumplist
     goto_next_start = {
       [']m'] = '@function.outer',
-      [']e'] = '@parameter.inner',
+      [']]'] = '@parameter.inner',
     },
     goto_next_end = {
       [']M'] = '@function.outer',
@@ -181,20 +245,27 @@ require('nvim-treesitter.configs').setup {
       ['[]'] = '@class.outer',
     },
   },
-  -- TODO: Add more languages suppport
-  -- r, rescript
   textsubjects = {
     enable = true,
+    prev_selection = ',',
     keymaps = {
       ['.'] = 'textsubjects-smart',
       [';'] = 'textsubjects-container-outer',
+      ['i;'] = 'textsubjects-container-inner',
     },
   },
 }
 
-require('mapx').nmap('<leader>tp', ':TSPlaygroundToggle<cr>', 'silent')
-require('mapx').nmap(
+-- highlight argument
+-- require('hlargs').setup {
+--   color = color.yellow,
+-- }
+-- require('hlargs').enable()
+
+vim.keymap.set('n', '<leader>tp', ':TSPlaygroundToggle<cr>', { silent = true })
+vim.keymap.set(
+  'n',
   '<leader>th',
   ':TSHighlightCapturesUnderCursor<cr>',
-  'silent'
+  { silent = true }
 )

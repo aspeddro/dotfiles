@@ -1,7 +1,7 @@
 local herline = require 'heirline'
 local conditions = require 'heirline.conditions'
 local utils = require 'heirline.utils'
-local colors = require('blueberry').colors
+local c = require 'user.color'
 
 local ViMode = {
   -- get vim current mode, this information will be required by the provider
@@ -23,7 +23,7 @@ local ViMode = {
       niI = 'Ni',
       niR = 'Nr',
       niV = 'Nv',
-      nt = 'Nt',
+      nt = 'Normal Term',
       v = 'Visual',
       vs = 'Vs',
       V = 'V_',
@@ -51,19 +51,19 @@ local ViMode = {
       t = 'Term',
     },
     mode_colors = {
-      n = colors.cyan,
-      i = colors.green,
-      v = colors.orange,
-      V = colors.orange,
-      ['^V'] = colors.orange,
-      c = colors.orange,
-      s = colors.purple,
-      S = colors.purple,
-      ['^S'] = colors.purple,
-      R = colors.orange,
-      r = colors.orange,
-      ['!'] = colors.red,
-      t = colors.red,
+      n = c.cyan,
+      i = c.green,
+      v = c.orange,
+      V = c.orange,
+      ['^V'] = c.orange,
+      c = c.orange,
+      s = c.purple,
+      S = c.purple,
+      ['^S'] = c.purple,
+      R = c.orange,
+      r = c.orange,
+      ['!'] = c.red,
+      t = c.red,
     },
   },
   -- We can now access the value of mode() that, by now, would have been
@@ -95,18 +95,18 @@ local FileName = {
     end
     return filename
   end,
-  hl = { fg = colors.blue },
+  hl = { fg = c.blue },
 }
 
-local WorkDir = {
-  provider = function()
-    local wd = vim.loop.cwd()
-    if not conditions.width_percent_below(wd:len(), 0.25) then
-      return
-    end
-    return ' ' .. wd
-  end,
-}
+-- local WorkDir = {
+--   provider = function()
+--     local wd = vim.loop.cwd()
+--     if not conditions.width_percent_below(wd:len(), 0.25) then
+--       return
+--     end
+--     return ' ' .. wd
+--   end,
+-- }
 
 local Git = {
   condition = conditions.is_git_repo,
@@ -118,7 +118,7 @@ local Git = {
       or self.status_dict.changed ~= 0
   end,
 
-  hl = { fg = colors.orange },
+  hl = { fg = c.orange },
 
   { -- git branch name
     provider = function(self)
@@ -138,21 +138,21 @@ local Git = {
       local count = self.status_dict.added or 0
       return count > 0 and ('+' .. count .. ' ')
     end,
-    hl = { fg = colors.green },
+    hl = { fg = c.green },
   },
   {
     provider = function(self)
       local count = self.status_dict.removed or 0
       return count > 0 and ('-' .. count .. ' ')
     end,
-    hl = { fg = colors.red },
+    hl = { fg = c.red },
   },
   {
     provider = function(self)
       local count = self.status_dict.changed or 0
       return count > 0 and ('~' .. count .. ' ')
     end,
-    hl = { fg = colors.blue },
+    hl = { fg = c.blue },
   },
   {
     condition = function(self)
@@ -191,72 +191,48 @@ local Diagnostics = {
       { severity = vim.diagnostic.severity.INFO }
     )
   end,
-
-  -- {
-  --   provider = '![',
-  -- },
   {
     provider = function(self)
       -- 0 is just another output, we can decide to print it or not!
       return self.errors > 0 and (self.error_icon .. self.errors .. ' ')
     end,
-    hl = { fg = colors.error },
+    hl = { fg = c.error },
   },
   {
     provider = function(self)
       return self.warnings > 0 and (self.warn_icon .. self.warnings .. ' ')
     end,
-    hl = { fg = colors.yellow },
+    hl = { fg = c.yellow },
   },
   {
     provider = function(self)
       return self.info > 0 and (self.info_icon .. self.info .. ' ')
     end,
-    hl = { fg = colors.cyan },
+    hl = { fg = c.cyan },
   },
   {
     provider = function(self)
       return self.hints > 0 and (self.hint_icon .. self.hints)
     end,
-    hl = { fg = colors.cyan },
+    hl = { fg = c.cyan },
   },
-  -- {
-  --   provider = ']',
-  -- },
 }
 
 local LSPActive = {
   condition = conditions.lsp_attached,
-
-  -- You can keep it simple,
-  -- provider = " [LSP]",
-
-  -- Or complicate things a bit and get the servers names
-  provider = function()
-    local names = {}
-    for _, server in ipairs(vim.lsp.buf_get_clients(0)) do
-      table.insert(names, server.name)
-    end
-    return ' [' .. table.concat(names, ' ') .. ']'
-  end,
-  hl = { fg = colors.green },
+  provider = ' LSP',
+  hl = { fg = c.green },
 }
 
--- We're getting minimalists here!
 local Ruler = {
-  -- %l = current line number
-  -- %L = number of lines in the buffer
-  -- %c = column number
-  -- %P = percentage through file of displayed window
-  -- provider = '%7(%l/3L%):%2c %P',
   provider = '%l:%c/%L',
 }
 
 local FileType = {
   provider = function()
-    return string.upper(vim.bo.filetype)
+    return vim.bo.filetype
   end,
-  hl = { fg = colors.purple },
+  hl = { fg = c.orange },
 }
 
 local FileEncoding = {
@@ -280,7 +256,7 @@ local FileFlags = {
         return '[+]'
       end
     end,
-    hl = { fg = colors.green },
+    hl = { fg = c.green },
   },
   {
     provider = function()
@@ -288,7 +264,7 @@ local FileFlags = {
         return ''
       end
     end,
-    hl = { fg = colors.orange },
+    hl = { fg = c.orange },
   },
 }
 
@@ -297,7 +273,7 @@ local Space = { provider = ' ' }
 
 local BasicStatus = {
   Space,
-  WorkDir,
+  -- WorkDir,
   Space,
   FileName,
   Space,
@@ -319,35 +295,34 @@ local BasicStatus = {
   Space,
 }
 
-local InactiveStatusline = {
-  condition = function()
-    return not conditions.is_active()
-      and not conditions.buffer_matches {
-        buftype = { 'nofile', 'prompt', 'help', 'quickfix', 'NvimTree' },
-        filetype = { '^git.*', 'fugitive', 'NvimTree', 'toggleterm' },
-      }
-  end,
-  BasicStatus,
-}
+-- local InactiveStatusline = {
+--   condition = function()
+--     return not conditions.is_active()
+--       and not conditions.buffer_matches {
+--         buftype = { 'nofile', 'prompt', 'help', 'quickfix', 'NvimTree' },
+--         filetype = { '^git.*', 'fugitive', 'NvimTree', 'toggleterm' },
+--       }
+--   end,
+--   BasicStatus,
+-- }
 
-local EmptyStatusLine = {
-  condition = function()
-    return conditions.buffer_matches {
-      buftype = {
-        'nofile',
-        'prompt',
-        'help',
-        'quickfix',
-        'NvimTree',
-        'toggleterm',
-      },
-      filetype = { '^git.*', 'fugitive', 'NvimTree', 'toggleterm' },
-    }
-  end,
-  {
-    provider = nil,
-  },
-}
+-- local EmptyStatusLine = {
+--   condition = function()
+--     return conditions.buffer_matches {
+--       buftype = {
+--         'nofile',
+--         'prompt',
+--         'help',
+--         'quickfix',
+--         'NvimTree',
+--         'toggleterm',
+--       },
+--       filetype = { '^git.*', 'fugitive', 'NvimTree', 'toggleterm' },
+--     }
+--   end,
+--   Space,
+--   ViMode,
+-- }
 
 local DefaultStatusLine = {
   Space,
@@ -359,20 +334,20 @@ local StatusLine = {
   hl = function()
     if conditions.is_active() then
       return {
-        fg = colors.fg,
-        bg = colors.bg,
+        fg = c.fg,
+        bg = c.bg,
       }
     else
       return {
-        fg = colors.fg,
-        bg = colors.bg,
+        fg = c.fg,
+        bg = c.bg,
       }
     end
   end,
 
   init = utils.pick_child_on_condition,
-  InactiveStatusline,
-  EmptyStatusLine,
+  -- InactiveStatusline,
+  -- EmptyStatusLine,
   DefaultStatusLine,
 }
 

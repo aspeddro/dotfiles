@@ -1,5 +1,5 @@
 local cokeline = require 'cokeline'
-local colors = require('blueberry').colors
+local colors = require 'user.color'
 local get_hex = require('cokeline.utils').get_hex
 
 cokeline.setup {
