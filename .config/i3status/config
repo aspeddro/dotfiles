@@ -7,9 +7,9 @@
 # If the above line is not correctly displayed, fix your editor first!
 
 general {
-        interval = 5
-        output_format = "i3bar"
-        colors = true
+    interval = 5
+    output_format = "i3bar"
+    colors = true
 }
 
 order += "ipv6"
@@ -23,46 +23,46 @@ order += "memory"
 order += "tztime local"
 
 cpu_usage {
-  format = "CPU: %usage"
-  max_threshold = 75
+    format = "CPU: %usage"
+    max_threshold = 75
 }
 
 volume master {
-   format = "VOL: %volume"
-   format_muted = "VOL: muted (%volume)"
+    format = "VOL: %volume"
+    format_muted = "VOL: muted (%volume)"
 }
 
 wireless _first_ {
-        format_up = "W: (%quality at %essid, %bitrate, %frequency)"
-        format_down = "W: down"
-        format_quality = "%03d%s"
+    format_up = "W: (%quality at %essid, %bitrate, %frequency)"
+    format_down = "W: down"
+    format_quality = "%03d%s"
 }
 
 ethernet _first_ {
-        format_up = "E: %ip (%speed)"
-        format_down = "E: down"
+    format_up = "E: %ip (%speed)"
+    format_down = "E: down"
 }
 
 battery all {
-        format = "%status %percentage %remaining"
+    format = "%status %percentage %remaining"
 }
 
 disk "/" {
-        format = "%avail"
+    format = "%avail"
 }
 
 load {
-        format = "%1min"
+    format = "%1min"
 }
 
 memory {
-        format = "%used/%available"
-        threshold_degraded = "1G"
-        format_degraded = "%available"
+    format = "%used/%available"
+    threshold_degraded = "1G"
+    format_degraded = "%available"
 }
 
 tztime local {
-        format = "%Y-%m-%d %H:%M:%S"
+    format = "%a, %Y-%m-%d %H:%M:%S"
 }
 
 # vim:ft=conf
