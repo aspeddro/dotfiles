@@ -10,10 +10,9 @@
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
 set $mod Mod4
-# set $term kitty
 set $term alacritty
-set $menu bemenu-run --prompt "" --fn "JetBrainsMonoMedium Nerd Font 9" --tf "#ffffff" --ff "#ffffff" --nf "#666666" --hf "#89ddff" --line-height 21
-set $font JetBrainsMonoMedium Nerd Font 9
+set $menu bemenu-run --prompt "" --fn "JetBrains Mono Nerd Font 9" --tf "#ffffff" --ff "#ffffff" --nf "#666666" --hf "#89ddff" --line-height 22
+set $font JetBrains Mono Nerd Font 9
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
 font pango:$font
