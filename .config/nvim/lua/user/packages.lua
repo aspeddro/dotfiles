@@ -81,6 +81,7 @@ M.setup = function()
         'lewis6991/impatient.nvim',
         rocks = 'mpack',
       }
+      use 'tpope/vim-sleuth'
 
       use {
         'kyazdani42/nvim-web-devicons',
@@ -222,6 +223,12 @@ M.setup = function()
               require('telescope').load_extension 'fzf'
             end,
           },
+          {
+            'smartpde/telescope-recent-files',
+            config = function()
+              require('telescope').load_extension 'recent_files'
+            end,
+          },
         },
       }
 
@@ -269,7 +276,8 @@ M.setup = function()
       }
 
       use {
-        'windwp/nvim-autopairs',
+        here 'nvim-autopairs',
+        -- 'windwp/nvim-autopairs',
         config = function()
           require 'user.plugins.autopairs'
         end,
@@ -311,7 +319,6 @@ M.setup = function()
           }
           require('indent_blankline').setup {
             show_current_context = true,
-            -- show_current_context_start = true,
             filetype_exclude = {
               'NvimTree',
               'lsp-installer',
@@ -347,15 +354,6 @@ M.setup = function()
           }
         end,
       }
-
-      -- Hclipboard will bypass the text into clipboard
-      -- use {
-      --   'kevinhwang91/nvim-hclipboard',
-      --   event = 'InsertCharPre',
-      --   config = function()
-      --     require('hclipboard').start()
-      --   end,
-      -- }
 
       -- peeks lines of the buffer
       use {
@@ -393,6 +391,7 @@ M.setup = function()
       --     require('slides').setup {}
       --   end,
       -- }
+
       use {
         here 'pandoc.nvim',
         requires = {

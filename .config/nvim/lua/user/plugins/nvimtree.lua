@@ -12,6 +12,9 @@ require('nvim-tree').setup {
   trash = {
     cmd = 'rip',
   },
+  filters = {
+    custom = { '.git$' },
+  },
 }
 vim.keymap.set(
   'n',
