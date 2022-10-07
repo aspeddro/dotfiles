@@ -8,7 +8,6 @@ local empty_file_name = '[No Name]'
 local Align = { provider = '%=' }
 local Space = { provider = ' ' }
 
-
 local ViMode = {
   -- get vim current mode, this information will be required by the provider
   -- and the highlight functions, so we compute it only once per component
@@ -99,19 +98,19 @@ local ViMode = {
   end,
 }
 
-local FileName = {
-  provider = function()
-    local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ':.')
-    if filename == '' then
-      return empty_file_name
-    end
-    if not conditions.width_percent_below(filename:len(), 0.25) then
-      return vim.fn.pathshorten(filename)
-    end
-    return filename
-  end,
-  hl = { fg = c.blue },
-}
+-- local FileName = {
+--   provider = function()
+--     local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ':.')
+--     if filename == '' then
+--       return empty_file_name
+--     end
+--     if not conditions.width_percent_below(filename:len(), 0.25) then
+--       return vim.fn.pathshorten(filename)
+--     end
+--     return filename
+--   end,
+--   hl = { fg = c.blue },
+-- }
 
 -- local WorkDir = {
 --   provider = function()
@@ -229,12 +228,20 @@ local LSPActive = {
   condition = conditions.lsp_attached,
   update = { 'LspAttach', 'LspDetach' },
   provider = function()
-    local names = vim.tbl_map(function(c)
-      return c.name
+    local names = vim.tbl_map(function(client)
+      return client.name
     end, vim.lsp.get_active_clients { bufnr = 0 })
     return ' [' .. table.concat(names, ' ') .. ']'
   end,
   hl = { fg = c.green },
+}
+
+local Navic = {
+  condition = require('nvim-navic').is_available,
+  provider = function()
+    return require('nvim-navic').get_location()
+  end,
+  hl = { fg = c.gray }
 }
 
 local Ruler = {
@@ -279,6 +286,13 @@ local FileFlags = {
   },
 }
 
+local BufferWindow = {
+  provider = function ()
+    return string.format('[%d:%d]', vim.api.nvim_get_current_buf(), vim.api.nvim_get_current_win())
+  end,
+  hl = { fg = c.gray }
+}
+
 local StatusLine = {
   hl = function()
     if conditions.is_active() then
@@ -298,7 +312,11 @@ local StatusLine = {
   ViMode,
   Space,
   Git,
+  Space,
+  Navic,
   Align,
+  BufferWindow,
+  Space,
   Diagnostics,
   Space,
   LSPActive,
@@ -447,7 +465,7 @@ local TabLineOffset = {
     local bufnr = vim.api.nvim_win_get_buf(win)
     self.winid = win
 
-    if vim.tbl_contains({'NvimTree'}, vim.bo[bufnr].filetype) then
+    if vim.tbl_contains({ 'NvimTree' }, vim.bo[bufnr].filetype) then
       self.title = ''
       return true
     end
@@ -477,10 +495,8 @@ vim.api.nvim_create_autocmd('User', {
   pattern = 'HeirlineInitWinbar',
   callback = function(args)
     local buf = args.buf
-    local buftype = vim.tbl_contains(
-      { 'prompt', 'nofile', 'quickfix' },
-      vim.bo[buf].buftype
-    )
+    local buftype =
+      vim.tbl_contains({ 'prompt', 'nofile', 'quickfix' }, vim.bo[buf].buftype)
     local filetype =
       vim.tbl_contains({ 'gitcommit', 'fugitive' }, vim.bo[buf].filetype)
     if buftype or filetype then

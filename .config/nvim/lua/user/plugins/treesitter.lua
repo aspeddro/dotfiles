@@ -117,10 +117,11 @@ require('nvim-treesitter.configs').setup {
   autotag = {
     enable = true,
   },
+  endwise = {
+    enable = true
+  },
   query_linter = {
     enable = true,
-    use_virtual_text = true,
-    lint_events = { 'BufWrite', 'CursorHold' },
   },
   playground = {
     enable = true,
@@ -157,7 +158,7 @@ require('nvim-treesitter.configs').setup {
   swap = {
     enable = true,
     swap_next = {
-      ['<space>a'] = '@parameter.inner',
+      ['<leader>a'] = '@parameter.inner',
     },
     swap_previous = {
       ['<leader>A'] = '@parameter.inner',
@@ -192,6 +193,9 @@ require('nvim-treesitter.configs').setup {
       ['i;'] = 'textsubjects-container-inner',
     },
   },
+  context_commentstring = {
+    enable = true
+  }
 }
 
 -- highlight argument

@@ -1,19 +1,28 @@
-local install_path = vim.fn.stdpath 'data'
-  .. '/site/pack/packer/start/packer.nvim'
+local M = {}
 
-local packer_bootstrap
-if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-  packer_bootstrap = vim.fn.system {
-    'git',
-    'clone',
-    '--depth',
-    '1',
-    'https://github.com/wbthomason/packer.nvim',
-    install_path,
-  }
+local function bootstap()
+  local install_path = vim.fn.stdpath 'data'
+    .. '/site/pack/packer/start/packer.nvim'
+
+  if not vim.loop.fs_stat(install_path) then
+    if vim.fn.input 'Download Packer? (y for yes): ' ~= 'y' then
+      return
+    end
+
+    print 'Downloading packer.nvim...'
+    print(
+      vim.fn.system(
+        string.format(
+          'git clone %s %s',
+          'https://github.com/wbthomason/packer.nvim',
+          install_path
+        )
+      )
+    )
+  end
 end
 
-local function automatize()
+local function automatize(packer)
   local packer_compile =
     vim.api.nvim_create_augroup('PackerCompile', { clear = true })
 
@@ -27,7 +36,6 @@ local function automatize()
     end,
   })
 
-  local packer = require 'packer'
   local state = 'cleaned'
   local orig_complete = packer.on_complete
   packer.on_complete = vim.schedule_wrap(function()
@@ -51,19 +59,21 @@ local function automatize()
   })
 end
 
---- Development plugins
+--- Development local plugins
 ---@param name string
 ---@return string
 local here = function(name)
-  return vim.fn.expand '~/Desktop/plugins/' .. name
+  return os.getenv 'HOME' .. '/Desktop/plugins/' .. name
 end
 
-local M = {}
-
 M.setup = function()
-  automatize()
+  bootstap()
 
-  require('packer').startup {
+  local packer = require 'packer'
+
+  automatize(packer)
+
+  packer.startup {
     function(use)
       use 'wbthomason/packer.nvim'
       use 'nvim-lua/plenary.nvim'
@@ -108,7 +118,9 @@ M.setup = function()
           { 'nvim-treesitter/nvim-treesitter-textobjects' },
           { 'p00f/nvim-ts-rainbow' },
           { 'RRethy/nvim-treesitter-textsubjects' },
+          { 'RRethy/nvim-treesitter-endwise' },
           { 'windwp/nvim-ts-autotag' },
+          { 'JoosepAlviste/nvim-ts-context-commentstring' },
           -- { 'm-demare/hlargs.nvim' },
         },
       }
@@ -143,9 +155,12 @@ M.setup = function()
           },
           { 'ray-x/lsp_signature.nvim' },
           {
+            'SmiteshP/nvim-navic',
+          },
+          {
             'rmagatti/goto-preview',
             config = function()
-              require('goto-preview').setup {}
+              require 'user.plugins.gotopreview'
             end,
           },
         },
@@ -401,10 +416,6 @@ M.setup = function()
       }
 
       use 'ii14/emmylua-nvim'
-
-      if packer_bootstrap then
-        require('packer').sync()
-      end
     end,
     config = {
       git = {

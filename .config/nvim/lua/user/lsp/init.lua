@@ -26,6 +26,7 @@ local on_attach = function(client, bufnr)
     callback = function()
       vim.lsp.buf.format {
         timeout_ms = 2000,
+        async = true
       }
     end,
     buffer = bufnr,
@@ -48,6 +49,10 @@ local on_attach = function(client, bufnr)
 
   if client.server_capabilities.colorProvider then
     require('document-color').buf_attach(bufnr)
+  end
+
+  if client.server_capabilities.documentSymbolProvider then
+    require('nvim-navic').attach(client, bufnr)
   end
 
   if client.server_capabilities.codeLensProvider then

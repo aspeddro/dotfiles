@@ -10,7 +10,7 @@ M.sumneko_lua = {
         library = vim.api.nvim_get_runtime_file('', true),
       },
       diagnostics = {
-        globals = { 'vim' },
+        globals = { 'vim', 'it', 'before_each', 'after_each' },
       },
       format = {
         enable = false,
