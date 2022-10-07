@@ -1,66 +1,56 @@
 #!/bin/sh
 
 mkd() {
-	mkdir -p $1 && cd $1
+  mkdir -p $1 && cd $1
 }
 
 open() {
   for i in $*
   do
-      setsid nohup xdg-open $i > /dev/null 2> /dev/null
-      # xdg-open $i & disown
+    setsid nohup xdg-open $i > /dev/null 2> /dev/null
+    # xdg-open $i & disown
   done
 }
 
-fzfp() {
-	fzf --preview 'bat --style=numbers --color=always --line-range :500 {}'
+rstudio() {
+  setsid nohup rstudio-bin $1 > /dev/null 2> /dev/null
 }
 
 texclear() {
-	TEXFILES=(
-		".toc"
-		".gz"
-		".snm"
-		".out"
-		".nav"
-		".log"
-		".fls"
-		".fdb_latexmk"
-		".blg"
-		".bbl"
-		".aux"
-		".blg"
-		".idx"
-		".xdv"
-		".bcf"
-		".xml"
-		".ilg"
-		".ind"
-		".acn"
-		".glo"
-		".glsdefs"
-		".lof"
-		".lot"
-		".syx"
-		".abx"
-		"__latexindent_temp.tex"
-	)
-	for file in $TEXFILES; do
-		if [ -f $file ]; then
-			rm $file
-		fi
-		[ "$(ls -a | grep $file)" ] && rm *$file
-	done
-}
-
-spotify-tui() {
-  STATUS=$(systemctl --user is-active spotifyd.service)
-
-  if [[ "$STATUS" == "inactive" ]]; then
-    systemctl --user restart spotifyd.service
-  fi
-
-  spt
+  TEXFILES=(
+    ".toc"
+    ".gz"
+    ".snm"
+    ".out"
+    ".nav"
+    ".log"
+    ".fls"
+    ".fdb_latexmk"
+    ".blg"
+    ".bbl"
+    ".aux"
+    ".blg"
+    ".idx"
+    ".xdv"
+    ".bcf"
+    ".xml"
+    ".ilg"
+    ".ind"
+    ".acn"
+    ".glo"
+    ".glsdefs"
+    ".lof"
+    ".lot"
+    ".syx"
+    ".abx"
+    "__latexindent_temp.tex"
+  )
+  for file in $TEXFILES; do
+    if [ -f $file ]; then
+      rm $file
+    fi
+    [ "$(ls -a | grep $file)" ] && rm *$file
+  done
 }
 
 update-pkg-list() {
@@ -69,10 +59,10 @@ update-pkg-list() {
   echo "Done"
 }
 
-screencast() {
-  INFO=$(xwininfo)
-  WIN_GEO=$(echo $INFO | grep -oEe 'geometry [0-9]+x[0-9]+' | grep -oEe '[0-9]+x[0-9]+')
-  LEFT=$(echo $INFO | grep -oEe 'Absolute upper-left X: \s+[0-9]+' | grep -oEe '[0-9]+')
-  TOP=$(echo $INFO | grep -oEe 'Absolute upper-left Y: \s+[0-9]+' | grep -oEe '[0-9]+')
-  ffmpeg -f x11grab -show_region 1 -s "$WIN_GEO" -i ":0.0+$LEFT,$TOP" $(date +%Y-%m-%d_%H-%M_%S).mp4
+screensave() {
+  screencast \
+    --select-region \
+    --fps 60 \
+    --auto-filename \
+    --audio-input none
 }

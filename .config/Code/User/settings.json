@@ -1,14 +1,14 @@
 {
     "workbench.startupEditor": "newUntitledFile",
     "workbench.iconTheme": "material-icon-theme",
-    "workbench.tree.indent": 10,
+    "workbench.colorTheme": "Community Material Theme Darker High Contrast",
     "workbench.tree.renderIndentGuides": "always",
     "workbench.editor.wrapTabs": true,
     "workbench.editor.decorations.badges": true,
     "workbench.editor.decorations.colors": true,
     "editor.fontSize": 14,
     "editor.fontFamily": "JetBrainsMono Nerd Font",
-    "editor.fontWeight": "400",
+    "editor.fontWeight": "normal",
     "editor.fontLigatures": true,
     "editor.rulers": [80],
     "editor.wordWrapColumn": 80,
@@ -19,21 +19,17 @@
     "editor.cursorSmoothCaretAnimation": true,
     "editor.renderLineHighlight": "all",
     "editor.autoClosingDelete": "auto",
+    "editor.semanticHighlighting.enabled": true,
+
+
     "terminal.integrated.fontSize": 14,
     "terminal.integrated.fontFamily": "JetBrainsMono Nerd Font",
-    "terminal.integrated.fontWeight": "100",
-    "explorer.confirmDelete": false,
-    "explorer.confirmDragAndDrop": false,
-    "workbench.colorCustomizations": {
-        // "editorError.background": "#ff80ab66",
-        "editorError.foreground": "rgb(236, 90, 90)",
-    },
+    "terminal.integrated.fontWeight": "normal",
+    
+    "explorer.confirmDragAndDrop": true,
     "files.exclude": {
         "**/.git": true,
         "node_modules": false,
-        // Rust
-        // "**/target": true,
-        // TeX Files
         "**/*.aux": true,
         "**/*.fdb_latexmk": true,
         "**/*.fls": true,
@@ -45,118 +41,39 @@
         "**/*.ind": true,
         "**/*.gz": false
     },
-    "errorLens.fontWeight": "600",
-    "errorLens.errorColor": "rgba(241, 84, 84, 0.2)",
-    "errorLens.errorTextColor": "rgb(236, 90, 90)",
-    "errorLens.warningColor": "rgba(255,202,40, 0.2)",
-    "errorLens.warningTextColor": "rgb(255,202,40)",
-    "errorLens.hintColor": "rgba(20,140,140,0.4)",
-    "errorLens.infoColor": "rgba(0,200,0,0.4)",
-    "errorLens.enabledDiagnosticLevels": [
-        "error",
-        "warning",
-        // "info",
-        // "hint"
-    ],
-    "cSpell.language": "en,pt-BR",
-    "cSpell.enabledLanguageIds": [
-        "markdown",
-        "rmd",
-        "plaintext",
-        "latex"
-    ], // Specify file types to spell check.
-    "cSpell.userWords": [
-        "Hayami",
-        "Ruttan",
-        "Yujiro",
-        "abntarticle",
-        "abntex",
-        "abstractbr",
-        "abstracten",
-        "authoryear",
-        "biblatex",
-        "documentclass",
-        "esyrmd",
-        "extarticle",
-        "fontsize",
-        "keywordsbr",
-        "otherlangs"
-    ],
-    "cSpell.ignoreRegExpList": [
-        "\\[[@|:|-|a-z|0-9]+\\]", // ignore citation on rmarkdown
-        "```(\\w|\\W|\\d|\\D)+```" // ignore chucnk code
-    ],
-    "cSpell.enabled": false,
+
+    // TypeScript
     "typescript.inlayHints.parameterNames.enabled": "all",
     "typescript.inlayHints.variableTypes.enabled": true,
+
     // OCaml
     "ocaml.trace.server": "verbose",
-    // Lua
-    "lua.luacheckPath": "/usr/bin/lua",
+    
     // R
-    "r.rterm.linux": "/usr/bin/R",
-    "r.rpath.linux": "/usr/bin/R",
-    "r.sessionWatcher": true,
-    "r.bracketedPaste": true,
-    "r.rmarkdown.enableCodeLens": true,
-    "r.lsp.diagnostics": false,
-    "r.lsp.debug": true,
-    "r.lsp.use_stdio": true,
     "[rmd]": {
         "editor.wordWrap": "bounded"
     },
-    // Julia
-    "julia.lint.disabledDirs": [
-        "julia-1.6.1",
-        "test"
-    ],
+    // Reason
     "[reason]": {
         "editor.formatOnSave": true
-    },
-    "python.formatting.provider": "black",
-    "python.linting.enabled": true,
-    "python.autoComplete.addBrackets": true,
-    "python.autoComplete.extraPaths": [
-        "~/.local/lib/Google/google_appengine",
-        "~/.local/lib/Google/google_appengine/lib/flask-0.12" 
-    ],
-    "notebook.outline.showCodeCells": true,
-    "notebook.breadcrumbs.showCodeCells": false,
-    "[python]": {
-        "editor.formatOnSave": false,
-        // "editor.formatOnSaveMode": "modifications"
     },
     // JSON
     "json.format.enable": false,
     "json.schemaDownload.enable": false,
     // Tex
-    "latex-workshop.latex.autoBuild.run": "never",
     "[latex]": {
         "editor.wordWrap": "bounded"
     },
     // Rust
-    "rust-analyzer.cargo.allFeatures": true,
     "rust-analyzer.checkOnSave.enable": false,
-    "rust-analyzer.trace.server": "verbose",
-    "editor.suggestSelection": "first",
+    "rust-analyzer.trace.server": "off",
     
+    // JS
     "javascript.updateImportsOnFileMove.enabled": "always",
-    "jupyter.alwaysTrustNotebooks": true,
-    "terminal.integrated.commandsToSkipShell": [
-        "language-julia.interrupt"
-    ],
-    "julia.enableTelemetry": false,
-    "latex-workshop.message.update.show": false,
-    "editor.semanticHighlighting.enabled": true,
-    "workbench.editorAssociations": {
-        "*.ipynb": "jupyter.notebook.ipynb"
-    },
-    "Lua.telemetry.enable": false,
-    "python.analysis.extraPaths": [
-        "~/.local/lib/Google/google_appengine",
-        "~/.local/lib/Google/google_appengine/lib/flask-0.12"
-    ],
-    "python.analysis.completeFunctionParens": true,
-    "julia.symbolCacheDownload": true,
-    "rust-analyzer.inlayHints.enable": true
+
+    // ReScript
+    "rescript.settings.askToStartBuild": false,
+    "rescript.settings.codeLens": true,
+    "rescript.settings.inlayHints.enable": true,
+    "rescript.settings.signatureHelp.enable": true
 }
