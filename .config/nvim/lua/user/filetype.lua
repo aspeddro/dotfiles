@@ -11,5 +11,7 @@ vim.filetype.add {
     prettierrc = 'json',
     conf = 'conf',
     mdx = 'markdown',
+    re = 'reason',
+    rei = 'reason'
   },
 }

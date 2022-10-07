@@ -1,5 +1,7 @@
 local M = {}
 
+---@param hex_str string
+---@return string[]
 local function hexToRgb(hex_str)
   local hex = '[abcdef0-9][abcdef0-9]'
   local pat = '^#(' .. hex .. ')(' .. hex .. ')(' .. hex .. ')$'
@@ -17,12 +19,13 @@ end
 ---@param fg string foreground color
 ---@param bg string background color
 ---@param alpha number number between 0 and 1. 0 results in bg, 1 results in fg
+---@return string
 local blend = function(fg, bg, alpha)
-  bg = hexToRgb(bg)
-  fg = hexToRgb(fg)
+  local bg_hex = hexToRgb(bg)
+  local fg_hex = hexToRgb(fg)
 
   local blendChannel = function(i)
-    local ret = (alpha * fg[i] + ((1 - alpha) * bg[i]))
+    local ret = (alpha * fg_hex[i] + ((1 - alpha) * bg_hex[i]))
     return math.floor(math.min(math.max(0, ret), 255) + 0.5)
   end
 
@@ -67,6 +70,11 @@ local pallete = {
     gray = '#848484',
     gray1 = '#999999',
   },
+  rainbow = {
+    '#ffd700',
+    '#da70d6',
+    '#179fff'
+  }
 }
 
 M = pallete

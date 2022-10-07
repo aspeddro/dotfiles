@@ -3,12 +3,27 @@ local conditions = require 'heirline.conditions'
 local utils = require 'heirline.utils'
 local c = require 'user.color'
 
+local empty_file_name = '[No Name]'
+
+local Align = { provider = '%=' }
+local Space = { provider = ' ' }
+
+
 local ViMode = {
   -- get vim current mode, this information will be required by the provider
   -- and the highlight functions, so we compute it only once per component
   -- evaluation and store it as a component attribute
   init = function(self)
     self.mode = vim.fn.mode(1) -- :h mode()
+
+    -- execute this only once, this is required if you want the ViMode
+    -- component to be updated on operator pending mode
+    if not self.once then
+      vim.api.nvim_create_autocmd('ModeChanged', {
+        command = 'redrawstatus',
+      })
+      self.once = true
+    end
   end,
   -- Now we define some dictionaries to map the output of mode() to the
   -- corresponding string and color. We can put these into `static` to compute
@@ -88,7 +103,7 @@ local FileName = {
   provider = function()
     local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ':.')
     if filename == '' then
-      return '[No Name]'
+      return empty_file_name
     end
     if not conditions.width_percent_below(filename:len(), 0.25) then
       return vim.fn.pathshorten(filename)
@@ -174,22 +189,14 @@ local Diagnostics = {
   },
 
   init = function(self)
-    self.errors = #vim.diagnostic.get(
-      0,
-      { severity = vim.diagnostic.severity.ERROR }
-    )
-    self.warnings = #vim.diagnostic.get(
-      0,
-      { severity = vim.diagnostic.severity.WARN }
-    )
-    self.hints = #vim.diagnostic.get(
-      0,
-      { severity = vim.diagnostic.severity.HINT }
-    )
-    self.info = #vim.diagnostic.get(
-      0,
-      { severity = vim.diagnostic.severity.INFO }
-    )
+    self.errors =
+      #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })
+    self.warnings =
+      #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN })
+    self.hints =
+      #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.HINT })
+    self.info =
+      #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.INFO })
   end,
   {
     provider = function(self)
@@ -220,7 +227,13 @@ local Diagnostics = {
 
 local LSPActive = {
   condition = conditions.lsp_attached,
-  provider = ' LSP',
+  update = { 'LspAttach', 'LspDetach' },
+  provider = function()
+    local names = vim.tbl_map(function(c)
+      return c.name
+    end, vim.lsp.get_active_clients { bufnr = 0 })
+    return ' [' .. table.concat(names, ' ') .. ']'
+  end,
   hl = { fg = c.green },
 }
 
@@ -237,15 +250,13 @@ local FileType = {
 
 local FileEncoding = {
   provider = function()
-    local enc = (vim.bo.fileencoding ~= '' and vim.bo.fileencoding) or vim.o.enc -- :h 'enc'
-    return enc:upper()
+    return vim.bo.fileencoding ~= '' and vim.bo.fileencoding or vim.o.enc -- :h 'enc'
   end,
 }
 
 local FileFormat = {
   provider = function()
-    local fmt = vim.bo.fileformat
-    return fmt:upper()
+    return vim.bo.fileformat
   end,
 }
 
@@ -268,14 +279,23 @@ local FileFlags = {
   },
 }
 
-local Align = { provider = '%=' }
-local Space = { provider = ' ' }
-
-local BasicStatus = {
+local StatusLine = {
+  hl = function()
+    if conditions.is_active() then
+      return {
+        fg = c.fg,
+        bg = c.bg,
+      }
+    else
+      return {
+        fg = c.fg,
+        bg = c.bg,
+      }
+    end
+  end,
+  fallthrough = true,
   Space,
-  -- WorkDir,
-  Space,
-  FileName,
+  ViMode,
   Space,
   Git,
   Align,
@@ -295,60 +315,206 @@ local BasicStatus = {
   Space,
 }
 
--- local InactiveStatusline = {
---   condition = function()
---     return not conditions.is_active()
---       and not conditions.buffer_matches {
---         buftype = { 'nofile', 'prompt', 'help', 'quickfix', 'NvimTree' },
---         filetype = { '^git.*', 'fugitive', 'NvimTree', 'toggleterm' },
---       }
---   end,
---   BasicStatus,
--- }
-
--- local EmptyStatusLine = {
---   condition = function()
---     return conditions.buffer_matches {
---       buftype = {
---         'nofile',
---         'prompt',
---         'help',
---         'quickfix',
---         'NvimTree',
---         'toggleterm',
---       },
---       filetype = { '^git.*', 'fugitive', 'NvimTree', 'toggleterm' },
---     }
---   end,
---   Space,
---   ViMode,
--- }
-
-local DefaultStatusLine = {
-  Space,
-  ViMode,
-  BasicStatus,
+local FileIcon = {
+  init = function(self)
+    local filename = self.filename
+    local extension = vim.fn.fnamemodify(filename, ':e')
+    self.icon, self.icon_color = require('nvim-web-devicons').get_icon_color(
+      filename,
+      extension,
+      { default = true }
+    )
+  end,
+  provider = function(self)
+    return self.icon and (self.icon .. ' ')
+  end,
+  hl = function(self)
+    return { fg = self.icon_color }
+  end,
 }
 
-local StatusLine = {
-  hl = function()
-    if conditions.is_active() then
-      return {
-        fg = c.fg,
-        bg = c.bg,
-      }
+-- we redefine the filename component, as we probably only want the tail and not the relative path
+local TablineFileName = {
+  provider = function(self)
+    -- self.filename will be defined later, just keep looking at the example!
+    local filename = self.filename
+    filename = filename == '' and empty_file_name
+      or vim.fn.fnamemodify(filename, ':t')
+    return filename
+  end,
+  hl = function(self)
+    return { fg = self.is_active and c.fg or c.gray }
+  end,
+}
+
+-- Here the filename block finally comes together
+local TablineFileNameBlock = {
+  init = function(self)
+    self.filename = vim.api.nvim_buf_get_name(self.bufnr)
+  end,
+  hl = function(self)
+    if self.is_active then
+      return { fg = c.red }
+      -- why not?
+      -- elseif not vim.api.nvim_buf_is_loaded(self.bufnr) then
+      --     return { fg = "gray" }
     else
-      return {
-        fg = c.fg,
-        bg = c.bg,
-      }
+      return { fg = c.yellow }
+    end
+  end,
+  on_click = {
+    callback = function(_, minwid, _, button)
+      if button == 'm' then -- close on mouse middle click
+        vim.api.nvim_buf_delete(minwid, { force = false })
+      else
+        vim.api.nvim_win_set_buf(0, minwid)
+      end
+    end,
+    minwid = function(self)
+      return self.bufnr
+    end,
+    name = 'heirline_tabline_buffer_callback',
+  },
+  Space,
+  FileIcon,
+  TablineFileName,
+}
+
+-- a nice "x" button to close the buffer
+local TablineCloseButton = {
+  Space,
+  {
+    provider = '',
+    hl = { fg = c.gray },
+    on_click = {
+      callback = function(_, minwid)
+        vim.api.nvim_buf_delete(minwid, { force = false })
+      end,
+      minwid = function(self)
+        return self.bufnr
+      end,
+      name = 'heirline_tabline_close_buffer_callback',
+    },
+  },
+}
+
+-- The final touch!
+local TablineBufferBlock = {
+  TablineFileNameBlock,
+  TablineCloseButton,
+  Space,
+}
+
+-- and here we go
+local BufferLine = utils.make_buflist(
+  TablineBufferBlock,
+  { provider = '«', hl = { fg = c.gray } }, -- left truncation, optional (defaults to "<")
+  { provider = '»', hl = { fg = c.gray } } -- right trunctation, also optional (defaults to ...... yep, ">")
+  -- by the way, open a lot of buffers and try clicking them ;)
+)
+
+local Tabpage = {
+  provider = function(self)
+    return '%' .. self.tabnr .. 'T ' .. self.tabnr .. ' %T'
+  end,
+  hl = function(self)
+    if not self.is_active then
+      return 'TabLine'
+    else
+      return 'TabLineSel'
+    end
+  end,
+}
+
+local TabpageClose = {
+  provider = '%999X  %X',
+  hl = 'TabLine',
+}
+
+local TabPages = {
+  -- only show this component if there's 2 or more tabpages
+  condition = function()
+    return #vim.api.nvim_list_tabpages() >= 2
+  end,
+  { provider = '%=' },
+  utils.make_tablist(Tabpage),
+  TabpageClose,
+}
+
+local TabLineOffset = {
+  condition = function(self)
+    local win = vim.api.nvim_tabpage_list_wins(0)[1]
+    local bufnr = vim.api.nvim_win_get_buf(win)
+    self.winid = win
+
+    if vim.tbl_contains({'NvimTree'}, vim.bo[bufnr].filetype) then
+      self.title = ''
+      return true
     end
   end,
 
-  init = utils.pick_child_on_condition,
-  -- InactiveStatusline,
-  -- EmptyStatusLine,
-  DefaultStatusLine,
+  provider = function(self)
+    local title = self.title
+    local width = vim.api.nvim_win_get_width(self.winid)
+    local pad = math.ceil((width - #title) / 2)
+    return string.rep(' ', pad) .. title .. string.rep(' ', pad)
+  end,
+
+  hl = function(self)
+    if vim.api.nvim_get_current_win() == self.winid then
+      return 'TablineSel'
+    else
+      return 'Tabline'
+    end
+  end,
 }
 
-herline.setup(StatusLine)
+local TabLine = { TabLineOffset, BufferLine, TabPages }
+
+--WinBar
+
+vim.api.nvim_create_autocmd('User', {
+  pattern = 'HeirlineInitWinbar',
+  callback = function(args)
+    local buf = args.buf
+    local buftype = vim.tbl_contains(
+      { 'prompt', 'nofile', 'quickfix' },
+      vim.bo[buf].buftype
+    )
+    local filetype =
+      vim.tbl_contains({ 'gitcommit', 'fugitive' }, vim.bo[buf].filetype)
+    if buftype or filetype then
+      vim.opt_local.winbar = nil
+    end
+  end,
+})
+
+local WinBars = {
+  fallthrough = true,
+  { -- Hide the winbar for special buffers
+    condition = function()
+      return conditions.buffer_matches {
+        buftype = { 'nofile', 'prompt', 'help', 'quickfix' },
+        filetype = { '^git.*', 'fugitive' },
+      }
+    end,
+    init = function()
+      vim.opt_local.winbar = nil
+    end,
+  },
+  -- A winbar for regular files
+  Align,
+  {
+    provider = function()
+      local filename = vim.api.nvim_buf_get_name(0)
+      if filename == '' then
+        return empty_file_name
+      end
+      return filename
+    end,
+    hl = { fg = c.gray },
+  },
+  Space,
+}
+
+herline.setup(StatusLine, WinBars, TabLine)

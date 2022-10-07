@@ -1,6 +1,6 @@
 local ft = require 'Comment.ft'
 
-ft.set('rescript', { '//%s', '/*%s*/' })
+ft({ 'rescript', 'reason' }, { '//%s', '/*%s*/' })
 
 require('Comment').setup {
   ignore = function()

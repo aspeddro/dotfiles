@@ -1,10 +1,5 @@
--- My version of material darker high contrast
+-- My version of Material Theme Darker High Contrast
 local c = require 'user.color'
-
--- vim.cmd 'hi clear'
--- if vim.fn.exists 'syntax_on' then
---   vim.cmd 'syntax reset'
--- end
 
 vim.o.background = 'dark'
 
@@ -84,7 +79,7 @@ M.base = {
   QuickFixLine = { fg = c.fg, bg = c.bg_alt },
 
   -- MatchWord = { gui = 'underline' },
-  -- MatchParen = { gui = 'underline' },
+  MatchParen = { bg = c.gray },
   -- MatchWordCur = { gui = 'underline' },
   -- MatchParenCur = { gui = 'underline' },
 
@@ -103,8 +98,8 @@ M.base = {
   IncSearch = { bg = c.gray, gui = c.none },
 
   -- Tabs
-  TabLine = { fg = c.red, bg = c.bg_alt },
-  TabLineSel = { fg = c.red, bg = c.bg_alt },
+  TabLine = { fg = c.gray, bg = c.bg_alt },
+  TabLineSel = { fg = c.orange, bg = c.bg_alt },
   TabLineFill = { gui = c.none, bg = c.bg },
 
   -- Status Line
@@ -251,35 +246,39 @@ M.treesitter = {
   -- TSURI = { underline = true }, -- Any URI like a link or email.
   -- TSStrong = { bold = true },
   -- TSStrike = { strikethrough = true },
-  TSError = { fg = c.error, underline = true }, -- For syntax/parser errors.
+  TSError = { underline = true }, -- For syntax/parser errors.
   TSNote = { fg = c.extra.orange, bold = true, italic = true },
   TSWarning = { fg = c.extra.orange, bold = true, italic = true },
   -- TSDanger = { fg = c.error, gui = 'italic', gui = 'bold' },
 }
 
+---@see h lsp-highlight
 M.lsp = {
-  LspReferenceText = { fg = c.none, bg = '#333333' }, -- used for highlighting "text" references
-  LspReferenceRead = { link = 'LspReferenceText' }, -- used for highlighting "read" references
-  LspReferenceWrite = { link = 'LspReferenceText' }, --
-  LspCodeLens = { fg = '#999999', italic = true, bg = c.none },
-  -- LspSignatureActiveParameter
+  LspReferenceText = { fg = c.none, bg = '#333333' },
+  LspReferenceRead = { link = 'LspReferenceText' },
+  LspReferenceWrite = { link = 'LspReferenceText' },
+  LspCodeLens = { fg = c.extra.gray },
+  LspCodeLensSeparator = { link = 'LspCodeLens' },
+  LspSignatureActiveParameter = {link = 'LspCodeLens'}
 }
 
 M.plugins = {
   TelescopeBorder = { link = 'FloatBorder' },
   TelescopeSelection = { fg = c.blue, bg = c.none },
+
   NvimTreeNormal = { fg = c.fg_sidebar, bg = c.bg_alt },
   NvimTreeFolderName = { fg = c.fg_sidebar },
   NvimTreeFolderIcon = { fg = c.folder_icon },
   NvimTreeOpenedFolderName = { fg = c.cyan },
   NvimTreeOpenedFile = { fg = c.cyan },
-  NvimTreeVertsplit = { bg = c.bg, fg = c.bg },
+  NvimTreeVertsplit = { bg = c.bg_alt, fg = c.bg_alt },
+
   GitSignsAdd = { fg = c.git_sings_add },
   GitSignsChange = { fg = c.git_sings_change },
   GitSignsDelete = { fg = c.git_sings_delete },
   GitSignsCurrentLineBlame = { link = 'Comment' },
-  -- headlines
-  CodeBlock = { bg = c.fn.blend(c.gray, c.bg, 0.1) },
+  -- nvim-lspconfig
+  LspInfoBorder = { link = 'FloatBorder' },
   -- Indent Blank line
   IndentBlanklineChar = { fg = c.fn.blend(c.gray, c.bg, 0.3) },
   IndentBlanklineContextChar = { fg = c.fn.blend(c.gray, c.bg, 0.99) }

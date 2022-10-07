@@ -1,22 +1,23 @@
+local util = require 'lspconfig.util'
+
 local M = {}
 
-M.sumneko_lua = vim.tbl_deep_extend(
-  'force',
-  require('lua-dev').setup {
-    library = { runtime = true, plugins = { 'plenary.nvim' }, types = true },
-  },
-  {
-    settings = {
-      Lua = {
-        completion = { callSnippet = 'Disable' },
-        workspace = { maxPreload = nil },
-        format = {
-          enable = false,
-        },
+M.sumneko_lua = {
+  settings = {
+    Lua = {
+      completion = { callSnippet = 'Disable' },
+      workspace = {
+        library = vim.api.nvim_get_runtime_file('', true),
+      },
+      diagnostics = {
+        globals = { 'vim' },
+      },
+      format = {
+        enable = false,
       },
     },
-  }
-)
+  },
+}
 
 M.tsserver = {
   init_options = {
@@ -35,7 +36,27 @@ M.tsserver = {
 
 M.r_language_server = {}
 
-M.rescriptls = {}
+M.rescriptls = {
+  -- cmd = { 'rescript-lsp', '--stdio' },
+  cmd = {
+    'node',
+    '/home/pedro/Desktop/projects/rescript-vscode/server/out/server.js',
+    '--stdio',
+  },
+  init_options = {
+    extensionConfiguration = {
+      -- binaryPath = nil,
+      askToStartBuild = false,
+      codeLens = true,
+      signatureHelp = {
+        enable = true,
+      },
+      inlayHints = {
+        enable = false,
+      },
+    },
+  },
+}
 
 M.texlab = {
   settings = {
@@ -56,12 +77,6 @@ M.texlab = {
   },
 }
 
--- M.ltex = require 'user.lsp.servers.ltex'
-
-M.clojure_lsp = {
-  filetypes = { 'clojure', 'edn', 'fennel' },
-}
-
 M.jsonls = {
   settings = {
     json = {
@@ -72,16 +87,38 @@ M.jsonls = {
 
 M.html = {}
 M.cssls = {}
-
 M.yamlls = {}
 
-M.ocamllsp = {}
+M.ocamllsp = (function()
+  local root = vim.loop.cwd()
+  -- TODO: handle with sandox using opam switch
+  local cmd = (#vim.fs.find 'esy.lock' > 0)
+      and { 'esy', '-P', root, 'ocamllsp', '--fallback-read-dot-merlin' }
+    or { 'ocamllsp' }
+  return { cmd = cmd }
+end)()
+
+M.pyright = {}
+
+M.taplo = {}
+M.vimls = {}
+
+M.tailwindcss = {
+  root_dir = util.root_pattern('tailwind.config.js', 'tailwind.config.ts'),
+}
+
+M.bashls = {}
+
+M.marksman = {
+  single_file_support = true,
+}
 
 M.rust_analyzer = {
   settings = {
     ['rust-analyzer'] = {
       lens = {
         run = true,
+        debug = true,
       },
       checkOnSave = {
         enable = true,
@@ -90,5 +127,7 @@ M.rust_analyzer = {
     },
   },
 }
+
+M.clangd = {}
 
 return M

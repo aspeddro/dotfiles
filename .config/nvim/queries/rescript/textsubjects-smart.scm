@@ -1,0 +1,102 @@
+((comment) @_start @_end
+  (#make-range! "range" @_start @_end))
+
+(([
+  (let_binding)
+  (call_expression)
+  (expression_statement)
+  (open_statement)
+  (include_statement)
+  (assert_expression)
+  (switch_expression)
+  (pipe_expression)
+  (binary_expression)
+  (ternary_expression)
+  (for_expression)
+  (while_expression)
+  (if_expression)
+  (else_clause)
+  (else_if_clause)
+  (try_expression)
+  (await_expression)
+  (coercion_expression)
+  (subscript_expression)
+  (mutation_expression)
+  (member_expression)
+  (parenthesized_expression)
+  (extension_expression)
+  (external_declaration)
+  (record)
+  (object)
+  (array)
+  (array_pattern)
+  (tuple)
+  (tuple_pattern)
+  (list)
+  (list_pattern)
+  (block)
+  (function)
+  (module_declaration)
+  (switch_match)
+  (switch_pattern_condition)
+
+  (template_string)
+  (template_substitution)
+  ; (polyvar_pattern)
+  ; (tuple_pattern)
+  ; (variant_pattern)
+  ; (list_pattern)
+  ; (record_pattern)
+  ; (array_pattern)
+  ; types
+  (type_declaration)
+  (record_type)
+  (object_type)
+  (polyvar_type)
+  (tuple_type)
+  (function_type)
+  (generic_type)
+  ;
+  (decorated)
+  (decorator_statement)
+  ; jsx
+  (jsx_element)
+  (jsx_fragment)
+  (jsx_self_closing_element)
+  (jsx_attribute)
+] @_start @_end)
+(#make-range! "range" @_start @_end))
+
+((parameter (_) @_start @_end . ","? @_end)
+    (#make-range! "range" @_start @_end))
+
+((array (_) @_start @_end . ","? @_end)
+    (#make-range! "range" @_start @_end))
+
+((array_pattern (_) @_start @_end . ","? @_end)
+    (#make-range! "range" @_start @_end))
+
+((tuple (_) @_start @_end . ","? @_end)
+    (#make-range! "range" @_start @_end))
+
+((tuple_pattern (_) @_start @_end . ","? @_end)
+    (#make-range! "range" @_start @_end))
+
+((list (_) @_start @_end . ","? @_end)
+    (#make-range! "range" @_start @_end))
+
+((list_pattern (_) @_start @_end . ","? @_end)
+    (#make-range! "range" @_start @_end))
+
+((record (_) @_start @_end . ","? @_end)
+    (#make-range! "range" @_start @_end))
+
+((record_type (_) @_start @_end . ","? @_end)
+    (#make-range! "range" @_start @_end))
+
+((object (_) @_start @_end . ","? @_end)
+    (#make-range! "range" @_start @_end))
+
+
+; ((formal_parameters (_) @_start @_end . ","? @_end)
+;     (#make-range! "range" @_start @_end))

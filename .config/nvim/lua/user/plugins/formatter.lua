@@ -1,5 +1,15 @@
 local formatter = require 'formatter'
 
+local stylua = function()
+  return {
+    exe = 'stylua',
+    args = {
+      '-',
+    },
+    stdin = true,
+  }
+end
+
 local prettier = function()
   return {
     exe = 'prettier',
@@ -13,16 +23,9 @@ end
 
 formatter.setup {
   filetype = {
-    lua = {
-      function()
-        return {
-          exe = 'stylua',
-          args = {
-            '-',
-          },
-          stdin = true,
-        }
-      end,
-    },
+    lua = { stylua },
+    javascript = { prettier },
+    typescript = { prettier },
+    markdown = { prettier }
   },
 }

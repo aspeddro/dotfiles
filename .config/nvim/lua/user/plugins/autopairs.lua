@@ -1,28 +1,13 @@
 local npairs = require 'nvim-autopairs'
 local Rule = require 'nvim-autopairs.rule'
-local endwise = require('nvim-autopairs.ts-rule').endwise
 local ts_conds = require 'nvim-autopairs.ts-conds'
 local cond = require 'nvim-autopairs.conds'
 local cmp_autopairs = require 'nvim-autopairs.completion.cmp'
 local cmp = require 'cmp'
 
-npairs.setup {
-  -- enable_check_bracket_line = true,
-  -- enable_moveright = true,
-  check_ts = true,
-  ts_config = {
-    lua = { 'string' }, -- it will not add a pair on that treesitter node
-    -- r = { 'string' },
-  },
-  disable_filetype = { 'TelescopePrompt' },
-}
+npairs.setup()
 
-cmp.event:on(
-  'confirm_done',
-  cmp_autopairs.on_confirm_done {
-    map_char = { tex = '' },
-  }
-)
+cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
 
 npairs.remove_rule "'"
 npairs.remove_rule '('
@@ -31,20 +16,11 @@ npairs.remove_rule '<'
 npairs.remove_rule '```'
 
 npairs.add_rules {
-  -- Rule('(', ')'):with_pair(cond.not_filetypes {
-  --   'ocaml',
-  --   'query',
-  --   'fennel',
-  --   'clojure',
-  --   'dune',
-  --   'lua'
-  -- }),
-
   Rule('(', ')', { '-lua', '-ocaml', '-dune', '-query', '-scheme' }),
 
   Rule('(', ')', 'lua'):with_pair(cond.not_after_regex '[%{|%(]'),
 
-  Rule('(', ')', { 'ocaml', 'query', 'scheme' }):with_pair(
+  Rule('(', ')', { 'ocaml', 'query', 'scheme', 'dune' }):with_pair(
     cond.not_after_regex '%('
   ),
   Rule("'", "'", { '-rescript' }),
@@ -80,10 +56,8 @@ npairs.add_rules {
     if not params then
       return false
     end
-    local words_before_cursor = vim.split(
-      string.sub(params.line, 1, params.cursor[2]),
-      ' '
-    )
+    local words_before_cursor =
+      vim.split(string.sub(params.line, 1, params.cursor[2]), ' ')
     local last_word =
       words_before_cursor[#words_before_cursor]:match '[a-zA-Z]+$'
     if

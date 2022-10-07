@@ -8,7 +8,7 @@ vim.opt.shortmess = {
   I = true,
   t = true,
   A = true,
-  o = false,
+  o = true,
   O = false,
   T = true,
   f = true,
@@ -110,7 +110,7 @@ vim.opt.showcmd = false
 vim.opt.showmatch = true
 vim.opt.splitbelow = true
 vim.opt.splitright = true
-vim.opt.cmdheight = 1
+vim.opt.cmdheight = 0
 vim.opt.laststatus = 3
 
 vim.opt.title = true
@@ -149,12 +149,6 @@ vim.opt.wildignore = vim.opt.wildignore
     '.DS_Store',
     'tags.lock',
   }
-
--- vim.opt.guicursor = {
---   [[n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50]],
---   [[a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor]],
---   [[sm:block-blinkwait175-blinkoff150-blinkon175]],
--- }
 
 -- Faster grep alternative
 if vim.fn.executable 'rg' == 1 then

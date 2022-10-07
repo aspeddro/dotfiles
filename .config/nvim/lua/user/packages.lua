@@ -14,10 +14,8 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 end
 
 local function automatize()
-  local packer_compile = vim.api.nvim_create_augroup(
-    'PackerCompile',
-    { clear = true }
-  )
+  local packer_compile =
+    vim.api.nvim_create_augroup('PackerCompile', { clear = true })
 
   vim.api.nvim_create_autocmd('BufWritePost', {
     group = packer_compile,
@@ -54,10 +52,10 @@ local function automatize()
 end
 
 --- Development plugins
----@param path string
+---@param name string
 ---@return string
-local here = function(path)
-  return vim.fn.expand '~/Desktop/Plugins/' .. path
+local here = function(name)
+  return vim.fn.expand '~/Desktop/plugins/' .. name
 end
 
 local M = {}
@@ -68,15 +66,12 @@ M.setup = function()
   require('packer').startup {
     function(use)
       use 'wbthomason/packer.nvim'
-      use 'nvim-lua/popup.nvim'
       use 'nvim-lua/plenary.nvim'
       use {
         'lewis6991/impatient.nvim',
         rocks = 'mpack',
       }
 
-      use 'antoinemadec/FixCursorHold.nvim'
-      use 'tweekmonster/startuptime.vim'
       use {
         'kyazdani42/nvim-web-devicons',
         config = function()
@@ -84,30 +79,18 @@ M.setup = function()
         end,
       }
 
-      -- use {
-      --   'rcarriga/nvim-notify',
-      --   config = function()
-      --     vim.notify = require 'notify'
-      --     require('notify').setup{
-      --       timeout = 1000
-      --     }
-      --   end,
-      -- }
+      use {
+        'monkoose/matchparen.nvim',
+        config = function()
+          require('matchparen').setup()
+        end,
+      }
 
       -- NOTE: rename to buffernavigation.nvim?
       use {
         here 'bufferhandler.nvim',
         config = function()
-          require('bufferhandler').setup {
-            source = {
-              buffers = function()
-                return vim.tbl_map(function(buffer)
-                  return buffer.number
-                  ---@diagnostic disable-next-line: undefined-field
-                end, _G.cokeline.visible_buffers)
-              end,
-            },
-          }
+          require('bufferhandler').setup()
         end,
       }
 
@@ -121,71 +104,29 @@ M.setup = function()
           require 'user.plugins.treesitter'
         end,
         requires = {
-          { 'nkrkv/nvim-treesitter-rescript' },
           { 'nvim-treesitter/playground' },
           { 'nvim-treesitter/nvim-treesitter-textobjects' },
           { 'p00f/nvim-ts-rainbow' },
           { 'RRethy/nvim-treesitter-textsubjects' },
           { 'windwp/nvim-ts-autotag' },
-          {
-            'lewis6991/spellsitter.nvim',
-            config = function()
-              require('spellsitter').setup()
-            end,
-          },
           -- { 'm-demare/hlargs.nvim' },
         },
+      }
+
+      use {
+        'williamboman/mason.nvim',
+        config = function()
+          require('mason').setup()
+        end,
       }
 
       -- LSP
       use {
         'neovim/nvim-lspconfig',
-        config = function()
-          -- TODO: call lspconfig setup here start a new server every time when run :PackerCompile
-          -- @see https://github.com/wbthomason/packer.nvim/discussions/832
-          -- require('user.plugins.lspconfig').setup()
-        end,
         requires = {
-          {
-            'williamboman/nvim-lsp-installer',
-            config = function()
-              require('nvim-lsp-installer').setup {}
-            end,
-          },
-          {
-            'nvim-lua/lsp_extensions.nvim',
-          },
-          -- {
-          --   here 'nvim-code-action-menu',
-          --   -- 'weilbith/nvim-code-action-menu',
-          --   config = function()
-          --     vim.g.code_action_menu_window_border = 'rounded'
-          --   end,
-          -- },
-          -- {
-          --   'filipdutescu/renamer.nvim',
-          -- },
-          -- {
-          --   'PlatyPew/format-installer.nvim',
-          --   config = function()
-          --     require('format-installer').setup()
-          --   end,
-          -- },
-          {
-            'RRethy/vim-illuminate',
-            config = function()
-              vim.g.Illuminate_delay = 1000
-            end,
-          },
           {
             -- JSON LSP
             'b0o/schemastore.nvim',
-          },
-          {
-            'jose-elias-alvarez/null-ls.nvim',
-            config = function()
-              require 'user.plugins.null-ls'
-            end,
           },
           {
             -- UI LSP progress
@@ -196,6 +137,16 @@ M.setup = function()
           },
           {
             here 'lsp_menu.nvim',
+          },
+          {
+            'mrshmllow/document-color.nvim',
+          },
+          { 'ray-x/lsp_signature.nvim' },
+          {
+            'rmagatti/goto-preview',
+            config = function()
+              require('goto-preview').setup {}
+            end,
           },
         },
       }
@@ -217,22 +168,15 @@ M.setup = function()
           },
           { 'hrsh7th/cmp-buffer' },
           { 'hrsh7th/cmp-path' },
-          -- { 'hrsh7th/cmp-nvim-lua' },
           { 'hrsh7th/cmp-nvim-lsp' },
           { 'saadparwaiz1/cmp_luasnip' },
-          -- { 'hrsh7th/cmp-nvim-lsp-signature-help' },
-          -- { 'hrsh7th/cmp-nvim-lsp-document-symbol' },
-          -- use 'kdheepak/cmp-latex-symbols'
           { 'hrsh7th/cmp-emoji' },
-          -- use 'uga-rosa/cmp-dictionary'
           { 'petertriho/cmp-git' },
-          -- use 'f3fora/cmp-spell'
           { 'hrsh7th/cmp-cmdline' },
           {
             here 'cmp-pandoc.nvim',
           },
           { 'onsails/lspkind-nvim' },
-          { 'ray-x/lsp_signature.nvim' },
           { 'davidsierradz/cmp-conventionalcommits' },
           -- { 'mjlbach/lsp_signature.nvim' },
           -- { 'zbirenbaum/copilot-cmp' },
@@ -263,12 +207,6 @@ M.setup = function()
               require('telescope').load_extension 'fzf'
             end,
           },
-          {
-            'nvim-telescope/telescope-github.nvim',
-            config = function()
-              require('telescope').load_extension 'gh'
-            end,
-          },
         },
       }
 
@@ -279,7 +217,7 @@ M.setup = function()
         end,
       }
 
-      -- Status Line
+      -- StatusLine, BufferLine and WinBar
       use {
         'rebelot/heirline.nvim',
         config = function()
@@ -288,20 +226,16 @@ M.setup = function()
       }
 
       use {
-        'noib3/nvim-bufferline',
+        'NvChad/nvim-colorizer.lua',
         config = function()
-          require 'user.plugins.cokeline'
-        end,
-      }
-
-      use {
-        'akinsho/toggleterm.nvim',
-      }
-
-      use {
-        'norcalli/nvim-colorizer.lua',
-        config = function()
-          require('colorizer').setup { 'css', '!vim', '!packer', '!NvimTree' }
+          require('colorizer').setup {
+            filetypes = {
+              'css',
+              '!vim',
+              '!packer',
+              '!NvimTree',
+            },
+          }
         end,
       }
 
@@ -310,42 +244,12 @@ M.setup = function()
         config = function()
           require 'user.plugins.gitsings'
         end,
-        requires = {
-          'nvim-lua/plenary.nvim',
-        },
       }
 
       use {
         'sindrets/diffview.nvim',
         config = function()
           require 'user.plugins.diffview'
-        end,
-        requires = 'nvim-lua/plenary.nvim',
-      }
-
-      use {
-        'akinsho/git-conflict.nvim',
-        config = function()
-          require('git-conflict').setup {
-            default_mappings = false,
-          }
-        end,
-      }
-
-      use {
-        'lewis6991/hover.nvim',
-        config = function()
-          require('hover').setup {
-            preview_opts = {
-              border = 'rounded',
-              max_width = math.ceil(vim.api.nvim_win_get_width(0) * 0.6),
-              max_height = math.ceil(vim.api.nvim_win_get_height(0) * 0.8),
-            },
-            title = true,
-          }
-          vim.keymap.set('n', 'K', require('hover').hover, {
-            desc = 'hover.nvim',
-          })
         end,
       }
 
@@ -388,7 +292,7 @@ M.setup = function()
             'module_declaration',
             'block',
             'switch_match',
-            'jsx_fragment'
+            'jsx_fragment',
           }
           require('indent_blankline').setup {
             show_current_context = true,
@@ -407,62 +311,11 @@ M.setup = function()
       }
 
       use {
-        'lukas-reineke/headlines.nvim',
-        config = function()
-          require('headlines').setup {
-            markdown = {
-              dash_highlight = false,
-              headline_pattern = false,
-            },
-            rmd = {
-              dash_highlight = false,
-              headline_pattern = false,
-            },
-          }
-        end,
-      }
-
-      use {
         'mhartington/formatter.nvim',
         config = function()
           require 'user.plugins.formatter'
         end,
       }
-
-      use {
-        here 'detect-indent.nvim',
-        config = function()
-          require('detect-indent').setup()
-        end,
-      }
-
-      -- Preserve buffer width/height when resize neovim window
-      -- use {
-      --   'kwkarlwang/bufresize.nvim',
-      --   config = function()
-      --     -- TODO: add support to ignore window
-      --     -- require('bufresize').setup()
-      --     vim.cmd [[
-      --       augroup ResizeWindow
-      --           autocmd!
-      --           autocmd VimResized * lua require('bufresize').resize()
-      --           autocmd WinEnter * lua require('bufresize').register()
-      --       augroup END
-      --     ]]
-      --   end,
-      -- }
-
-      -- use {
-      --   'gpanders/editorconfig.nvim',
-      --   config = function()
-      --     vim.cmd [[
-      --         augroup editorconfig
-      --           autocmd!
-      --           autocmd BufEnter * lua require('editorconfig').config()
-      --         augroup END
-      --       ]]
-      --   end,
-      -- }
 
       use {
         here 'repl.nvim',
@@ -481,18 +334,11 @@ M.setup = function()
       }
 
       -- Hclipboard will bypass the text into clipboard
-      use {
-        'kevinhwang91/nvim-hclipboard',
-        event = 'InsertCharPre',
-        config = function()
-          require('hclipboard').start()
-        end,
-      }
-
       -- use {
-      --   'lewis6991/spaceless.nvim',
+      --   'kevinhwang91/nvim-hclipboard',
+      --   event = 'InsertCharPre',
       --   config = function()
-      --     require('spaceless').setup()
+      --     require('hclipboard').start()
       --   end,
       -- }
 
@@ -504,7 +350,7 @@ M.setup = function()
         end,
       }
 
-      -- TESTING:
+      -- DEPREACTED: remove in 0.8.1
       use {
         'luukvbaal/stabilize.nvim',
         config = function()
@@ -518,26 +364,20 @@ M.setup = function()
       --   'kdheepak/lazygit.nvim',
       -- }
 
-      use {
-        here 'gitui.nvim',
-        config = function()
-          require('gitui').setup()
-        end,
-      }
+      -- use {
+      --   here 'gitui.nvim',
+      --   config = function()
+      --     require('gitui').setup()
+      --   end,
+      -- }
 
-      use {
-        'aspeddro/slides.nvim',
-        ft = { 'markdown' },
-        config = function()
-          require('slides').setup {}
-        end,
-      }
-
-      use {
-        'npxbr/glow.nvim',
-        cmd = 'Glow',
-      }
-
+      -- use {
+      --   'aspeddro/slides.nvim',
+      --   ft = { 'markdown' },
+      --   config = function()
+      --     require('slides').setup {}
+      --   end,
+      -- }
       use {
         here 'pandoc.nvim',
         requires = {
@@ -560,18 +400,7 @@ M.setup = function()
         end,
       }
 
-      -- use { 'bakpakin/fennel.vim' }
-
-      use 'folke/lua-dev.nvim'
-
-      -- use {
-      --   'jghauser/follow-md-links.nvim',
-      -- }
-
-      -- F# support
-      -- use {
-      --   'PhilT/vim-fsharp',
-      -- }
+      use 'ii14/emmylua-nvim'
 
       if packer_bootstrap then
         require('packer').sync()

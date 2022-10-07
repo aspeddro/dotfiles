@@ -1,72 +1,33 @@
 local install = require 'nvim-treesitter.install'
 local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
-
-local color = require 'user.color'
+local c = require 'user.color'
 
 install.prefer_git = true
 
--- local read_query = function(filename)
---   return table.concat(vim.fn.readfile(vim.fn.expand(filename)), '\n')
--- end
-
--- parser_config.rdoc = {
---   install_info = {
---     url = '~/Desktop/Projects/tree-sitter-rdoc',
---     -- branch = 'main',
---     files = { 'src/parser.c', 'src/scanner.c' },
---   },
--- }
-
--- parser_config.rescript = {
---   install_info = {
---     url = '~/Desktop/Projects/tree-sitter-rescript',
---     -- branch = 'main',
---     files = { 'src/parser.c', 'src/scanner.c' },
---   },
---   filetype = { "rescript" }
--- }
-
-parser_config.r = {
+parser_config.rescript = {
   install_info = {
-    url = '~/Desktop/Projects/tree-sitter-r',
+    url = '~/Desktop/Projects/tree-sitter-rescript',
     -- branch = 'main',
-    files = { 'src/parser.c' },
+    files = { 'src/parser.c', 'src/scanner.c' },
   },
-  filetype = 'r',
+  filetype = { 'rescript' },
 }
--- parser_config.r = {
---   install_info = {
---     url = '~/Desktop/Projects/tree-sitter-r',
---     -- branch = 'main',
---     files = { 'src/parser.c' },
---   },
---   filetype = 'r',
--- }
 
--- query.set_query(
---   'r',
---   'highlights',
---   read_query '~/.config/nvim/__queries/r/highlights.scm'
--- )
-
--- @see https://github.com/nvim-treesitter/nvim-treesitter/issues/1708
 local disable = function(_, bufnr)
   local name = vim.api.nvim_buf_get_name(bufnr)
-  local filetype = vim.api.nvim_buf_get_option(bufnr, 'filetype')
   local is_valid = vim.tbl_contains({ '.min.js' }, name:match '.min.js')
-    and vim.tbl_contains({ 'javascript' }, filetype)
 
   if is_valid then
     return true
   end
 
-  local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, true)
+  local lines = vim.api.nvim_buf_line_count(bufnr)
 
-  if #lines > 10000 then
+  if lines > 10000 then
     return true
   end
 
-  for _, line in ipairs(lines) do
+  for _, line in ipairs(vim.api.nvim_buf_get_lines(0, 0, -1, true)) do
     if line:len() > 5000 then
       return true
     end
@@ -130,6 +91,8 @@ require('nvim-treesitter.configs').setup {
     'zig',
     'cmake',
     'prisma',
+    'help',
+    'swift',
   },
   highlight = {
     enable = true,
@@ -139,27 +102,17 @@ require('nvim-treesitter.configs').setup {
   rainbow = {
     enable = true,
     disable = disable,
-    -- disable = { 'latex' }, -- list of languages you want to disable the plugin for
     extended_mode = {
       latex = false,
-    }, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
-    max_file_lines = nil, -- Do not enable for files with more than n lines, int
-    colors = {
-      color.extra.orange,
-      color.extra.green,
-      color.extra.blue1,
-      color.extra.paleblue,
-      color.extra.purple,
-      color.extra.pink,
-      color.extra.viole,
-    }, -- table of hex strings
-    -- termcolors = {} -- table of colour name strings
+    },
+    max_file_lines = nil,
+    colors = vim.tbl_flatten { c.rainbow, c.rainbow },
   },
   indent = {
-    disable = { 'yaml' },
+    enable = true,
   },
   autopairs = {
-    enable = true, -- check for autopairs (see nvim-autopairs)
+    enable = true,
   },
   autotag = {
     enable = true,
@@ -171,20 +124,6 @@ require('nvim-treesitter.configs').setup {
   },
   playground = {
     enable = true,
-    persist_queries = true,
-    updatetime = 25,
-    keybindings = {
-      toggle_query_editor = 'o',
-      toggle_hl_groups = 'i',
-      toggle_injected_languages = 't',
-      toggle_anonymous_nodes = 'a',
-      toggle_language_display = 'I',
-      focus_language = 'f',
-      unfocus_language = 'F',
-      update = 'R',
-      goto_node = '<cr>',
-      show_help = '?',
-    },
   },
   incremental_selection = {
     enable = true,
@@ -225,7 +164,6 @@ require('nvim-treesitter.configs').setup {
     },
   },
   move = {
-    -- FIX: https://github.com/nvim-treesitter/nvim-treesitter-textobjects/issues/177
     enable = true,
     set_jumps = true, -- whether to set jumps in the jumplist
     goto_next_start = {

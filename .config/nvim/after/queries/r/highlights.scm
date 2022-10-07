@@ -1,3 +1,5 @@
+;; extends
+
 ("$" (identifier) @field)
 
 (call

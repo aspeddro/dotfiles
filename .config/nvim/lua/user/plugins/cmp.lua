@@ -2,9 +2,6 @@ local cmp = require 'cmp'
 
 cmp.setup {
   window = {
-    completion = {
-      border = 'none',
-    },
     documentation = {
       border = 'rounded',
       winhighlight = 'Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None',
@@ -31,19 +28,20 @@ cmp.setup {
     },
   },
   formatting = {
-    format = require('lspkind').cmp_format {
-      with_text = true,
-      menu = {
+    fields = { 'kind', 'abbr', 'menu' },
+    format = function(entry, vim_item)
+      vim_item.kind = require('lspkind').presets.codicons[vim_item.kind] or ''
+      vim_item.menu = ({
         nvim_lsp = '[LSP]',
-        buffer = '[Buffer]',
-        luasnip = '[LuaSnip]',
+        buffer = '[Buf]',
+        luasnip = '[Snip]',
         emoji = '[Emoji]',
         path = '[Path]',
         git = '[Git]',
         cmp_pandoc = '[Pandoc]',
-        -- copilot = '[Copilot]',
-      },
-    },
+      })[entry.source.name]
+      return vim_item
+    end,
   },
   sources = cmp.config.sources {
     { name = 'nvim_lsp' },
@@ -55,15 +53,6 @@ cmp.setup {
     -- { name = 'emoji' },
     { name = 'cmp_pandoc' },
     { name = 'git' },
-    -- { name = 'spell' },
-    -- {
-    --   name = "dictionary",
-    --   keyword_length = 5,
-    -- }
-  },
-  experimental = {
-    native_menu = false,
-    ghost_text = false,
   },
 }
 
@@ -89,7 +78,6 @@ cmp.setup.filetype({ 'markdown', 'rmd', 'pandoc' }, {
   },
 })
 
--- stylua: ignore
 cmp.setup.filetype('gitcommit', {
   sources = cmp.config.sources {
     { name = 'buffer' },
@@ -98,15 +86,13 @@ cmp.setup.filetype('gitcommit', {
   },
 })
 
--- stylua: ignore
-cmp.setup.cmdline('/', {
+cmp.setup.cmdline({ '/', '?' }, {
   mapping = cmp.mapping.preset.cmdline(),
   sources = {
-    { name = 'buffer' }
+    { name = 'buffer' },
   },
 })
 
--- stylua: ignore
 cmp.setup.cmdline(':', {
   mapping = cmp.mapping.preset.cmdline(),
   sources = cmp.config.sources {
@@ -115,6 +101,6 @@ cmp.setup.cmdline(':', {
       name = 'cmdline',
       max_item_count = 30,
       keyword_length = 2,
-    }
+    },
   },
 })

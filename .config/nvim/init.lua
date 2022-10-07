@@ -1,12 +1,13 @@
 local ok, impatient = pcall(require, 'impatient')
 
+
 if ok then
   impatient.enable_profile()
 end
 
 require 'user.disable'
 
-vim.cmd [[colorscheme materialdarkerhc]]
+vim.cmd.colorscheme [[materialdarkerhc]]
 
 require 'user.filetype'
 require 'user.options'
