@@ -25,7 +25,6 @@
 ; ((comment) @_line
 ;   (#lua-match? @_line "^/**"))
 
-; TODO: add top-level comment
 ; (((comment) @_doc_comment
 ;   (#match? @_doc_comment "^/\\*\\*")) @markdown
 ;   (#offset! @markdown 0 3 0 -3))

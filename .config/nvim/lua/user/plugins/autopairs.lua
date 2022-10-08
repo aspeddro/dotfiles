@@ -23,6 +23,24 @@ npairs.add_rules {
   Rule('(', ')', { 'ocaml', 'query', 'scheme', 'dune' }):with_pair(
     cond.not_after_regex '%('
   ),
+
+  Rule(
+    '(',
+    ')',
+    { 'javascript', 'typescript', 'javascriptreact', 'typescriptreact' }
+  ):with_pair(ts_conds.is_in_range(function(param)
+    if not param then
+      return false
+    end
+    return not vim.tbl_contains(
+      { 'named_imports', 'import_statement' },
+      param.type
+    )
+  end, function()
+    local cursor = vim.api.nvim_win_get_cursor(0)
+    return { cursor[1] - 1, cursor[2] }
+  end)),
+
   Rule("'", "'", { '-rescript' }),
 
   Rule('$', '$', { 'markdown', 'rmd' }),

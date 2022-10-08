@@ -12,25 +12,27 @@ vim.keymap.set('v', '>', '>gv')
 vim.keymap.set('v', '<', '<gv')
 
 -- Cursor navigation
-for key, value in pairs({s = 'j', w = 'k', d = 'l', a = 'h'}) do
-  vim.keymap.set('n', ('<a-%s>'):format(key), function ()
+for key, value in pairs { s = 'j', w = 'k', d = 'l', a = 'h' } do
+  vim.keymap.set({ 'n', 't' }, ('<a-%s>'):format(key), function()
     vim.cmd.wincmd(value)
   end)
-  vim.keymap.set('t', ('<a-%s>'):format(key), function ()
-    vim.api.nvim_input('<esc>')
-    vim.cmd.wincmd(value)
-  end)
+  -- vim.keymap.set('t', ('<a-%s>'):format(key), function ()
+  --   -- vim.api.nvim_input('<esc>')
+  --   vim.cmd.wincmd(value)
+  -- end)
 end
 
 -- Move window
-for key, value in pairs({s = 'J', w = 'K', d = 'L', a = 'H'}) do
-  vim.keymap.set('n', ('<a-s-%s>'):format(key), function ()
+for key, value in pairs { s = 'J', w = 'K', d = 'L', a = 'H' } do
+  vim.keymap.set('n', ('<a-s-%s>'):format(key), function()
     vim.cmd.wincmd(value)
   end)
 end
 
 -- cuts without affecting yank
-vim.keymap.set({'n', 'v'}, 'C', '"_C')
+vim.keymap.set({ 'n', 'v' }, 'C', '"_C')
+
+vim.keymap.set('t', '<esc>', [[<C-\><C-n>]])
 
 -- save buffer
 vim.keymap.set('n', '<c-s>', vim.cmd.write)

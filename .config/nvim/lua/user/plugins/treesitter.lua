@@ -6,7 +6,7 @@ install.prefer_git = true
 
 parser_config.rescript = {
   install_info = {
-    url = '~/Desktop/Projects/tree-sitter-rescript',
+    url = '~/Desktop/projects/tree-sitter-rescript',
     -- branch = 'main',
     files = { 'src/parser.c', 'src/scanner.c' },
   },
@@ -54,6 +54,7 @@ require('nvim-treesitter.configs').setup {
     'javascript',
     'json',
     'jsonc',
+    'json5',
     'julia',
     'query',
     'haskell',
@@ -80,6 +81,7 @@ require('nvim-treesitter.configs').setup {
     'rust',
     'tsx',
     'make',
+    'markdown_inline',
     'markdown',
     'svelte',
     'vim',
@@ -92,6 +94,8 @@ require('nvim-treesitter.configs').setup {
     'cmake',
     'prisma',
     'help',
+    'gitignore',
+    'gitattributes',
     'swift',
   },
   highlight = {
@@ -118,7 +122,7 @@ require('nvim-treesitter.configs').setup {
     enable = true,
   },
   endwise = {
-    enable = true
+    enable = true,
   },
   query_linter = {
     enable = true,
@@ -194,8 +198,8 @@ require('nvim-treesitter.configs').setup {
     },
   },
   context_commentstring = {
-    enable = true
-  }
+    enable = true,
+  },
 }
 
 -- highlight argument

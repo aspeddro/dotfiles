@@ -12,11 +12,11 @@ return {
       )
     end, {}),
   },
-  todo = f(function ()
+  todo = f(function()
     return string.format(
-        string.gsub(vim.bo.commentstring, '%%s', '%%s'),
-        " TODO: "
-      )
+      string.gsub(vim.bo.commentstring, '%%s', '%%s'),
+      ' TODO: '
+    )
   end),
   hashbang = fmt([[{}!/usr/bin/{} {}]], { i(1), i(2, 'env'), i(3) }),
 }

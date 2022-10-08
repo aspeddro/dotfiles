@@ -74,7 +74,6 @@
  ; (positional_parameter (value_identifier))
 
 
-; TODO
 ; (jsx_opening_element
 ;   name: (jsx_identifier) @tag)
 

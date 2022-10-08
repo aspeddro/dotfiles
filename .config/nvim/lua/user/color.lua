@@ -73,8 +73,8 @@ local pallete = {
   rainbow = {
     '#ffd700',
     '#da70d6',
-    '#179fff'
-  }
+    '#179fff',
+  },
 }
 
 M = pallete

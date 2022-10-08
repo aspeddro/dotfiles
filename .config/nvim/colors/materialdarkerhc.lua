@@ -33,8 +33,8 @@ M.base = {
 
   SpellBad = { fg = c.red, underline = true },
   SpellCap = { underline = true },
-  SpellLocal = { fg = c.red, underline = false },
-  SpellRare = { fg = c.red, underline = false },
+  SpellLocal = { underline = true },
+  SpellRare = { underline = true },
 
   -- Pop-up Menu
   Pmenu = { fg = c.text_pop_menu, bg = c.bg_alt },
@@ -78,10 +78,7 @@ M.base = {
 
   QuickFixLine = { fg = c.fg, bg = c.bg_alt },
 
-  -- MatchWord = { gui = 'underline' },
   MatchParen = { bg = c.gray },
-  -- MatchWordCur = { gui = 'underline' },
-  -- MatchParenCur = { gui = 'underline' },
 
   Terminal = { fg = c.fg, bg = c.bg },
   TermCursor = { fg = c.fg, bg = c.fg },
@@ -90,8 +87,6 @@ M.base = {
   Conceal = { fg = c.red },
   Directory = { fg = c.blue },
   SpecialKey = { fg = c.blue, bold = true },
-
-  -- Title = { fg = c.blue, gui = 'bold' },
 
   -- Search
   Search = { fg = c.none, bg = c.gray },
@@ -103,7 +98,7 @@ M.base = {
   TabLineFill = { gui = c.none, bg = c.bg },
 
   -- Status Line
-  StatusLine = { fg = c.bg }, -- focus
+  StatusLine = { link = 'Normal' }, -- focus
   -- StatusLineNC = { ctermfg = c.none },
   -- StatusLineTerm
   -- StatusLineTermNC
@@ -126,7 +121,7 @@ M.base = {
   DiagnosticError = { fg = c.error },
   DiagnosticWarn = { fg = c.yellow },
   DiagnosticInfo = { fg = c.paleblue },
-  DiagnosticHint = { fg = c.fg },
+  DiagnosticHint = { fg = c.paleblue },
   DiagnosticVirtualTextHint = { fg = c.gray },
 
   DiagnosticFloatingHint = { fg = c.fg },
@@ -175,8 +170,8 @@ M.syntax = {
   Debug = { fg = c.red }, -- debugging statements
   Underlined = { fg = c.red, bg = c.none, underline = true }, -- text that stands out, HTML links
   Ignore = { fg = c.red }, -- left blank, hidden
-  Error = { fg = c.error, bg = c.none, underline = true },
-  Todo = { fg = c.yellow, bg = c.none, bold = true, underline = true }, -- anything that needs extra attention; mostly the keywords TODO FIXME and XXX
+  Error = { underline = true },
+  Todo = { fg = c.yellow, bg = c.none, bold = true, italic = true }, -- anything that needs extra attention; mostly the keywords TODO FIXME and XXX
 
   -- healthError = { fg = c.error },
   -- healthSuccess = { fg = c.green },
@@ -197,31 +192,29 @@ M.treesitter = {
   TSMethod = { fg = c.blue, italic = true },
   -- TSFuncBuiltin = { fg = c.blue, gui = 'italic' },
   -- TSEnvironment = { fg = c.blue },
-  TSVariableBuiltin = { fg = c.blue, italic = true },
+  -- TSVariableBuiltin = { fg = c.blue, italic = true },
   TSAnnotation = { fg = c.pink }, -- For C++/Dart attributes, annotations that can be attached to the code to denote some kind of meta information.
-  TSAttribute = { fg = c.yellow }, -- (unstable) TODO: docs
+  TSAttribute = { fg = c.yellow },
   -- TSBoolean = { fg = c.orange }, -- For booleans.
   -- TSCharacter = { fg = c.green, italic = true }, -- For characters.
-  -- TODO: testing
   TSConstructor = { fg = c.cyan }, -- For constructor calls and definitions: `= {}` in Lua, and Java constructors.
-  -- TODO: rescript
   TSConstant = { fg = c.orange, italic = true }, -- For constants
   TSConstBuiltin = { fg = c.red }, -- For constant that are built in the language: `nil` in Lua.
   -- TSConstMacro = { fg = c.orange }, -- For constants that are defined by macros: `NULL` in C.
-  TSException = { fg = c.red }, -- For exception related keywords.
-  -- TODO: from lua
+  -- TSException = { fg = c.red }, -- For exception related keywords.
+  -- TODO: find a color for TSField and TSProperty
   TSField = { fg = '#ffdfb6' }, -- For fields. -- TEST: #FFD7A3
   TSProperty = { link = 'TSField' },
   -- TSFloat = { fg = c.orange }, -- For floats.
   -- TSFuncMacro = { fg = c.blue }, -- For macro defined fuctions (calls and definitions): each `macro_rules` in Rust.
   -- TSInclude = { fg = c.cyan }, -- For includes: `#include` in C, `use` or `extern crate` in Rust, or `require` in Lua.
   -- TSLabel = { fg = c.purple }, -- For labels: `label:` in C and `:label:` in Lua.
-  -- TODO: equal TSField
+  -- TODO: fund a color for TSNamespace
   TSNamespace = { fg = '#FFECB3' }, -- For identifiers referring to modules and namespaces.
   -- TSNumber = { fg = c.orange }, -- For all numbers
   -- TSOperator = { fg = c.cyan }, -- For any operator: `+`, but also `->` and `*` in C.
   TSParameter = { fg = c.yellow }, -- For parameters of a function.
-  TSParameterReference = { fg = c.yellow }, -- For references to parameters of a function.
+  TSParameterReference = { link = 'TSParameter' }, -- For references to parameters of a function.
   -- TSProperty = { fg = c.blue }, -- Same as `TSField`,accesing for struct members in C.
   -- TSPunctDelimiter = { fg = c.fg }, -- For delimiters ie: `.`
   TSPunctBracket = { fg = c.cyan }, -- For brackets and parens.
@@ -247,9 +240,10 @@ M.treesitter = {
   -- TSStrong = { bold = true },
   -- TSStrike = { strikethrough = true },
   TSError = { underline = true }, -- For syntax/parser errors.
-  TSNote = { fg = c.extra.orange, bold = true, italic = true },
-  TSWarning = { fg = c.extra.orange, bold = true, italic = true },
-  -- TSDanger = { fg = c.error, gui = 'italic', gui = 'bold' },
+
+  TSNote = { link = 'Todo' },
+  -- TSWarning = { link = 'Todo' },
+  TSDanger = { link = 'Todo' },
 }
 
 ---@see h lsp-highlight
@@ -259,7 +253,7 @@ M.lsp = {
   LspReferenceWrite = { link = 'LspReferenceText' },
   LspCodeLens = { fg = c.extra.gray },
   LspCodeLensSeparator = { link = 'LspCodeLens' },
-  LspSignatureActiveParameter = {link = 'LspCodeLens'}
+  LspSignatureActiveParameter = { link = 'LspCodeLens' },
 }
 
 M.plugins = {
@@ -281,7 +275,7 @@ M.plugins = {
   LspInfoBorder = { link = 'FloatBorder' },
   -- Indent Blank line
   IndentBlanklineChar = { fg = c.fn.blend(c.gray, c.bg, 0.3) },
-  IndentBlanklineContextChar = { fg = c.fn.blend(c.gray, c.bg, 0.99) }
+  IndentBlanklineContextChar = { fg = c.fn.blend(c.gray, c.bg, 0.99) },
 }
 
 M.langs = {

@@ -1,9 +1,32 @@
 local herline = require 'heirline'
 local conditions = require 'heirline.conditions'
-local utils = require 'heirline.utils'
+local u = require 'heirline.utils'
 local c = require 'user.color'
 
 local empty_file_name = '[No Name]'
+
+local colors = {
+  bright_bg = u.get_highlight('Folded').bg,
+  bright_fg = u.get_highlight('Folded').fg,
+  red = u.get_highlight('DiagnosticError').fg,
+  dark_red = u.get_highlight('DiffDelete').bg,
+  green = u.get_highlight('String').fg,
+  blue = u.get_highlight('Function').fg,
+  gray = u.get_highlight('NonText').fg,
+  orange = u.get_highlight('Number').fg,
+  purple = u.get_highlight('Statement').fg,
+  cyan = u.get_highlight('Type').fg,
+  diag_warn = u.get_highlight('DiagnosticWarn').fg,
+  diag_error = u.get_highlight('DiagnosticError').fg,
+  diag_hint = u.get_highlight('DiagnosticHint').fg,
+  diag_info = u.get_highlight('DiagnosticInfo').fg,
+  --TODO: add highlight for git
+  git_del = u.get_highlight('DiagnosticError').fg,
+  git_add = u.get_highlight('String').fg,
+  git_change = u.get_highlight('Function').fg,
+}
+
+require('heirline').load_colors(colors)
 
 local Align = { provider = '%=' }
 local Space = { provider = ' ' }
@@ -65,19 +88,19 @@ local ViMode = {
       t = 'Term',
     },
     mode_colors = {
-      n = c.cyan,
-      i = c.green,
-      v = c.orange,
-      V = c.orange,
-      ['^V'] = c.orange,
-      c = c.orange,
-      s = c.purple,
-      S = c.purple,
-      ['^S'] = c.purple,
-      R = c.orange,
-      r = c.orange,
-      ['!'] = c.red,
-      t = c.red,
+      n = 'cyan',
+      i = 'green',
+      v = 'orange',
+      V = 'orange',
+      ['^V'] = 'orange',
+      c = 'orange',
+      s = 'purple',
+      S = 'purple',
+      ['^S'] = 'purple',
+      R = 'orange',
+      r = 'orange',
+      ['!'] = 'red',
+      t = 'red',
     },
   },
   -- We can now access the value of mode() that, by now, would have been
@@ -138,7 +161,6 @@ local Git = {
     provider = function(self)
       return ' ' .. self.status_dict.head
     end,
-    -- hl = { style = 'bold' },
   },
   -- You could handle delimiters, icons and counts similar to Diagnostics
   {
@@ -152,21 +174,21 @@ local Git = {
       local count = self.status_dict.added or 0
       return count > 0 and ('+' .. count .. ' ')
     end,
-    hl = { fg = c.green },
+    hl = { fg = 'git_add' },
   },
   {
     provider = function(self)
       local count = self.status_dict.removed or 0
       return count > 0 and ('-' .. count .. ' ')
     end,
-    hl = { fg = c.red },
+    hl = { fg = 'git_del' },
   },
   {
     provider = function(self)
       local count = self.status_dict.changed or 0
       return count > 0 and ('~' .. count .. ' ')
     end,
-    hl = { fg = c.blue },
+    hl = { fg = 'git_change' },
   },
   {
     condition = function(self)
@@ -202,25 +224,25 @@ local Diagnostics = {
       -- 0 is just another output, we can decide to print it or not!
       return self.errors > 0 and (self.error_icon .. self.errors .. ' ')
     end,
-    hl = { fg = c.error },
+    hl = { fg = 'diag_error' },
   },
   {
     provider = function(self)
       return self.warnings > 0 and (self.warn_icon .. self.warnings .. ' ')
     end,
-    hl = { fg = c.yellow },
+    hl = { fg = 'diag_warn' },
   },
   {
     provider = function(self)
       return self.info > 0 and (self.info_icon .. self.info .. ' ')
     end,
-    hl = { fg = c.cyan },
+    hl = { fg = 'diag_info' },
   },
   {
     provider = function(self)
       return self.hints > 0 and (self.hint_icon .. self.hints)
     end,
-    hl = { fg = c.cyan },
+    hl = { fg = 'diag_hint' },
   },
 }
 
@@ -233,7 +255,7 @@ local LSPActive = {
     end, vim.lsp.get_active_clients { bufnr = 0 })
     return ' [' .. table.concat(names, ' ') .. ']'
   end,
-  hl = { fg = c.green },
+  hl = { fg = 'green' },
 }
 
 local Navic = {
@@ -241,7 +263,7 @@ local Navic = {
   provider = function()
     return require('nvim-navic').get_location()
   end,
-  hl = { fg = c.gray }
+  hl = { fg = 'gray' },
 }
 
 local Ruler = {
@@ -252,7 +274,7 @@ local FileType = {
   provider = function()
     return vim.bo.filetype
   end,
-  hl = { fg = c.orange },
+  hl = { fg = 'orange' },
 }
 
 local FileEncoding = {
@@ -274,7 +296,7 @@ local FileFlags = {
         return '[+]'
       end
     end,
-    hl = { fg = c.green },
+    hl = { fg = 'orange' },
   },
   {
     provider = function()
@@ -282,30 +304,24 @@ local FileFlags = {
         return ''
       end
     end,
-    hl = { fg = c.orange },
+    hl = { fg = 'orange' },
   },
 }
 
 local BufferWindow = {
-  provider = function ()
-    return string.format('[%d:%d]', vim.api.nvim_get_current_buf(), vim.api.nvim_get_current_win())
+  provider = function()
+    return string.format(
+      '[%d:%d]',
+      vim.api.nvim_get_current_buf(),
+      vim.api.nvim_get_current_win()
+    )
   end,
-  hl = { fg = c.gray }
+  hl = { fg = 'gray' },
 }
 
 local StatusLine = {
   hl = function()
-    if conditions.is_active() then
-      return {
-        fg = c.fg,
-        bg = c.bg,
-      }
-    else
-      return {
-        fg = c.fg,
-        bg = c.bg,
-      }
-    end
+    return 'StatusLine'
   end,
   fallthrough = true,
   Space,
@@ -361,7 +377,7 @@ local TablineFileName = {
     return filename
   end,
   hl = function(self)
-    return { fg = self.is_active and c.fg or c.gray }
+    return self.is_active and 'Normal' or 'NonText'
   end,
 }
 
@@ -370,15 +386,8 @@ local TablineFileNameBlock = {
   init = function(self)
     self.filename = vim.api.nvim_buf_get_name(self.bufnr)
   end,
-  hl = function(self)
-    if self.is_active then
-      return { fg = c.red }
-      -- why not?
-      -- elseif not vim.api.nvim_buf_is_loaded(self.bufnr) then
-      --     return { fg = "gray" }
-    else
-      return { fg = c.yellow }
-    end
+  hl = function()
+    return 'Normal'
   end,
   on_click = {
     callback = function(_, minwid, _, button)
@@ -403,7 +412,7 @@ local TablineCloseButton = {
   Space,
   {
     provider = '',
-    hl = { fg = c.gray },
+    hl = { fg = 'gray' },
     on_click = {
       callback = function(_, minwid)
         vim.api.nvim_buf_delete(minwid, { force = false })
@@ -424,11 +433,10 @@ local TablineBufferBlock = {
 }
 
 -- and here we go
-local BufferLine = utils.make_buflist(
+local BufferLine = u.make_buflist(
   TablineBufferBlock,
-  { provider = '«', hl = { fg = c.gray } }, -- left truncation, optional (defaults to "<")
-  { provider = '»', hl = { fg = c.gray } } -- right trunctation, also optional (defaults to ...... yep, ">")
-  -- by the way, open a lot of buffers and try clicking them ;)
+  { provider = '«', hl = { fg = 'gray' } }, -- left truncation
+  { provider = '»', hl = { fg = 'gray' } } -- right trunctation
 )
 
 local Tabpage = {
@@ -436,11 +444,7 @@ local Tabpage = {
     return '%' .. self.tabnr .. 'T ' .. self.tabnr .. ' %T'
   end,
   hl = function(self)
-    if not self.is_active then
-      return 'TabLine'
-    else
-      return 'TabLineSel'
-    end
+    return self.is_active and 'TabLine' or 'TabLineSel'
   end,
 }
 
@@ -455,7 +459,7 @@ local TabPages = {
     return #vim.api.nvim_list_tabpages() >= 2
   end,
   { provider = '%=' },
-  utils.make_tablist(Tabpage),
+  u.make_tablist(Tabpage),
   TabpageClose,
 }
 
@@ -465,7 +469,7 @@ local TabLineOffset = {
     local bufnr = vim.api.nvim_win_get_buf(win)
     self.winid = win
 
-    if vim.tbl_contains({ 'NvimTree' }, vim.bo[bufnr].filetype) then
+    if vim.tbl_contains({ 'NvimTree', 'mind' }, vim.bo[bufnr].filetype) then
       self.title = ''
       return true
     end
@@ -480,9 +484,9 @@ local TabLineOffset = {
 
   hl = function(self)
     if vim.api.nvim_get_current_win() == self.winid then
-      return 'TablineSel'
+      return 'TabLineSel'
     else
-      return 'Tabline'
+      return 'TabLine'
     end
   end,
 }
@@ -528,7 +532,7 @@ local WinBars = {
       end
       return filename
     end,
-    hl = { fg = c.gray },
+    hl = { fg = 'gray' },
   },
   Space,
 }

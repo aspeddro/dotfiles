@@ -6,7 +6,8 @@ end
 
 require 'user.disable'
 
-vim.cmd.colorscheme [[materialdarkerhc]]
+-- vim.cmd.colorscheme 'kanagawa'
+vim.cmd.colorscheme 'materialdarkerhc'
 
 require 'user.filetype'
 require 'user.options'
@@ -15,3 +16,4 @@ require 'user.packages'
 require 'user.globals'
 require 'user.mappings'
 require 'user.lsp'
+require 'user.modules.terminal'

@@ -12,6 +12,6 @@ vim.filetype.add {
     conf = 'conf',
     mdx = 'markdown',
     re = 'reason',
-    rei = 'reason'
+    rei = 'reason',
   },
 }

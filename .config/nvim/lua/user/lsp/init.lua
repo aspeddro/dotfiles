@@ -26,7 +26,7 @@ local on_attach = function(client, bufnr)
     callback = function()
       vim.lsp.buf.format {
         timeout_ms = 2000,
-        async = true
+        async = true,
       }
     end,
     buffer = bufnr,

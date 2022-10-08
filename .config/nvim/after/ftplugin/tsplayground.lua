@@ -1,1 +1,1 @@
-vim.keymap.set("n", "q", vim.cmd.bd)
+vim.keymap.set('n', 'q', vim.cmd.bd)
