@@ -76,7 +76,7 @@ M.base = {
     bold = false,
   },
 
-  QuickFixLine = { fg = c.fg, bg = c.bg_alt },
+  QuickFixLine = { bg = c.bg_alt },
 
   MatchParen = { bg = c.gray },
 
@@ -239,7 +239,7 @@ M.treesitter = {
   -- TSURI = { underline = true }, -- Any URI like a link or email.
   -- TSStrong = { bold = true },
   -- TSStrike = { strikethrough = true },
-  TSError = { underline = true }, -- For syntax/parser errors.
+  -- TSError = { underline = true }, -- For syntax/parser errors.
 
   TSNote = { link = 'Todo' },
   -- TSWarning = { link = 'Todo' },

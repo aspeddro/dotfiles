@@ -6,7 +6,6 @@ end
 
 require 'user.disable'
 
--- vim.cmd.colorscheme 'kanagawa'
 vim.cmd.colorscheme 'materialdarkerhc'
 
 require 'user.filetype'

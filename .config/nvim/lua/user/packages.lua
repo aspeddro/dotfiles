@@ -82,8 +82,6 @@ M.setup = function()
         rocks = 'mpack',
       }
 
-      use 'rebelot/kanagawa.nvim'
-
       use 'tpope/vim-sleuth'
 
       use {

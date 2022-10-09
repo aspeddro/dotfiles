@@ -19,18 +19,20 @@ vim.diagnostic.config {
 }
 
 local on_attach = function(client, bufnr)
-  local lsp_format =
-    vim.api.nvim_create_augroup('LSP/documentFormat', { clear = true })
-  vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
-    group = lsp_format,
-    callback = function()
-      vim.lsp.buf.format {
-        timeout_ms = 2000,
-        async = true,
-      }
-    end,
-    buffer = bufnr,
-  })
+  if client.server_capabilities.documentFormattingProvider then
+    local lsp_format =
+      vim.api.nvim_create_augroup('LSP/documentFormat', { clear = true })
+    vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
+      group = lsp_format,
+      callback = function()
+        vim.lsp.buf.format {
+          timeout_ms = 2000,
+          async = true,
+        }
+      end,
+      buffer = bufnr,
+    })
+  end
 
   if client.server_capabilities.documentHighlightProvider then
     local id =
@@ -107,6 +109,10 @@ local on_attach = function(client, bufnr)
   keymap_set('<space>wa', vim.lsp.buf.add_workspace_folder)
 
   keymap_set('<space>ca', lsp_menu.codeaction.run)
+
+  vim.keymap.set('v', '<space>ca', function()
+    require('lsp_menu').codeaction.run { range = true }
+  end)
 
   keymap_set('<space>wr', vim.lsp.buf.remove_workspace_folder)
 

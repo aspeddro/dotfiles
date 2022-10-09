@@ -131,7 +131,8 @@ end, {
   -- end,
 })
 
-local id_term_plugin_enter = vim.api.nvim_create_augroup('TermEnter', { clear = true })
+local id_term_plugin_enter =
+  vim.api.nvim_create_augroup('TermEnter', { clear = true })
 
 vim.api.nvim_create_autocmd('BufEnter', {
   group = id_term_plugin_enter,
