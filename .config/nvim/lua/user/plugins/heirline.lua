@@ -259,6 +259,7 @@ local LSPActive = {
 
 local Navic = {
   condition = require('nvim-navic').is_available,
+  update = 'CursorMoved',
   provider = function()
     return require('nvim-navic').get_location()
   end,

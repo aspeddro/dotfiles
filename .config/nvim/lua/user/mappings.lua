@@ -16,10 +16,6 @@ for key, value in pairs { s = 'j', w = 'k', d = 'l', a = 'h' } do
   vim.keymap.set({ 'n', 't' }, ('<a-%s>'):format(key), function()
     vim.cmd.wincmd(value)
   end)
-  -- vim.keymap.set('t', ('<a-%s>'):format(key), function ()
-  --   -- vim.api.nvim_input('<esc>')
-  --   vim.cmd.wincmd(value)
-  -- end)
 end
 
 -- Move window

@@ -46,7 +46,8 @@ M.base = {
   Folded = { fg = c.blue, bg = c.bg_alt },
   FoldColumn = { fg = c.blue, bg = c.bg_alt },
   LineNr = { fg = c.line_number },
-  VertSplit = { fg = c.line_number, gui = c.none },
+
+  WinSeparator = { fg = c.line_number },
 
   CursorLine = { bg = c.bg_alt },
   CursorLineNr = { fg = c.line_number_highlight },

@@ -10,6 +10,7 @@ local DIRECTIONS = { 'right', 'bottom' }
 ---@return table
 local terminals = function()
   return vim.tbl_filter(function(buffer)
+    --TODO: see h depreacted use jobpid
     return buffer.variables and buffer.variables.terminal_job_id
   end, vim.fn.getbufinfo())
 end

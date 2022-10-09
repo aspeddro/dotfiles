@@ -49,6 +49,10 @@ local on_attach = function(client, bufnr)
     })
   end
 
+  if client.server_capabilities.inlayHintProvider then
+    require('lsp-inlayhints').on_attach(client, bufnr)
+  end
+
   if client.server_capabilities.colorProvider then
     require('document-color').buf_attach(bufnr)
   end

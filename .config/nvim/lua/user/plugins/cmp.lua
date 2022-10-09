@@ -73,7 +73,6 @@ cmp.setup.filetype({ 'markdown', 'rmd', 'pandoc' }, {
     { name = 'emoji' },
     { name = 'luasnip' },
     { name = 'cmp_pandoc' },
-    -- { name = 'cmp_git' },
     { name = 'path' }
   },
 })
@@ -81,7 +80,6 @@ cmp.setup.filetype({ 'markdown', 'rmd', 'pandoc' }, {
 cmp.setup.filetype('gitcommit', {
   sources = cmp.config.sources {
     { name = 'buffer' },
-    { name = 'conventionalcommits' },
     { name = 'git' },
   },
 })

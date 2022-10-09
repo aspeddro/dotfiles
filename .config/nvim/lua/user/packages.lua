@@ -167,6 +167,19 @@ M.setup = function()
             'SmiteshP/nvim-navic',
           },
           {
+            'lvimuser/lsp-inlayhints.nvim',
+            config = function()
+              require('lsp-inlayhints').setup {
+                inlay_hints = {
+                  parameter_hints = {
+                    show = false,
+                  },
+                  highlight = 'LspSignatureActiveParameter',
+                },
+              }
+            end,
+          },
+          {
             'rmagatti/goto-preview',
             config = function()
               require 'user.plugins.gotopreview'
@@ -183,9 +196,6 @@ M.setup = function()
         requires = {
           {
             'L3MON4D3/LuaSnip',
-            requires = {
-              'rafamadriz/friendly-snippets',
-            },
             config = function()
               require 'user.plugins.luasnip'
             end,
@@ -201,7 +211,6 @@ M.setup = function()
             here 'cmp-pandoc.nvim',
           },
           { 'onsails/lspkind-nvim' },
-          { 'davidsierradz/cmp-conventionalcommits' },
           -- { 'mjlbach/lsp_signature.nvim' },
           -- { 'zbirenbaum/copilot-cmp' },
           -- {
@@ -222,7 +231,6 @@ M.setup = function()
           require 'user.plugins.telescope'
         end,
         requires = {
-          { 'nvim-lua/popup.nvim' },
           { 'nvim-lua/plenary.nvim' },
           {
             'nvim-telescope/telescope-fzf-native.nvim',
