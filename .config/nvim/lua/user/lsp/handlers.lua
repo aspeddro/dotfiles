@@ -11,6 +11,7 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] =
     update_in_insert = false,
     severity_sort = true,
   })
+
 local float_options = {
   border = 'rounded',
   max_width = math.ceil(vim.api.nvim_win_get_width(0) * 0.6),

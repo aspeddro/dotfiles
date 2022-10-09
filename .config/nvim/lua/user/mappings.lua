@@ -55,7 +55,8 @@ vim.keymap.set('n', '<c-t>', function()
   bufferhandler.new()
 end)
 vim.keymap.set('n', '<c-w>', function()
-  bufferhandler.close()
+  -- bufferhandler.close()
+  vim.cmd 'bd!'
 end)
 
 for i = 1, 9, 1 do
@@ -64,4 +65,10 @@ for i = 1, 9, 1 do
   end)
 end
 
-vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
+vim.keymap.set('n', '<space>q', function()
+  local items = vim.diagnostic.toqflist(vim.diagnostic.get())
+
+  vim.fn.setqflist({}, ' ', { title = 'Workspace Diagnostics', items = items })
+
+  vim.cmd('botright copen')
+end)

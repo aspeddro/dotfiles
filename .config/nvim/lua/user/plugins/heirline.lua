@@ -1,7 +1,6 @@
 local herline = require 'heirline'
 local conditions = require 'heirline.conditions'
 local u = require 'heirline.utils'
-local c = require 'user.color'
 
 local empty_file_name = '[No Name]'
 
@@ -155,7 +154,7 @@ local Git = {
       or self.status_dict.changed ~= 0
   end,
 
-  hl = { fg = c.orange },
+  hl = { fg = 'orange' },
 
   { -- git branch name
     provider = function(self)

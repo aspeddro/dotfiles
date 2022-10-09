@@ -82,6 +82,13 @@ M.setup = function()
         rocks = 'mpack',
       }
 
+      use {
+        'ggandor/leap.nvim',
+        config = function()
+          require('leap').set_default_keymaps()
+        end,
+      }
+
       use 'tpope/vim-sleuth'
 
       use {
@@ -222,12 +229,6 @@ M.setup = function()
             run = 'make',
             config = function()
               require('telescope').load_extension 'fzf'
-            end,
-          },
-          {
-            'smartpde/telescope-recent-files',
-            config = function()
-              require('telescope').load_extension 'recent_files'
             end,
           },
         },

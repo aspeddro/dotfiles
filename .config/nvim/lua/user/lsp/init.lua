@@ -20,10 +20,10 @@ vim.diagnostic.config {
 
 local on_attach = function(client, bufnr)
   if client.server_capabilities.documentFormattingProvider then
-    local lsp_format =
+    local group =
       vim.api.nvim_create_augroup('LSP/documentFormat', { clear = true })
-    vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
-      group = lsp_format,
+    vim.api.nvim_create_autocmd('BufWritePre', {
+      group = group,
       callback = function()
         vim.lsp.buf.format {
           timeout_ms = 2000,
@@ -35,17 +35,17 @@ local on_attach = function(client, bufnr)
   end
 
   if client.server_capabilities.documentHighlightProvider then
-    local id =
+    local group =
       vim.api.nvim_create_augroup('LSP/documentHighlight', { clear = true })
     vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
       callback = vim.lsp.buf.document_highlight,
       buffer = bufnr,
-      group = id,
+      group = group,
     })
     vim.api.nvim_create_autocmd('CursorMoved', {
       callback = vim.lsp.buf.clear_references,
       buffer = bufnr,
-      group = id,
+      group = group,
     })
   end
 
@@ -58,11 +58,17 @@ local on_attach = function(client, bufnr)
   end
 
   if client.server_capabilities.codeLensProvider then
-    local id = vim.api.nvim_create_augroup('LSP/CodeLens', { clear = true })
-    vim.api.nvim_create_autocmd({ 'BufEnter', 'InsertLeave', 'CursorHold' }, {
-      group = id,
+    local group = vim.api.nvim_create_augroup('LSP/CodeLens', { clear = true })
+    vim.api.nvim_create_autocmd({ 'InsertLeave', 'CursorHold' }, {
+      group = group,
       callback = vim.lsp.codelens.refresh,
       buffer = bufnr,
+    })
+    vim.api.nvim_create_autocmd('BufEnter', {
+      group = group,
+      callback = vim.lsp.codelens.refresh,
+      buffer = bufnr,
+      once = true,
     })
   end
 
