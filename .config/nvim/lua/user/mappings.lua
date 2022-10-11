@@ -51,8 +51,8 @@ vim.keymap.set('n', '<c-t>', function()
   bufferhandler.new()
 end)
 vim.keymap.set('n', '<c-w>', function()
-  -- bufferhandler.close()
-  vim.cmd 'bd!'
+  bufferhandler.close()
+  -- vim.cmd 'bd!'
 end)
 
 for i = 1, 9, 1 do

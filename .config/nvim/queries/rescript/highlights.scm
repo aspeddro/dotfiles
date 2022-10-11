@@ -10,8 +10,15 @@
 
 [
   (type_identifier)
-  "list"
+  (unit_type)
 ] @type
+
+(list "list{" @type)
+(list_pattern "list{" @type)
+
+; To ensure that the closing curly bracket is the same color (scope) as the opening curly bracket
+(list "}" @type (#set! "priority" 105))
+(list_pattern "}" @type (#set! "priority" 105))
 
 ((type_identifier) @type.builtin
  (#any-of? @type.builtin
@@ -91,6 +98,7 @@
 
 (call_expression
   function: (value_identifier_path (value_identifier) @function))
+
 ; Meta
 ;-----
 
@@ -126,20 +134,30 @@
   "rec"
   "type"
   "and"
+  "assert"
+  "async"
+  "await"
+  "with"
+  "unpack"
+  "module"
 ] @keyword
 
 [
   "if"
   "else"
   "switch"
+  "when"
 ] @conditional
 
 [
   "exception"
   "try"
   "catch"
-  "raise"
 ] @exception
+
+(call_expression
+  function: (value_identifier) @exception
+  (#eq? @exception "raise"))
 
 [
   "for"
@@ -162,6 +180,7 @@
   "-"
   "-."
   "*"
+  "**"
   "*."
   "/."
   "<="

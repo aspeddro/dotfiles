@@ -85,7 +85,7 @@ M.setup = function()
       use {
         'ggandor/leap.nvim',
         config = function()
-          require('leap').set_default_keymaps()
+          require('leap').add_default_mappings()
         end,
       }
 
@@ -269,6 +269,13 @@ M.setup = function()
             },
           }
         end,
+      }
+
+      use {
+        'mfussenegger/nvim-lint',
+        config = function ()
+          require('user.plugins.lint')
+        end
       }
 
       use {

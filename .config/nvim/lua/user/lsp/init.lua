@@ -20,18 +20,24 @@ vim.diagnostic.config {
 
 local on_attach = function(client, bufnr)
   if client.server_capabilities.documentFormattingProvider then
-    local group =
-      vim.api.nvim_create_augroup('LSP/documentFormat', { clear = true })
-    vim.api.nvim_create_autocmd('BufWritePre', {
-      group = group,
-      callback = function()
-        vim.lsp.buf.format {
-          timeout_ms = 2000,
-          async = true,
-        }
-      end,
-      buffer = bufnr,
-    })
+    -- local group =
+    --   vim.api.nvim_create_augroup('LSP/documentFormat', { clear = true })
+    -- vim.api.nvim_create_autocmd('BufWritePre', {
+    --   group = group,
+    --   callback = function()
+    --     vim.lsp.buf.format {
+    --       timeout_ms = 2000,
+    --       async = true,
+    --     }
+    --   end,
+    --   buffer = bufnr,
+    -- })
+    vim.api.nvim_buf_create_user_command(bufnr, 'FormatLSP', function ()
+      vim.lsp.buf.format{
+        timeout_ms = 2000,
+        async = true
+      }
+    end, {})
   end
 
   if client.server_capabilities.documentHighlightProvider then
