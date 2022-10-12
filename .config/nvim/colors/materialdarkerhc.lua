@@ -198,7 +198,7 @@ M.treesitter = {
   TSAttribute = { fg = c.yellow },
   -- TSBoolean = { fg = c.orange }, -- For booleans.
   -- TSCharacter = { fg = c.green, italic = true }, -- For characters.
-  TSConstructor = { fg = c.cyan }, -- For constructor calls and definitions: `= {}` in Lua, and Java constructors.
+  TSConstructor = { fg = c.orange }, -- For constructor calls and definitions: `= {}` in Lua, and Java constructors.
   TSConstant = { fg = c.orange, italic = true }, -- For constants
   TSConstBuiltin = { fg = c.red }, -- For constant that are built in the language: `nil` in Lua.
   -- TSConstMacro = { fg = c.orange }, -- For constants that are defined by macros: `NULL` in C.
@@ -277,13 +277,6 @@ M.plugins = {
   -- Indent Blank line
   IndentBlanklineChar = { fg = c.fn.blend(c.gray, c.bg, 0.3) },
   IndentBlanklineContextChar = { fg = c.fn.blend(c.gray, c.bg, 0.99) },
-}
-
-M.langs = {
-  rTSKeywordReturn = { fg = c.blue, italic = true },
-  ocamlTSConstructor = { fg = c.orange },
-  javascriptTSConstructor = { link = 'TSTag' },
-  tsxTSConstructor = { link = 'TSTag' },
 }
 
 for _, value in pairs(M) do

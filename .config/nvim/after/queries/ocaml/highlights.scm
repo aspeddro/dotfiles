@@ -1,7 +1,4 @@
-[
-  "|"
-] @punctuation.special
-
+;; extends
 
 ((type_constructor) @type.builtin
  (#any-of? @type.builtin
