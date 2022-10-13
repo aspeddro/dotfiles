@@ -15,7 +15,9 @@ require('nvim-tree').setup {
   filters = {
     custom = { '.git$' },
   },
+  -- TODO: handle buffer delete when file is open
 }
+
 vim.keymap.set(
   'n',
   '<c-n>',

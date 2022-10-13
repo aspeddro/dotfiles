@@ -20,18 +20,42 @@ M.sumneko_lua = {
 }
 
 M.tsserver = {
-  init_options = {
-    preferences = {
-      jsxAttributeCompletionStyle = 'auto',
-      includeInlayParameterNameHints = 'all',
-      includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-      includeInlayFunctionParameterTypeHints = true,
-      includeInlayVariableTypeHints = true,
-      includeInlayPropertyDeclarationTypeHints = true,
-      includeInlayFunctionLikeReturnTypeHints = true,
-      includeInlayEnumMemberValueHints = true,
+  settings = {
+    javascript = {
+      inlayHints = {
+        includeInlayEnumMemberValueHints = true,
+        includeInlayFunctionLikeReturnTypeHints = true,
+        includeInlayFunctionParameterTypeHints = true,
+        includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
+        includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+        includeInlayPropertyDeclarationTypeHints = true,
+        includeInlayVariableTypeHints = true,
+      },
+    },
+    typescript = {
+      inlayHints = {
+        includeInlayEnumMemberValueHints = true,
+        includeInlayFunctionLikeReturnTypeHints = true,
+        includeInlayFunctionParameterTypeHints = true,
+        includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
+        includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+        includeInlayPropertyDeclarationTypeHints = true,
+        includeInlayVariableTypeHints = true,
+      },
     },
   },
+  -- init_options = {
+  --   preferences = {
+  --     jsxAttributeCompletionStyle = 'auto',
+  --     includeInlayParameterNameHints = 'all',
+  --     includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+  --     includeInlayFunctionParameterTypeHints = true,
+  --     includeInlayVariableTypeHints = true,
+  --     includeInlayPropertyDeclarationTypeHints = true,
+  --     includeInlayFunctionLikeReturnTypeHints = true,
+  --     includeInlayEnumMemberValueHints = true,
+  --   },
+  -- },
 }
 
 M.r_language_server = {}

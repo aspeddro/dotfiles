@@ -211,17 +211,6 @@ M.setup = function()
             here 'cmp-pandoc.nvim',
           },
           { 'onsails/lspkind-nvim' },
-          -- { 'mjlbach/lsp_signature.nvim' },
-          -- { 'zbirenbaum/copilot-cmp' },
-          -- {
-          --   'zbirenbaum/copilot.lua',
-          --   event = 'InsertEnter',
-          --   config = function()
-          --     vim.schedule(function()
-          --       require 'copilot'
-          --     end)
-          --   end,
-          -- },
         },
       }
 

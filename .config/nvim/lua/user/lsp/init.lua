@@ -32,10 +32,10 @@ local on_attach = function(client, bufnr)
     --   end,
     --   buffer = bufnr,
     -- })
-    vim.api.nvim_buf_create_user_command(bufnr, 'FormatLSP', function ()
-      vim.lsp.buf.format{
+    vim.api.nvim_buf_create_user_command(bufnr, 'FormatLSP', function()
+      vim.lsp.buf.format {
         timeout_ms = 2000,
-        async = true
+        async = true,
       }
     end, {})
   end
@@ -82,13 +82,15 @@ local on_attach = function(client, bufnr)
     })
   end
 
-  require('lsp_signature').on_attach({
-    hint_enable = true,
-    floating_window = false,
-    hint_prefix = '',
-    hint_scheme = 'LspSignatureActiveParameter',
-    fix_pos = false,
-  }, bufnr)
+  if client.server_capabilities.signatureHelpProvider and client.name ~= 'ocamllsp' then
+    require('lsp_signature').on_attach({
+      hint_enable = true,
+      floating_window = false,
+      hint_prefix = '',
+      hint_scheme = 'LspSignatureActiveParameter',
+      fix_pos = false,
+    }, bufnr)
+  end
 
   lsp_menu.on_attach(client, bufnr)
 

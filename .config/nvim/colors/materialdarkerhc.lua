@@ -3,22 +3,6 @@ local c = require 'user.color'
 
 vim.o.background = 'dark'
 
-local function hi(group, opts)
-  vim.api.nvim_set_hl(0, group, {
-    link = opts.link,
-    ctermfg = opts.ctermfg,
-    ctermbg = opts.ctermbg,
-    fg = opts.fg,
-    bg = opts.bg,
-    sp = opts.sp,
-    bold = opts.bold and 1 or 0,
-    italic = opts.italic and 1 or 0,
-    underline = opts.underline and 1 or 0,
-    undercurl = opts.undercurl and 1 or 0,
-    -- reverse??
-  })
-end
-
 local M = {}
 
 -- UI Highlights (:h highlight-groups)
@@ -91,15 +75,15 @@ M.base = {
 
   -- Search
   Search = { fg = c.none, bg = c.gray },
-  IncSearch = { bg = c.gray, gui = c.none },
+  IncSearch = { bg = c.gray },
 
   -- Tabs
   TabLine = { fg = c.gray, bg = c.bg_alt },
   TabLineSel = { fg = c.orange, bg = c.bg_alt },
-  TabLineFill = { gui = c.none, bg = c.bg },
+  TabLineFill = { bg = c.bg },
 
   -- Status Line
-  StatusLine = { link = 'Normal' }, -- focus
+  StatusLine = { link = 'Normal' },
   -- StatusLineNC = { ctermfg = c.none },
   -- StatusLineTerm
   -- StatusLineTermNC
@@ -145,7 +129,7 @@ M.syntax = {
   Repeat = { fg = c.purple },
   Bold = { bold = true },
   Italic = { italic = true },
-  Type = { fg = c.cyan, gui = c.none }, -- int, long, char, etc.
+  Type = { fg = c.cyan }, -- int, long, char, etc.
   StorageClass = { fg = c.cyan }, -- static, register, volatile, etc.
   Structure = { fg = c.puple }, -- struct, union, enum, etc.
   Constant = { fg = c.red, italic = true }, -- any constant
@@ -153,7 +137,7 @@ M.syntax = {
   Number = { fg = c.orange }, -- a number constant: 5
   Boolean = { fg = c.orange }, -- a boolean constant: TRUE, false
   Float = { fg = c.orange }, -- a floating point constant: 2.3e10
-  Statement = { fg = c.purple, gui = 'none' }, -- any statement
+  Statement = { fg = c.purple }, -- any statement
   Label = { fg = c.purple }, -- case, default, etc.
   Operator = { fg = c.cyan }, -- sizeof", "+", "*", etc.
   Exception = { fg = c.red }, -- try, catch, throw
@@ -172,7 +156,7 @@ M.syntax = {
   Underlined = { fg = c.red, bg = c.none, underline = true }, -- text that stands out, HTML links
   Ignore = { fg = c.red }, -- left blank, hidden
   Error = { underline = true },
-  Todo = { fg = c.yellow, bg = c.none, bold = true, italic = true }, -- anything that needs extra attention; mostly the keywords TODO FIXME and XXX
+  Todo = { fg = c.yellow, bg = c.none, bold = true }, -- anything that needs extra attention; mostly the keywords TODO FIXME and XXX
 
   -- healthError = { fg = c.error },
   -- healthSuccess = { fg = c.green },
@@ -181,7 +165,7 @@ M.syntax = {
 
 M.treesitter = {
   TSVariable = { link = 'Variable' },
-  -- TSComment = { fg = c.comment, gui = 'italic' },
+  -- TSComment = { fg = c.comment },
   -- TSString = { fg = c.green },
   -- TSConditional = { fg = c.puple },
   -- TSKeyword = { fg = c.purple },
@@ -191,7 +175,7 @@ M.treesitter = {
   TSKeywordOperator = { link = 'Keyword' },
   -- TSFunction = { fg = c.blue },
   TSMethod = { fg = c.blue, italic = true },
-  -- TSFuncBuiltin = { fg = c.blue, gui = 'italic' },
+  -- TSFuncBuiltin = { fg = c.blue },
   -- TSEnvironment = { fg = c.blue },
   -- TSVariableBuiltin = { fg = c.blue, italic = true },
   TSAnnotation = { fg = c.pink }, -- For C++/Dart attributes, annotations that can be attached to the code to denote some kind of meta information.
@@ -259,7 +243,7 @@ M.lsp = {
 
 M.plugins = {
   TelescopeBorder = { link = 'FloatBorder' },
-  TelescopeSelection = { fg = c.blue, bg = c.none },
+  TelescopeSelection = { link = 'Identifier' },
 
   NvimTreeNormal = { fg = c.fg_sidebar, bg = c.bg_alt },
   NvimTreeFolderName = { fg = c.fg_sidebar },
@@ -268,9 +252,9 @@ M.plugins = {
   NvimTreeOpenedFile = { fg = c.cyan },
   NvimTreeVertsplit = { bg = c.bg_alt, fg = c.bg_alt },
 
-  GitSignsAdd = { fg = c.git_sings_add },
-  GitSignsChange = { fg = c.git_sings_change },
-  GitSignsDelete = { fg = c.git_sings_delete },
+  GitSignsAdd = { fg = c.diff_add },
+  GitSignsChange = { fg = c.diff_change },
+  GitSignsDelete = { fg = c.diff_delete },
   GitSignsCurrentLineBlame = { link = 'Comment' },
   -- nvim-lspconfig
   LspInfoBorder = { link = 'FloatBorder' },
@@ -281,6 +265,6 @@ M.plugins = {
 
 for _, value in pairs(M) do
   for group, opts in pairs(value) do
-    hi(group, opts)
+    vim.api.nvim_set_hl(0, group, opts)
   end
 end
