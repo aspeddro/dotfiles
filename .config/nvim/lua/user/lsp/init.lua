@@ -82,7 +82,10 @@ local on_attach = function(client, bufnr)
     })
   end
 
-  if client.server_capabilities.signatureHelpProvider and client.name ~= 'ocamllsp' then
+  if
+    client.server_capabilities.signatureHelpProvider
+    and client.name ~= 'ocamllsp'
+  then
     require('lsp_signature').on_attach({
       hint_enable = true,
       floating_window = false,

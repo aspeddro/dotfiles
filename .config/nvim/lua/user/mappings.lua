@@ -66,5 +66,5 @@ vim.keymap.set('n', '<space>q', function()
 
   vim.fn.setqflist({}, ' ', { title = 'Workspace Diagnostics', items = items })
 
-  vim.cmd('botright copen')
+  vim.cmd 'botright copen'
 end)

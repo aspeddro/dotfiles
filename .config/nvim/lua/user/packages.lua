@@ -262,9 +262,9 @@ M.setup = function()
 
       use {
         'mfussenegger/nvim-lint',
-        config = function ()
-          require('user.plugins.lint')
-        end
+        config = function()
+          require 'user.plugins.lint'
+        end,
       }
 
       use {
