@@ -84,9 +84,9 @@ M.setup = function()
 
       use {
         'ggandor/leap.nvim',
-        config = function()
-          require('leap').add_default_mappings()
-        end,
+        -- config = function()
+        --   require('leap').add_default_mappings()
+        -- end,
       }
 
       use 'tpope/vim-sleuth'
@@ -124,7 +124,7 @@ M.setup = function()
         end,
         requires = {
           { 'nvim-treesitter/playground' },
-          { 'nvim-treesitter/nvim-treesitter-textobjects' },
+          -- { 'nvim-treesitter/nvim-treesitter-textobjects' },
           { 'p00f/nvim-ts-rainbow' },
           { 'RRethy/nvim-treesitter-textsubjects' },
           { 'RRethy/nvim-treesitter-endwise' },
@@ -392,6 +392,14 @@ M.setup = function()
         branch = 'v2.2',
         config = function()
           require('mind').setup()
+        end,
+      }
+
+      use {
+        'toppair/peek.nvim',
+        run = 'deno task --quiet build:fast',
+        config = function()
+          require('peek').setup()
         end,
       }
     end,
