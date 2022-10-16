@@ -164,71 +164,37 @@ M.syntax = {
 }
 
 M.treesitter = {
-  TSVariable = { link = 'Variable' },
-  -- TSComment = { fg = c.comment },
-  -- TSString = { fg = c.green },
-  -- TSConditional = { fg = c.puple },
-  -- TSKeyword = { fg = c.purple },
-  -- TSRepeat = { fg = c.purple },
-  TSKeywordFunction = { fg = c.orange, italic = true },
-  TSKeywordReturn = { fg = c.purple, italic = true },
-  TSKeywordOperator = { link = 'Keyword' },
-  -- TSFunction = { fg = c.blue },
-  TSMethod = { fg = c.blue, italic = true },
-  -- TSFuncBuiltin = { fg = c.blue },
-  -- TSEnvironment = { fg = c.blue },
-  -- TSVariableBuiltin = { fg = c.blue, italic = true },
-  TSAnnotation = { fg = c.pink }, -- For C++/Dart attributes, annotations that can be attached to the code to denote some kind of meta information.
-  TSAttribute = { fg = c.yellow },
-  -- TSBoolean = { fg = c.orange }, -- For booleans.
-  -- TSCharacter = { fg = c.green, italic = true }, -- For characters.
-  TSConstructor = { fg = c.orange }, -- For constructor calls and definitions: `= {}` in Lua, and Java constructors.
-  TSConstant = { fg = c.orange, italic = true }, -- For constants
-  TSConstBuiltin = { fg = c.red }, -- For constant that are built in the language: `nil` in Lua.
-  -- TSConstMacro = { fg = c.orange }, -- For constants that are defined by macros: `NULL` in C.
-  -- TSException = { fg = c.red }, -- For exception related keywords.
-  -- TODO: find a color for TSField and TSProperty
-  TSField = { fg = '#ffdfb6' }, -- For fields. -- TEST: #FFD7A3
-  TSProperty = { link = 'TSField' },
-  -- TSFloat = { fg = c.orange }, -- For floats.
-  -- TSFuncMacro = { fg = c.blue }, -- For macro defined fuctions (calls and definitions): each `macro_rules` in Rust.
-  -- TSInclude = { fg = c.cyan }, -- For includes: `#include` in C, `use` or `extern crate` in Rust, or `require` in Lua.
-  -- TSLabel = { fg = c.purple }, -- For labels: `label:` in C and `:label:` in Lua.
-  -- TODO: fund a color for TSNamespace
-  TSNamespace = { fg = '#FFECB3' }, -- For identifiers referring to modules and namespaces.
-  -- TSNumber = { fg = c.orange }, -- For all numbers
-  -- TSOperator = { fg = c.cyan }, -- For any operator: `+`, but also `->` and `*` in C.
-  TSParameter = { fg = c.yellow }, -- For parameters of a function.
-  TSParameterReference = { link = 'TSParameter' }, -- For references to parameters of a function.
-  -- TSProperty = { fg = c.blue }, -- Same as `TSField`,accesing for struct members in C.
-  -- TSPunctDelimiter = { fg = c.fg }, -- For delimiters ie: `.`
-  TSPunctBracket = { fg = c.cyan }, -- For brackets and parens.
-  TSPunctSpecial = { fg = c.cyan }, -- For special punctutation that does not fall in the catagories before.
-  TSStringRegex = { fg = c.blue }, -- For regexes.
-  TSStringEscape = { fg = c.gray }, -- For escape characters within a string.
-  -- TSStringSpecial = { fg = c.green },
-  TSSymbol = { fg = c.yellow }, -- For identifiers referring to symbols or atoms.
-  -- TSType = { fg = c.cyan }, -- For types.
-  TSTypeBuiltin = { fg = c.red, italic = true }, -- For builtin types.
-  TSTag = { fg = '#ff7597' }, -- Tags like html tag names.
-  TSTagDelimiter = { fg = c.cyan }, -- Tag delimiter like `<` `>` `/`
-  TSTagAttribute = { fg = c.yellow },
-  -- TSText = { fg = c.fg }, -- For strings considered text in a markup language
-  TSMath = { fg = c.blue },
-  TSTextReference = { fg = '#ff6c92', italic = true },
-  -- TSEmphasis = { italic = true }, -- For text to be represented with emphasis.
-  -- TSUnderline = { fg = c.fg, underline = true }, -- For text to be represented with an underline.
-  -- TSTitle = { fg = c.yellow }, -- Text that is part of a title.
-  TSLiteral = { fg = '#6bffb5' }, -- Literal text.
-  -- TODO:
-  -- TSURI = { underline = true }, -- Any URI like a link or email.
-  -- TSStrong = { bold = true },
-  -- TSStrike = { strikethrough = true },
-  -- TSError = { underline = true }, -- For syntax/parser errors.
-
-  TSNote = { link = 'Todo' },
-  -- TSWarning = { link = 'Todo' },
-  TSDanger = { link = 'Todo' },
+  ['@variable'] = { link = 'Variable' },
+  ['@keyword.function'] = { fg = c.orange, italic = true },
+  ['@keyword.return'] = { fg = c.purple, italic = true },
+  ['@keyword.operator'] = { link = 'Keyword' },
+  ['@method'] = { fg = c.blue, italic = true },
+  ['@annotation'] = { fg = c.pink },
+  ['@attribute'] = { fg = c.yellow },
+  ['@constructor'] = { fg = c.orange },
+  ['@constant'] = { fg = c.orange, italic = true },
+  ['@constant.builtin'] = { fg = c.red },
+  ['@field'] = { fg = '#ffdfb6' }, -- For fields. -- TEST: #FFD7A3
+  ['@property'] = { link = '@field' },
+  -- TODO: fund a color for @amespace
+  ['@namespace'] = { fg = '#FFECB3' },
+  ['@parameter'] = { fg = c.yellow },
+  ['@parameter.reference'] = { link = '@parameter' },
+  ['@punctuation.bracket'] = { fg = c.cyan },
+  ['@punctuation.special'] = { fg = c.cyan },
+  ['@string.regex'] = { fg = c.blue },
+  ['@string.espace'] = { fg = c.gray },
+  ['@symbol'] = { fg = c.yellow },
+  ['@type.builtin'] = { fg = c.red, italic = true },
+  ['@tag'] = { fg = '#ff7597' },
+  ['@tag.delimiter'] = { fg = c.cyan },
+  ['@tag.attribute'] = { fg = c.yellow },
+  ['@text.title'] = {link = 'Title'},
+  ['@text.math'] = { fg = c.blue },
+  ['@text.reference'] = { fg = '#ff6c92', italic = true },
+  ['@text.literal'] = { fg = '#6bffb5' },
+  ['@text.note'] = { link = 'Todo' },
+  ['@text.danger'] = { link = 'Todo' },
 }
 
 ---@see h lsp-highlight

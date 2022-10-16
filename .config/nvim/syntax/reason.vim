@@ -167,7 +167,7 @@ syntax cluster interpolation  contains=reasonTemplateString,reasonCommentLine,re
 
 " Default highlighting {{{1
 hi def link labelArgument       Special
-hi def link labelArgumentPunned TSParameter
+hi def link labelArgumentPunned @paramenter
 hi def link reasonDecNumber       reasonNumber
 hi def link reasonHexNumber       reasonNumber
 hi def link reasonOctNumber       reasonNumber
@@ -189,8 +189,8 @@ hi def link reasonCharacter     Character
 hi def link reasonNumber        Number
 hi def link reasonBoolean       Boolean
 hi def link reasonEnum          reasonType
-hi def link reasonConstructor   TSConstructor
-hi def link reasonModPath       TSNamespace
+hi def link reasonConstructor   @constructor
+hi def link reasonModPath       @namespace
 hi def link reasonConstant      Constant
 hi def link reasonSelf          Constant
 hi def link reasonFloat         Float
@@ -209,7 +209,7 @@ hi def link reasonCommentBlock  Comment
 hi def link reasonCommentBlockDoc Comment
 hi def link reasonAssert        Precondit
 hi def link reasonFailwith      PreCondit
-hi def link reasonType          TSTypeBuiltin
+hi def link reasonType          @type.builtin
 hi def link reasonTodo          Todo
 hi def link reasonAttribute     PreProc
 hi def link reasonStorage       Keyword

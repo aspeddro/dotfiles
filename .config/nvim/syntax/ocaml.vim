@@ -579,14 +579,14 @@ hi def link ocamlErr	   Error
 hi def link ocamlComment	   Comment
 hi def link ocamlShebang    ocamlComment
 
-hi def link ocamlModPath	   TSNamespace
+hi def link ocamlModPath	   @namespace
 hi def link ocamlObject	   Include
 hi def link ocamlModule	   Include
 hi def link ocamlModParam1    Include
 hi def link ocamlGenMod       Include
 hi def link ocamlModType	   Include
 hi def link ocamlMPRestr3	   Include
-hi def link ocamlFullMod	   TSNamespace
+hi def link ocamlFullMod	   @namespace
 hi def link ocamlFuncWith	   Include
 hi def link ocamlModParam     Include
 hi def link ocamlModTypeRestr Include
@@ -605,8 +605,8 @@ hi def link ocamlModPreRHS    Keyword
 hi def link ocamlMPRestr2	   Keyword
 hi def link ocamlKeyword	   Keyword
 hi def link ocamlMethod	   Include
-hi def link ocamlArrow	   TSPunctSpecial
-hi def link ocamlKeyChar	   TSPunctSpecial
+hi def link ocamlArrow	   @punctuation.special
+hi def link ocamlKeyChar	   @punctuation.special
 hi def link ocamlAnyVar	   Keyword
 hi def link ocamlTopStop	   Keyword
 
@@ -633,7 +633,7 @@ hi def link ocamlFloat	   Float
 hi def link ocamlString	   String
 hi def link ocamlQuotedStringDelim Identifier
 
-hi def link ocamlLabel	   TSParameter
+hi def link ocamlLabel	   @parameter
 " Type linting groups that the user can customize:
 " - ocamlTypeCatchAll: anything in a type context that is not caught by more
 "   specific rules (in principle, this should only match syntax errors)
@@ -647,7 +647,7 @@ hi def link ocamlLabel	   TSParameter
 " implemented, but now we can do better. :-)
 hi def link ocamlTypeCatchAll Error
 hi def link ocamlTypeConstr   NONE
-hi def link ocamlTypeBuiltin  TSTypeBuiltin
+hi def link ocamlTypeBuiltin  @type.builtin
 hi def link ocamlTypeVar      NONE
 hi def link ocamlTypeAnyVar   NONE
 hi def link ocamlTypeVariance ocamlKeyChar
