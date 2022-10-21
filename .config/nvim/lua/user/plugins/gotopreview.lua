@@ -1,4 +1,5 @@
 require('goto-preview').setup {
+  border = 'rounded',
   post_open_hook = function(bufnr, window)
     vim.api.nvim_create_autocmd({ 'WinLeave' }, {
       group = vim.api.nvim_create_augroup('GoToPreview', { clear = true }),

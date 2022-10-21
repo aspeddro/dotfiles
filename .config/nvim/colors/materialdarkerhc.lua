@@ -141,10 +141,10 @@ M.syntax = {
   Label = { fg = c.purple }, -- case, default, etc.
   Operator = { fg = c.cyan }, -- sizeof", "+", "*", etc.
   Exception = { fg = c.red }, -- try, catch, throw
-  PreProc = { fg = c.orange }, -- generic Preprocessor
-  Include = { fg = c.cyan }, -- preprocessor #include
+  PreProc = { fg = c.purple, italic = true }, -- generic Preprocessor
+  Include = { fg = c.purple }, -- preprocessor #include
   Define = { fg = c.orange }, -- preprocessor #define
-  Macro = { fg = c.blue }, -- same as Define
+  Macro = { fg = c.blue, italic = true }, -- same as Define
   -- Typedef = { fg = c.red }, -- A typedef
   PreCondit = { fg = c.cyan }, -- preprocessor #if, #else, #endif, etc.
   Special = { fg = c.blue, italic = true }, -- any special symbol
@@ -157,10 +157,6 @@ M.syntax = {
   Ignore = { fg = c.red }, -- left blank, hidden
   Error = { underline = true },
   Todo = { fg = c.yellow, bg = c.none, bold = true }, -- anything that needs extra attention; mostly the keywords TODO FIXME and XXX
-
-  -- healthError = { fg = c.error },
-  -- healthSuccess = { fg = c.green },
-  -- healthWarning = { fg = c.orange },
 }
 
 M.treesitter = {
@@ -170,8 +166,9 @@ M.treesitter = {
   ['@keyword.operator'] = { link = 'Keyword' },
   ['@method'] = { fg = c.blue, italic = true },
   ['@annotation'] = { fg = c.pink },
-  ['@attribute'] = { fg = c.yellow },
+  ['@attribute'] = { fg = c.pink },
   ['@constructor'] = { fg = c.orange },
+  ['@prepoc'] = { link = 'PreProc' },
   ['@constant'] = { fg = c.orange, italic = true },
   ['@constant.builtin'] = { fg = c.red },
   ['@field'] = { fg = '#ffdfb6' }, -- For fields. -- TEST: #FFD7A3
@@ -180,7 +177,7 @@ M.treesitter = {
   ['@namespace'] = { fg = '#FFECB3' },
   ['@parameter'] = { fg = c.yellow },
   ['@parameter.reference'] = { link = '@parameter' },
-  ['@punctuation.bracket'] = { fg = c.cyan },
+  ['@punctuation.bracket'] = { fg = c.rainbow[1]},
   ['@punctuation.special'] = { fg = c.cyan },
   ['@string.regex'] = { fg = c.blue },
   ['@string.espace'] = { fg = c.gray },
@@ -189,7 +186,7 @@ M.treesitter = {
   ['@tag'] = { fg = '#ff7597' },
   ['@tag.delimiter'] = { fg = c.cyan },
   ['@tag.attribute'] = { fg = c.yellow },
-  ['@text.title'] = {link = 'Title'},
+  ['@text.title'] = { link = 'Title' },
   ['@text.math'] = { fg = c.blue },
   ['@text.reference'] = { fg = '#ff6c92', italic = true },
   ['@text.literal'] = { fg = '#6bffb5' },
@@ -227,6 +224,8 @@ M.plugins = {
   -- Indent Blank line
   IndentBlanklineChar = { fg = c.fn.blend(c.gray, c.bg, 0.3) },
   IndentBlanklineContextChar = { fg = c.fn.blend(c.gray, c.bg, 0.99) },
+  -- diffview.nvim
+  DiffviewNormal = { link = 'NvimTreeNormal' },
 }
 
 for _, value in pairs(M) do

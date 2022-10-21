@@ -20,7 +20,7 @@ require('nvim-tree').setup {
 
 vim.keymap.set(
   'n',
-  '<c-n>',
+  '<leader>n',
   require('nvim-tree').toggle,
   { desc = 'Toggle NvimTree' }
 )

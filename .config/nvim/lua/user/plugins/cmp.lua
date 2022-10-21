@@ -45,12 +45,9 @@ cmp.setup {
   },
   sources = cmp.config.sources {
     { name = 'nvim_lsp' },
-    -- { name = 'copilot', group_index = 2 },
     { name = 'luasnip' },
     { name = 'buffer', option = { keyword_length = 3 } },
     { name = 'path' },
-    -- { name = 'latex_symbols' }, -- very slow
-    -- { name = 'emoji' },
     { name = 'cmp_pandoc' },
     { name = 'git' },
   },

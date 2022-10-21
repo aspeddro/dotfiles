@@ -249,14 +249,7 @@ M.setup = function()
       use {
         'NvChad/nvim-colorizer.lua',
         config = function()
-          require('colorizer').setup {
-            filetypes = {
-              'css',
-              '!vim',
-              '!packer',
-              '!NvimTree',
-            },
-          }
+          require 'user.plugins.colorizer'
         end,
       }
 
@@ -370,28 +363,18 @@ M.setup = function()
           'jbyuki/nabla.nvim', -- optional
         },
         config = function()
-          require('pandoc').setup {
-            default = {
-              args = {
-                { '--standalone' },
-                { '--number-sections' },
-                -- { '--biblatex' },
-                -- { "--natbib" },
-                { '--pdf-engine', 'tectonic' },
-                { '--filter', 'pandoc-crossref' },
-              },
-            },
-          }
+          require 'user.plugins.pandoc'
         end,
       }
 
       use 'ii14/emmylua-nvim'
 
       use {
-        'phaazon/mind.nvim',
-        branch = 'v2.2',
+        -- 'phaazon/mind.nvim',
+        -- branch = 'v2.2',
+        here 'mind.nvim',
         config = function()
-          require('mind').setup()
+          require 'user.plugins.mind'
         end,
       }
 

@@ -4,6 +4,8 @@ local lsp_menu = require 'lsp_menu'
 require 'user.lsp.handlers'
 require 'user.lsp.commands'
 
+-- vim.lsp.set_log_level("debug")
+
 vim.diagnostic.config {
   virtual_text = true,
   sings = false,
@@ -49,7 +51,12 @@ local on_attach = function(client, bufnr)
       group = group,
     })
     vim.api.nvim_create_autocmd('CursorMoved', {
-      callback = vim.lsp.buf.clear_references,
+      callback = function()
+        --NOTE: Prevent Error executing vim.schedule lua callback: /usr/share/nvim/runtime/lua/vim/uri.lua:86: Invalid buffer id: number
+        if vim.api.nvim_buf_is_loaded(bufnr) then
+          vim.lsp.buf.clear_references()
+        end
+      end,
       buffer = bufnr,
       group = group,
     })
@@ -82,10 +89,7 @@ local on_attach = function(client, bufnr)
     })
   end
 
-  if
-    client.server_capabilities.signatureHelpProvider
-    and client.name ~= 'ocamllsp'
-  then
+  if client.server_capabilities.signatureHelpProvider then
     require('lsp_signature').on_attach({
       hint_enable = true,
       floating_window = false,
@@ -102,26 +106,20 @@ local on_attach = function(client, bufnr)
   end
 
   keymap_set('gD', vim.lsp.buf.declaration)
+
   keymap_set('gd', vim.lsp.buf.definition)
+
   keymap_set('gp', require('goto-preview').goto_preview_definition)
 
   keymap_set('K', vim.lsp.buf.hover)
 
   keymap_set('gi', vim.lsp.buf.implementation)
 
-  keymap_set('[d', vim.diagnostic.goto_prev)
-
-  keymap_set(']d', vim.diagnostic.goto_next)
-
   keymap_set('gr', vim.lsp.buf.references)
-
-  keymap_set('<space>e', vim.diagnostic.open_float)
 
   keymap_set('<space>d', vim.lsp.buf.type_definition)
 
   keymap_set('<space>l', lsp_menu.codelens.run)
-
-  -- keymap_set('<space>q', vim.diagnostic.setloclist)
 
   keymap_set('<space>k', vim.lsp.buf.signature_help)
 
@@ -151,7 +149,7 @@ end;
 
   for server_name, server in pairs(servers) do
     if not server then
-      vim.notify('Server ' .. server_name .. ' not found')
+      vim.notify('Server ' .. server_name .. ' not found', vim.log.levels.ERROR)
       return
     end
 

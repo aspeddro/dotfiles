@@ -5,24 +5,21 @@
 (value_identifier) @variable
 
 ; Escaped identifiers like \"+."
-((value_identifier) @constant.macro
- (#match? @constant.macro "^\\.*$"))
+; ((value_identifier) @constant.macro
+;  (#match? @constant.macro "^\\.*$"))
 
-[
-  (type_identifier)
-  (unit_type)
-] @type
+(type_identifier) @type
 
-(list "list{" @type)
-(list_pattern "list{" @type)
 
+(list "list{" @function.builtin)
+(list_pattern "list{" @function.builtin)
 ; To ensure that the closing curly bracket is the same color (scope) as the opening curly bracket
-(list "}" @type (#set! "priority" 105))
-(list_pattern "}" @type (#set! "priority" 105))
+(list "}" @function.builtin (#set! "priority" 105))
+(list_pattern "}" @function.builtin (#set! "priority" 105))
 
 ((type_identifier) @type.builtin
  (#any-of? @type.builtin
-  "int" "float" "string" "bool" "array"))
+  "int" "float" "string" "bool" "array" "list"))
 
 (unit_type) @type.builtin
 
@@ -31,21 +28,26 @@
 [
   (variant_identifier)
   (polyvar_identifier)
-] @constant
+] @constructor
 
-(record_type_field (property_identifier) @property)
-(record_field (property_identifier) @property)
-(object (field (property_identifier) @property))
-(object_type (field (property_identifier) @property))
-(member_expression (property_identifier) @property)
+; (record_type_field (property_identifier) @property)
+; (record_field (property_identifier) @property)
+; (object (field (property_identifier) @property))
+; (object_type (field (property_identifier) @property))
+; (member_expression (property_identifier) @property)
+(_ (property_identifier) @property)
+
 (module_identifier) @namespace
 
 ; Parameters
 ;----------------
 
-(list_pattern (value_identifier) @parameter)
-(spread_pattern (value_identifier) @parameter)
-(formal_parameters (value_identifier) @parameter)
+(parameter (value_identifier) @parameter)
+(labeled_parameter (value_identifier) @parameter)
+
+; (list_pattern (value_identifier) @parameter)
+; (spread_pattern (value_identifier) @parameter)
+; (formal_parameters (value_identifier) @parameter)
 
 ; String literals
 ;----------------
@@ -71,33 +73,28 @@
 ] @boolean
 
 (number) @number
-(polyvar) @constant
-(polyvar_string) @constant
 
 ; Functions
 ;----------
+
 (call_expression
-  function: (value_identifier) @function)
+  function: (value_identifier) @function.call)
 
-[
- (formal_parameters (value_identifier))
- (labeled_parameter (value_identifier))
-] @parameter
-
-(function parameter: (value_identifier) @parameter)
-(labeled_argument
-  label: (value_identifier) @parameter)
-
-(labeled_parameter (value_identifier) @parameter)
+(call_expression
+  function: (value_identifier_path (value_identifier) @function.call))
 
 (call_expression
   function: (pipe_expression (_) (value_identifier) @function))
+
 (call_expression
   function: (pipe_expression (_) (value_identifier_path (value_identifier) @function)))
 
+; (function parameter: (value_identifier) @parameter)
+; (labeled_argument
+;   label: (value_identifier) @parameter)
 
-(call_expression
-  function: (value_identifier_path (value_identifier) @function))
+; (labeled_parameter (value_identifier) @parameter)
+
 
 ; Meta
 ;-----
@@ -106,20 +103,24 @@
  "@"
  "@@"
  (decorator_identifier)
-] @annotation
+] @attribute
 
-(extension_identifier) @keyword
-("%") @keyword
+
+[
+  "%"
+  (extension_identifier)
+] @prepoc
+
 
 ; Misc
 ;-----
 
-(subscript_expression index: (string) @property)
-(polyvar_type_pattern "#" @constant)
+; (subscript_expression index: (string) @property)
+(polyvar_type_pattern "#" @constructor)
 
 [
-  ("include")
-  ("open")
+  "include"
+  "open"
 ] @include
 
 [
@@ -171,6 +172,7 @@
   "."
   ","
   "|"
+  ";"
 ] @punctuation.delimiter
 
 [
@@ -229,7 +231,6 @@
 ] @punctuation.special
 
 (ternary_expression ["?" ":"] @operator)
-
 
 ; JSX
 ;----------

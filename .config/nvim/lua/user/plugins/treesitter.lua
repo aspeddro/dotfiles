@@ -1,8 +1,11 @@
 local install = require 'nvim-treesitter.install'
 local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
+local ft_to_parser = require"nvim-treesitter.parsers".filetype_to_parsername
 local c = require 'user.color'
 
 install.prefer_git = true
+
+ft_to_parser.dune = "clojure"
 
 parser_config.rescript = {
   install_info = {
@@ -104,7 +107,7 @@ require('nvim-treesitter.configs').setup {
     disable = disable,
   },
   rainbow = {
-    enable = true,
+    enable = false,
     disable = disable,
     extended_mode = {
       latex = false,

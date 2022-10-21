@@ -469,7 +469,12 @@ local TabLineOffset = {
     local bufnr = vim.api.nvim_win_get_buf(win)
     self.winid = win
 
-    if vim.tbl_contains({ 'NvimTree', 'mind' }, vim.bo[bufnr].filetype) then
+    if
+      vim.tbl_contains(
+        { 'NvimTree', 'mind', 'DiffviewFiles' },
+        vim.bo[bufnr].filetype
+      )
+    then
       self.title = ''
       return true
     end

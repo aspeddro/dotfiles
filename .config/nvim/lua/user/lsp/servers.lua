@@ -5,14 +5,22 @@ local M = {}
 M.sumneko_lua = {
   settings = {
     Lua = {
+      version = 'LuaJIT',
       completion = { callSnippet = 'Disable' },
       workspace = {
-        library = vim.api.nvim_get_runtime_file('', true),
+        -- Load only ~/.config/nvim/lua/ files and emmmy-lua plugin
+        library = vim.list_extend(
+          vim.api.nvim_get_runtime_file('lua/user/*/*.lua', true),
+          vim.api.nvim_get_runtime_file('nvim/library/*.lua', true)
+        ),
       },
       diagnostics = {
         globals = { 'vim', 'it', 'before_each', 'after_each' },
       },
       format = {
+        enable = false,
+      },
+      telemetry = {
         enable = false,
       },
     },
