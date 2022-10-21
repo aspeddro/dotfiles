@@ -41,8 +41,7 @@ exec --no-startup-id feh --bg-fill $HOME/Pictures/wallpaper.jpg
 exec --no-startup-id nm-applet
 
 # Open nnn (terminal file manager)
-bindsym $mod+n exec alacritty -e nnn -cCdDEFnQrux
-# bindsym $mod+n exec kitty sh -c "nnn -cCdDEFnQrux"
+bindsym $mod+n exec alacritty -e nnn -CdDEFnQrux
 
 # Screenshot
 bindsym $mod+Print exec maim --select --hidecursor | xclip -selection clipboard -t image/png
