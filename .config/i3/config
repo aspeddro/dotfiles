@@ -45,6 +45,7 @@ bindsym $mod+n exec alacritty -e nnn -CdDEFnQrux
 
 # Screenshot
 bindsym $mod+Print exec maim --select --hidecursor | xclip -selection clipboard -t image/png
+bindsym $mod+shift+Print exec maim --hidecursor | xclip -selection clipboard -t image/png
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -217,7 +218,7 @@ mode "$mode_system" {
 # finds out, if available)
 bar {
     status_command i3status
-	position top
+	position bottom
 	font pango: $font
 }
 
