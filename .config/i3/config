@@ -34,7 +34,7 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 
 
 # Set wallpaper
-exec --no-startup-id feh --bg-fill $HOME/Pictures/wallpaper.jpg
+exec --no-startup-id feh --bg-fill $HOME/Pictures/wallpaper2.jpg
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
