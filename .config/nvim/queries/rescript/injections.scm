@@ -1,4 +1,4 @@
-; (comment) @comment
+(comment) @comment
 
 ; (extension_expression
 ;   (extension_identifier) @_name

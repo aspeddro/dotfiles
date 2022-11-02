@@ -44,7 +44,7 @@ M.base = {
   Visual = { bg = c.selection },
   VisualNOS = { bg = c.selection },
 
-  Title = { fg = c.blue },
+  Title = { fg = '#ff8eeb' },
 
   DiffText = { fg = c.none, bg = c.diff_change, underline = false },
   DiffAdd = { fg = c.none, bg = c.diff_add, underline = false },
@@ -161,6 +161,7 @@ M.syntax = {
 
 M.treesitter = {
   ['@variable'] = { link = 'Variable' },
+  ['@variable.builtin'] = { fg = c.blue, italic = true },
   ['@keyword.function'] = { fg = c.orange, italic = true },
   ['@keyword.return'] = { fg = c.purple, italic = true },
   ['@keyword.operator'] = { link = 'Keyword' },
@@ -170,17 +171,22 @@ M.treesitter = {
   ['@constructor'] = { fg = c.orange },
   ['@prepoc'] = { link = 'PreProc' },
   ['@constant'] = { fg = c.orange, italic = true },
-  ['@constant.builtin'] = { fg = c.red },
+  ['@constant.comment'] = { fg = --[[ c.orange ]] '#ff8eeb', italic = true },
+  ['@constant.builtin'] = { --[[ fg = c.red  ]]
+    link = '@constant',
+  },
   ['@field'] = { fg = '#ffdfb6' }, -- For fields. -- TEST: #FFD7A3
   ['@property'] = { link = '@field' },
   -- TODO: fund a color for @amespace
-  ['@namespace'] = { fg = '#FFECB3' },
-  ['@parameter'] = { fg = c.yellow },
-  ['@parameter.reference'] = { link = '@parameter' },
-  ['@punctuation.bracket'] = { fg = c.rainbow[1]},
+  ['@namespace'] = { --[[ fg = '#FFECB3' ]]
+    fg = '#F5A191',
+  },
+  ['@parameter'] = { fg = c.none },
+  -- ['@parameter.reference'] = { link = '@parameter' },
+  ['@punctuation.bracket'] = { fg = c.rainbow[1] },
   ['@punctuation.special'] = { fg = c.cyan },
   ['@string.regex'] = { fg = c.blue },
-  ['@string.espace'] = { fg = c.gray },
+  ['@string.escape'] = { fg = c.gray },
   ['@symbol'] = { fg = c.yellow },
   ['@type.builtin'] = { fg = c.red, italic = true },
   ['@tag'] = { fg = '#ff7597' },

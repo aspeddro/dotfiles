@@ -2,6 +2,8 @@
 vim.filetype.add {
   filename = {
     ['.Rprofile'] = 'r',
+    ['renv.lock'] = 'json',
+    ['.Rhistory'] = 'r',
   },
   extension = {
     pandoc = 'pandoc',

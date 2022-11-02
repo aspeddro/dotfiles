@@ -37,11 +37,17 @@ local blend = function(fg, bg, alpha)
   )
 end
 
+-- '#ff8eeb'
+-- '#8164ff'
+-- '#e7e6e8'
+-- '#00be89'
+
 local pallete = {
   none = 'NONE',
   bg = '#212121',
   bg_alt = '#1A1A1A',
-  fg = '#EEFFFF',
+  -- fg = '#EEFFFF',
+  fg = '#e7e6e8',
   white = '#ffffff',
   black = '#000000',
   red = '#f07178',

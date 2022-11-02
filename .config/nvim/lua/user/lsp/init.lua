@@ -39,7 +39,7 @@ local on_attach = function(client, bufnr)
         timeout_ms = 2000,
         async = true,
       }
-    end, {})
+    end, { nargs = 0 })
   end
 
   if client.server_capabilities.documentHighlightProvider then
@@ -97,6 +97,10 @@ local on_attach = function(client, bufnr)
       hint_scheme = 'LspSignatureActiveParameter',
       fix_pos = false,
     }, bufnr)
+  end
+
+  if client.name == 'rescriptls' then
+    require('rescript').on_attach(client, bufnr)
   end
 
   lsp_menu.on_attach(client, bufnr)

@@ -31,7 +31,7 @@ vim.keymap.set({ 'n', 'v' }, 'C', '"_C')
 vim.keymap.set('t', '<esc>', [[<C-\><C-n>]])
 
 -- save buffer
-vim.keymap.set('n', '<c-s>', vim.cmd.write)
+vim.keymap.set('n', '<leader>s', vim.cmd.write)
 
 -- resize
 for _, direction in ipairs { 'left', 'right', 'down', 'up' } do
@@ -41,16 +41,16 @@ for _, direction in ipairs { 'left', 'right', 'down', 'up' } do
 end
 
 -- Buffer navigation
-vim.keymap.set('n', '<a-v>', function()
+vim.keymap.set('n', '<leader>v', function()
   bufferhandler.split()
 end)
-vim.keymap.set('n', '<a-x>', function()
+vim.keymap.set('n', '<leader>x', function()
   bufferhandler.split { side = false }
 end)
-vim.keymap.set('n', '<c-t>', function()
+vim.keymap.set('n', '<leader>t', function()
   bufferhandler.new()
 end)
-vim.keymap.set('n', '<c-w>', function()
+vim.keymap.set('n', '<leader>w', function()
   bufferhandler.close()
   -- vim.cmd 'bd!'
 end)

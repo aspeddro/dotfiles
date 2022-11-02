@@ -69,12 +69,11 @@ M.tsserver = {
 M.r_language_server = {}
 
 M.rescriptls = {
-  -- cmd = { 'rescript-lsp', '--stdio' },
-  cmd = {
+  cmd = not false and {
     'node',
     '/home/pedro/Desktop/projects/rescript-vscode/server/out/server.js',
     '--stdio',
-  },
+  } or { 'rescript-lsp', '--stdio' },
   init_options = {
     extensionConfiguration = {
       -- binaryPath = nil,

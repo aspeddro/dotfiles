@@ -19,5 +19,5 @@ local rust_analyser = function(params)
 end
 
 -- Code Lens
--- vim.lsp.commands['rust-analyzer.debugSingle'] = rust_analyser
 vim.lsp.commands['rust-analyzer.runSingle'] = rust_analyser
+-- vim.lsp.commands['rust-analyzer.debugSingle'] = rust_analyser

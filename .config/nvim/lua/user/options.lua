@@ -4,6 +4,8 @@ vim.g.maplocalleader = ','
 -- Neovide GUI
 vim.opt.guifont = 'JetBrainsMono Nerd Font:h8'
 
+vim.opt.showtabline = 2
+
 vim.opt.shortmess = {
   I = true,
   t = true,

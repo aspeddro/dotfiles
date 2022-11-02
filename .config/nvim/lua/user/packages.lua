@@ -82,12 +82,12 @@ M.setup = function()
         rocks = 'mpack',
       }
 
-      use {
-        'ggandor/leap.nvim',
-        -- config = function()
-        --   require('leap').add_default_mappings()
-        -- end,
-      }
+      -- use {
+      --   'ggandor/leap.nvim',
+      --   config = function()
+      --     require('leap').add_default_mappings()
+      --   end,
+      -- }
 
       use 'tpope/vim-sleuth'
 
@@ -102,6 +102,17 @@ M.setup = function()
         'monkoose/matchparen.nvim',
         config = function()
           require('matchparen').setup()
+        end,
+      }
+
+      use {
+        'smjonas/live-command.nvim',
+        config = function()
+          require('live-command').setup {
+            commands = {
+              Norm = { cmd = 'norm' },
+            },
+          }
         end,
       }
 
@@ -384,6 +395,10 @@ M.setup = function()
         config = function()
           require('peek').setup()
         end,
+      }
+
+      use {
+        here 'rescript.nvim',
       }
     end,
     config = {
