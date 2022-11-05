@@ -21,12 +21,47 @@
     "editor.autoClosingDelete": "auto",
     "editor.semanticHighlighting.enabled": true,
 
+    "editor.semanticTokenColorCustomizations": {
+        "[Community Material Theme Darker High Contrast]": {
+            "enabled": true,
+            "rules": {
+                "namespace": "#F5A191",
+                "type": "#89DDFF",
+                "enumMember": "#F78C6C",
+                "struct": "#89DDFF",
+                "property": "#ffdfb6"
+            }
+        }
+    },
+    "editor.tokenColorCustomizations": {
+        "textMateRules": [
+            {
+                "scope": "keyword.other",
+                "settings": {
+                    "foreground": "#C792EA",
+                }
+            },
+            {
+                "scope": "variable.parameter",
+                "settings": {
+                    "foreground": "#EEFFFF",
+                }
+            }
+        ]
+    },
+
 
     "terminal.integrated.fontSize": 14,
     "terminal.integrated.fontFamily": "JetBrainsMono Nerd Font",
     "terminal.integrated.fontWeight": "normal",
     
     "explorer.confirmDragAndDrop": true,
+
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.patterns": {
+        "*.res": "${capture}.mjs, ${capture}.js, ${capture}.cmi, ${capture}.cmt, ${capture}.cmj"
+    },
+
     "files.exclude": {
         "**/.git": true,
         "node_modules": false,
@@ -45,8 +80,16 @@
     // TypeScript
     "typescript.inlayHints.parameterNames.enabled": "all",
     "typescript.inlayHints.variableTypes.enabled": true,
+    // JS
+    "javascript.updateImportsOnFileMove.enabled": "always",
+
+    //Markdown
+    "markdown.updateLinksOnFileMove.enabled": "prompt",
 
     // OCaml
+    "ocaml.server.extraEnv": {
+        "OCAMLLSP_SEMANTIC_HIGHLIGHTING": "full"
+    },
     "ocaml.trace.server": "verbose",
     
     // R
@@ -67,9 +110,6 @@
     // Rust
     "rust-analyzer.checkOnSave.enable": false,
     "rust-analyzer.trace.server": "off",
-    
-    // JS
-    "javascript.updateImportsOnFileMove.enabled": "always",
 
     // ReScript
     "rescript.settings.askToStartBuild": false,
