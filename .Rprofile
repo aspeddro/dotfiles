@@ -13,5 +13,6 @@ options(
   languageserver.rich_documentation = FALSE,
   languageserver.server_capabilities = list(
     documentFormattingProvider = TRUE
-  )
+  ),
+  browser = "google-chrome-stable"
 )
