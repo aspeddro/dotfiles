@@ -12,6 +12,7 @@ local colors = {
   green = u.get_highlight('String').fg,
   blue = u.get_highlight('Function').fg,
   gray = u.get_highlight('NonText').fg,
+  comment = u.get_highlight('Comment').fg,
   orange = u.get_highlight('Number').fg,
   purple = u.get_highlight('Statement').fg,
   cyan = u.get_highlight('Type').fg,
@@ -120,19 +121,19 @@ local ViMode = {
   end,
 }
 
--- local FileName = {
---   provider = function()
---     local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ':.')
---     if filename == '' then
---       return empty_file_name
---     end
---     if not conditions.width_percent_below(filename:len(), 0.25) then
---       return vim.fn.pathshorten(filename)
---     end
---     return filename
---   end,
---   hl = { fg = c.blue },
--- }
+local FileName = {
+  provider = function()
+    local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ':.')
+    if filename == '' then
+      return empty_file_name
+    end
+    if not conditions.width_percent_below(filename:len(), 0.25) then
+      return vim.fn.pathshorten(filename)
+    end
+    return filename
+  end,
+  hl = { fg = 'purple' },
+}
 
 -- local WorkDir = {
 --   provider = function()
@@ -263,7 +264,7 @@ local Navic = {
   provider = function()
     return require('nvim-navic').get_location()
   end,
-  hl = { fg = 'gray' },
+  hl = { fg = 'comment' },
 }
 
 local Ruler = {
@@ -311,7 +312,7 @@ local FileFlags = {
 local BufferWindow = {
   provider = function()
     return string.format(
-      '[%d:%d]',
+      '%d:%d',
       vim.api.nvim_get_current_buf(),
       vim.api.nvim_get_current_win()
     )
@@ -327,12 +328,10 @@ local StatusLine = {
   Space,
   ViMode,
   Space,
+  FileName,
+  Space,
   Git,
-  Space,
-  Navic,
   Align,
-  BufferWindow,
-  Space,
   Diagnostics,
   Space,
   LSPActive,
@@ -519,26 +518,18 @@ local WinBars = {
   { -- Hide the winbar for special buffers
     condition = function()
       return conditions.buffer_matches {
-        buftype = { 'nofile', 'prompt', 'help', 'quickfix' },
-        filetype = { '^git.*', 'fugitive' },
+        -- buftype = { 'nofile', 'prompt', 'help', 'quickfix' },
+        filetype = { 'NvimTree' },
       }
     end,
     init = function()
       vim.opt_local.winbar = nil
     end,
   },
-  -- A winbar for regular files
+  Space,
+  Navic,
   Align,
-  {
-    provider = function()
-      local filename = vim.api.nvim_buf_get_name(0)
-      if filename == '' then
-        return empty_file_name
-      end
-      return filename
-    end,
-    hl = { fg = 'gray' },
-  },
+  BufferWindow,
   Space,
 }
 

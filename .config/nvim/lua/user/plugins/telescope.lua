@@ -15,6 +15,18 @@ require('telescope').setup {
       treesitter = false,
     },
   },
+  pickers = {
+    find_files = {
+      find_command = {
+        'rg',
+        '--color=never',
+        '--files',
+        '--hidden',
+        '-g',
+        '!.git',
+      },
+    },
+  },
   extensions = {
     fzf = {
       fuzzy = true,

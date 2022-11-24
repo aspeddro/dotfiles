@@ -1,29 +1,24 @@
 (comment) @comment
 
-; (extension_expression
-;   (extension_identifier) @_name
-;   (#match? @_name "^styled|cx")
-;   (expression_statement (template_string) @css
-;   (#offset! @css 0 1 0 -1)))
-
-; (extension_expression
-;   (extension_identifier) @_name
-;   (#eq? @_name "css")
-;   (expression_statement (string (string_fragment) @css)))
-
-(raw_js) @javascript
-
+; %re
 (extension_expression
   (extension_identifier) @_name
   (#eq? @_name "re")
-  (expression_statement (string ((string_fragment) @regex))))
+  (expression_statement (_) @regex))
 
-(raw_gql) @graphql
+; %raw
+(extension_expression
+  (extension_identifier) @_name
+  (#eq? @_name "raw")
+  (expression_statement
+    (_ (_) @javascript)))
 
-
-; ((((comment) @_line (#lua-match? @_line "^///")) @combined) @markdown)
-; ((comment) @_line
-;   (#lua-match? @_line "^/**"))
+; %graphql
+(extension_expression
+  (extension_identifier) @_name
+  (#eq? @_name "graphql")
+  (expression_statement
+    (_ (_) @graphql)))
 
 ; (((comment) @_doc_comment
 ;   (#match? @_doc_comment "^/\\*\\*")) @markdown

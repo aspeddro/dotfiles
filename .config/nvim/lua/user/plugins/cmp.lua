@@ -43,14 +43,15 @@ cmp.setup {
       return vim_item
     end,
   },
-  sources = cmp.config.sources {
+  sources = cmp.config.sources({
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
-    { name = 'buffer', option = { keyword_length = 3 } },
+  }, {
+    { name = 'buffer', keyword_length = 3 },
     { name = 'path' },
     { name = 'cmp_pandoc' },
     { name = 'git' },
-  },
+  }),
 }
 
 require('cmp_pandoc').setup {
@@ -63,14 +64,13 @@ require('cmp_git').setup {
   filetypes = { 'gitcommit', 'markdown' },
 }
 
--- stylua: ignore
 cmp.setup.filetype({ 'markdown', 'rmd', 'pandoc' }, {
   sources = cmp.config.sources {
-    { name = 'buffer' },
+    { name = 'buffer', keyword_length = 3 },
     { name = 'emoji' },
     { name = 'luasnip' },
     { name = 'cmp_pandoc' },
-    { name = 'path' }
+    { name = 'path' },
   },
 })
 

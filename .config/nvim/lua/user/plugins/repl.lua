@@ -48,7 +48,11 @@ require('repl').setup {
           end,
           ['<leader>rm'] = function(repl, params)
             -- RMarkdown render using workspace directory
-            repl:send(([[rmarkdown::render("%s", knit_root_dir = here::here())]]):format(params.name))
+            repl:send(
+              ([[rmarkdown::render("%s", knit_root_dir = here::here())]]):format(
+                params.name
+              )
+            )
           end,
         },
         v = {

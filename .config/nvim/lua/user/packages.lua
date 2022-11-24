@@ -91,6 +91,15 @@ M.setup = function()
 
       use 'tpope/vim-sleuth'
 
+      -- use {
+      --   'kylechui/nvim-surround',
+      --   tag = '*', -- Use for stability; omit to use `main` branch for the latest features
+      --   config = function()
+      --     require('nvim-surround').setup {
+      --     }
+      --   end,
+      -- }
+
       use {
         'kyazdani42/nvim-web-devicons',
         config = function()
@@ -286,6 +295,15 @@ M.setup = function()
       }
 
       use {
+        -- 'akinsho/git-conflict.nvim',
+        here 'git-conflict.nvim',
+        -- tag = "*",
+        config = function()
+          require 'user.plugins.git_conflitc'
+        end,
+      }
+
+      use {
         here 'nvim-autopairs',
         -- 'windwp/nvim-autopairs',
         config = function()
@@ -338,13 +356,28 @@ M.setup = function()
         end,
       }
 
-      -- DEPREACTED: remove in 0.8.1
+      -- DEPREACTED: remove in 0.9
       use {
         'luukvbaal/stabilize.nvim',
         config = function()
-          require('stabilize').setup {
-            nested = 'QuickFixCmdPost,DiagnosticChanged *',
-          }
+          require('stabilize').setup()
+        end,
+      }
+
+      use {
+        -- 'phaazon/mind.nvim',
+        -- branch = 'v2.2',
+        here 'mind.nvim',
+        config = function()
+          require 'user.plugins.mind'
+        end,
+      }
+
+      use {
+        'toppair/peek.nvim',
+        run = 'deno task --quiet build:fast',
+        config = function()
+          require('peek').setup()
         end,
       }
 
@@ -378,27 +411,19 @@ M.setup = function()
         end,
       }
 
+      -- Langs support
+
       use 'ii14/emmylua-nvim'
 
       use {
-        -- 'phaazon/mind.nvim',
-        -- branch = 'v2.2',
-        here 'mind.nvim',
-        config = function()
-          require 'user.plugins.mind'
-        end,
+        here 'rescript-tools.nvim',
       }
 
       use {
-        'toppair/peek.nvim',
-        run = 'deno task --quiet build:fast',
+        'ocaml/vim-ocaml',
         config = function()
-          require('peek').setup()
+          vim.g.ocaml_highlight_operators = 1
         end,
-      }
-
-      use {
-        here 'rescript.nvim',
       }
     end,
     config = {

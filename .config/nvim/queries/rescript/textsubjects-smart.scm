@@ -56,6 +56,9 @@
   (tuple_type)
   (function_type)
   (generic_type)
+  (variant_declaration)
+  ;
+  (formal_parameters)
   ;
   (decorated)
   (decorator_statement)

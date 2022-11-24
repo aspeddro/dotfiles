@@ -10,7 +10,6 @@
 
 (type_identifier) @type
 
-
 (list "list{" @function.builtin)
 (list_pattern "list{" @function.builtin)
 ; To ensure that the closing curly bracket is the same color (scope) as the opening curly bracket
@@ -19,7 +18,7 @@
 
 ((type_identifier) @type.builtin
  (#any-of? @type.builtin
-  "int" "float" "string" "bool" "array" "list"))
+  "int" "float" "string" "bool" "array" "list" "promise"))
 
 (unit_type) @type.builtin
 
@@ -35,7 +34,9 @@
 ; (object (field (property_identifier) @property))
 ; (object_type (field (property_identifier) @property))
 ; (member_expression (property_identifier) @property)
+
 (_ (property_identifier) @property)
+(_ (property_identifier (_) (value_identifier) @property))
 
 (module_identifier) @namespace
 
@@ -44,6 +45,7 @@
 
 (parameter (value_identifier) @parameter)
 (labeled_parameter (value_identifier) @parameter)
+(function parameter: (value_identifier) @parameter)
 
 ; (list_pattern (value_identifier) @parameter)
 ; (spread_pattern (value_identifier) @parameter)
@@ -84,10 +86,15 @@
   function: (value_identifier_path (value_identifier) @function.call))
 
 (call_expression
-  function: (pipe_expression (_) (value_identifier) @function))
+  function: (_ (property_identifier) @function.call))
 
-(call_expression
-  function: (pipe_expression (_) (value_identifier_path (value_identifier) @function)))
+; (binary_expression
+;   operator: ["->" "|>"]
+;   right: (value_identifier) @function)
+
+; (pipe_expression (_) (value_identifier) @function)
+
+; (pipe_expression (_) (_ (value_identifier) @function))
 
 ; (function parameter: (value_identifier) @parameter)
 ; (labeled_argument
@@ -136,12 +143,15 @@
   "type"
   "and"
   "assert"
-  "async"
   "await"
   "with"
   "unpack"
   "module"
+  "lazy"
+  "constraint"
 ] @keyword
+
+((function "async" @keyword))
 
 [
   "if"

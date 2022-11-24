@@ -12,15 +12,26 @@ parser_config.rescript = {
     url = '~/Desktop/projects/tree-sitter-rescript',
     -- branch = 'main',
     files = { 'src/parser.c', 'src/scanner.c' },
+    requires_generate_from_grammar = true,
   },
-  filetype = { 'rescript' },
+  filetype = 'rescript',
+}
+
+parser_config.gitcommit = {
+  install_info = {
+    url = 'https://github.com/gbprod/tree-sitter-gitcommit',
+    branch = 'main',
+    files = { 'src/parser.c', 'src/scanner.c' },
+    requires_generate_from_grammar = false,
+  },
+  filetype = 'gitcommit',
 }
 
 local disable = function(_, bufnr)
   local name = vim.api.nvim_buf_get_name(bufnr)
-  local is_valid = vim.tbl_contains({ '.min.js' }, name:match '.min.js')
+  local is_minified_js = vim.tbl_contains({ '.min.js' }, name:match '.min.js')
 
-  if is_valid then
+  if is_minified_js then
     return true
   end
 
@@ -30,7 +41,9 @@ local disable = function(_, bufnr)
     return true
   end
 
-  for _, line in ipairs(vim.api.nvim_buf_get_lines(0, 0, -1, true)) do
+  for _, line in
+    ipairs(vim.api.nvim_buf_get_lines(0, 0, math.ceil(1 / 3 * lines), true))
+  do
     if line:len() > 5000 then
       return true
     end
@@ -97,9 +110,11 @@ require('nvim-treesitter.configs').setup {
     'cmake',
     'prisma',
     'help',
+    'swift',
+    -- Git
     'gitignore',
     'gitattributes',
-    'swift',
+    'diff',
   },
   highlight = {
     enable = true,
@@ -204,6 +219,14 @@ require('nvim-treesitter.configs').setup {
     enable = true,
   },
 }
+
+-- require'treesitter-context'.setup{
+--   patterns = {
+--     rescript = {
+--       "module_declaration"
+--     }
+--   }
+-- }
 
 -- highlight argument
 -- require('hlargs').setup {

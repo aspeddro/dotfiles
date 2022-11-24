@@ -171,7 +171,11 @@ M.treesitter = {
   ['@constructor'] = { fg = c.orange },
   ['@prepoc'] = { link = 'PreProc' },
   ['@constant'] = { fg = c.orange, italic = true },
-  ['@constant.comment'] = { fg = --[[ c.orange ]] '#ff8eeb', italic = true },
+  ['@constant.comment'] = {
+    --[[ c.orange ]]
+    fg = '#ff8eeb',
+    italic = true,
+  },
   ['@constant.builtin'] = { --[[ fg = c.red  ]]
     link = '@constant',
   },
@@ -228,8 +232,8 @@ M.plugins = {
   -- nvim-lspconfig
   LspInfoBorder = { link = 'FloatBorder' },
   -- Indent Blank line
-  IndentBlanklineChar = { fg = c.fn.blend(c.gray, c.bg, 0.3) },
-  IndentBlanklineContextChar = { fg = c.fn.blend(c.gray, c.bg, 0.99) },
+  IndentBlanklineChar = { fg = c.utils.blend(c.gray, c.bg, 0.3) },
+  IndentBlanklineContextChar = { fg = c.utils.blend(c.gray, c.bg, 0.99) },
   -- diffview.nvim
   DiffviewNormal = { link = 'NvimTreeNormal' },
 }

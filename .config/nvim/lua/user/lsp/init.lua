@@ -4,7 +4,7 @@ local lsp_menu = require 'lsp_menu'
 require 'user.lsp.handlers'
 require 'user.lsp.commands'
 
--- vim.lsp.set_log_level("debug")
+-- vim.lsp.set_log_level 'debug'
 
 vim.diagnostic.config {
   virtual_text = true,
@@ -21,6 +21,14 @@ vim.diagnostic.config {
 }
 
 local on_attach = function(client, bufnr)
+  local keymap_set = function(key, fn, desc)
+    return vim.keymap.set(
+      'n',
+      key,
+      fn,
+      { buffer = bufnr, desc = 'LSP ' .. (desc or '') }
+    )
+  end
   if client.server_capabilities.documentFormattingProvider then
     -- local group =
     --   vim.api.nvim_create_augroup('LSP/documentFormat', { clear = true })
@@ -34,12 +42,18 @@ local on_attach = function(client, bufnr)
     --   end,
     --   buffer = bufnr,
     -- })
-    vim.api.nvim_buf_create_user_command(bufnr, 'FormatLSP', function()
+    -- vim.api.nvim_buf_create_user_command(bufnr, 'FormatLSP', function()
+    --   vim.lsp.buf.format {
+    --     timeout_ms = 2000,
+    --     async = true,
+    --   }
+    -- end, { nargs = 0 })
+    keymap_set('<space>f', function()
       vim.lsp.buf.format {
         timeout_ms = 2000,
         async = true,
       }
-    end, { nargs = 0 })
+    end)
   end
 
   if client.server_capabilities.documentHighlightProvider then
@@ -100,14 +114,10 @@ local on_attach = function(client, bufnr)
   end
 
   if client.name == 'rescriptls' then
-    require('rescript').on_attach(client, bufnr)
+    require('rescript-tools').on_attach(client, bufnr)
   end
 
   lsp_menu.on_attach(client, bufnr)
-
-  local keymap_set = function(key, fn)
-    return vim.keymap.set('n', key, fn)
-  end
 
   keymap_set('gD', vim.lsp.buf.declaration)
 
@@ -132,6 +142,22 @@ local on_attach = function(client, bufnr)
   keymap_set('<space>wa', vim.lsp.buf.add_workspace_folder)
 
   keymap_set('<space>ca', lsp_menu.codeaction.run)
+
+  keymap_set('<space>g', function()
+    local diagnostics = vim.diagnostic.get(bufnr)
+    if #diagnostics == 0 then
+      vim.notify(
+        'Diagnostics not found for buffer ' .. bufnr,
+        vim.log.levels.INFO
+      )
+      return
+    end
+    local items = vim.diagnostic.toqflist(diagnostics)
+
+    vim.fn.setqflist({}, ' ', { title = 'Buffer Diagnostics', items = items })
+
+    vim.cmd 'botright copen'
+  end)
 
   vim.keymap.set('v', '<space>ca', function()
     require('lsp_menu').codeaction.run { range = true }
@@ -169,11 +195,15 @@ end;
         'additionalTextEdits',
       },
     }
-    capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-
     capabilities.textDocument.colorProvider = {
       dynamicRegistration = true,
     }
+
+    capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+
+    -- Workaround of https://github.com/hrsh7th/cmp-nvim-lsp/pull/46
+    -- capabilities.textDocument.completion.completionList = nil
+
     server = vim.tbl_deep_extend('force', config.default_config, server)
     server = vim.tbl_deep_extend('force', {
       on_attach = on_attach,

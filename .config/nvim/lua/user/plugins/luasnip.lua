@@ -7,7 +7,14 @@ ls.config.set_config {
   updateevents = 'TextChanged,TextChangedI',
 }
 
-for _, filetype in pairs { 'all', 'lua', 'ocaml', 'javascript', 'markdown' } do
+for _, filetype in pairs {
+  'all',
+  'lua',
+  'ocaml',
+  'javascript',
+  'markdown',
+  'rescript',
+} do
   ls.add_snippets(filetype, snips.filetype[filetype])
 end
 

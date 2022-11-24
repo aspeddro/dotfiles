@@ -84,7 +84,7 @@ local pallete = {
 }
 
 M = pallete
-M.fn = {
+M.utils = {
   blend = blend,
 }
 

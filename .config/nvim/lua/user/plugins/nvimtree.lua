@@ -13,7 +13,7 @@ require('nvim-tree').setup {
     cmd = 'rip',
   },
   filters = {
-    custom = { '.git$' },
+    custom = { '.git$', '.cmi$', '.cmj$', '.cmt$' },
   },
   -- TODO: handle buffer delete when file is open
 }

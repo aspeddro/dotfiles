@@ -83,6 +83,8 @@ vim.opt.clipboard = 'unnamedplus'
 vim.opt.pumheight = 15
 vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
 
+vim.opt.equalalways = false
+
 vim.opt.formatoptions = vim.opt.formatoptions
   + {
     t = false, -- Auto-wrap text using textwidth
@@ -99,9 +101,8 @@ vim.opt.formatoptions = vim.opt.formatoptions
 vim.opt.shada = { '!', "'1000", '<50', 's10', 'h' }
 
 vim.opt.spell = false
-vim.opt.spelllang = { 'en' }
+vim.opt.spelllang = { 'pt' }
 vim.opt.spelloptions = { 'camel' }
-vim.opt.spellcapcheck = ''
 vim.opt.spellfile = {
   en = vim.fn.stdpath 'config' .. '/spell/en.utf-8.add',
   pt = vim.fn.stdpath 'config' .. '/spell/pt.utf-8.add',

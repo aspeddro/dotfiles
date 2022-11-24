@@ -69,14 +69,15 @@ M.tsserver = {
 M.r_language_server = {}
 
 M.rescriptls = {
-  cmd = not false and {
+  cmd = false and {
     'node',
     '/home/pedro/Desktop/projects/rescript-vscode/server/out/server.js',
     '--stdio',
   } or { 'rescript-lsp', '--stdio' },
   init_options = {
     extensionConfiguration = {
-      -- binaryPath = nil,
+      binaryPath = nil,
+      platformPath = nil,
       askToStartBuild = false,
       codeLens = true,
       signatureHelp = {
@@ -123,9 +124,10 @@ M.yamlls = {}
 M.ocamllsp = (function()
   local root = vim.loop.cwd()
   -- TODO: handle with sandox using opam switch
-  local cmd = (#vim.fs.find 'esy.lock' > 0)
+  local cmd = (#vim.fs.find 'bsconfig.json' > 0)
+      -- Melange support
       and { 'esy', '-P', root, 'ocamllsp', '--fallback-read-dot-merlin' }
-    or { 'ocamllsp' }
+    or { 'opam', 'exec', '--', 'ocamllsp' }
   return { cmd = cmd }
 end)()
 
