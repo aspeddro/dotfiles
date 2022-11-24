@@ -1,7 +1,6 @@
 {
     "workbench.startupEditor": "newUntitledFile",
     "workbench.iconTheme": "material-icon-theme",
-    "workbench.colorTheme": "Community Material Theme Darker High Contrast",
     "workbench.tree.renderIndentGuides": "always",
     "workbench.editor.wrapTabs": true,
     "workbench.editor.decorations.badges": true,
@@ -21,6 +20,7 @@
     "editor.autoClosingDelete": "auto",
     "editor.semanticHighlighting.enabled": true,
 
+
     "editor.semanticTokenColorCustomizations": {
         "[Community Material Theme Darker High Contrast]": {
             "enabled": true,
@@ -29,7 +29,7 @@
                 "type": "#89DDFF",
                 "enumMember": "#F78C6C",
                 "struct": "#89DDFF",
-                "property": "#ffdfb6"
+                "property": "#ffdfb6",
             }
         }
     },
@@ -42,9 +42,22 @@
                 }
             },
             {
+                "scope": "keyword.control",
+                "settings": {
+                    "foreground": "#C792EA",
+                    "fontStyle": ""
+                }
+            },
+            {
                 "scope": "variable.parameter",
                 "settings": {
                     "foreground": "#EEFFFF",
+                }
+            },
+            {
+                "scope": "support.type",
+                "settings": {
+                    "foreground": "#89DDFF",
                 }
             }
         ]
@@ -78,7 +91,7 @@
     },
 
     // TypeScript
-    "typescript.inlayHints.parameterNames.enabled": "all",
+    "typescript.inlayHints.parameterNames.enabled": "none",
     "typescript.inlayHints.variableTypes.enabled": true,
     // JS
     "javascript.updateImportsOnFileMove.enabled": "always",
@@ -112,8 +125,14 @@
     "rust-analyzer.trace.server": "off",
 
     // ReScript
+    "[rescript]": {
+        "editor.fontLigatures": false,
+    },
     "rescript.settings.askToStartBuild": false,
     "rescript.settings.codeLens": true,
     "rescript.settings.inlayHints.enable": true,
-    "rescript.settings.signatureHelp.enable": true
+    "rescript.settings.signatureHelp.enable": true,
+
+    // YAML
+    "redhat.telemetry.enabled": false
 }
