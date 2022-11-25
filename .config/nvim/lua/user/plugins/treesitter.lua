@@ -17,16 +17,6 @@ parser_config.rescript = {
   filetype = 'rescript',
 }
 
-parser_config.gitcommit = {
-  install_info = {
-    url = 'https://github.com/gbprod/tree-sitter-gitcommit',
-    branch = 'main',
-    files = { 'src/parser.c', 'src/scanner.c' },
-    requires_generate_from_grammar = false,
-  },
-  filetype = 'gitcommit',
-}
-
 local disable = function(_, bufnr)
   local name = vim.api.nvim_buf_get_name(bufnr)
   local is_minified_js = vim.tbl_contains({ '.min.js' }, name:match '.min.js')
@@ -112,6 +102,7 @@ require('nvim-treesitter.configs').setup {
     'help',
     'swift',
     -- Git
+    'gitcommit',
     'gitignore',
     'gitattributes',
     'diff',
