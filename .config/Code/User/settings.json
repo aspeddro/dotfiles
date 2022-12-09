@@ -28,6 +28,7 @@
                 "namespace": "#F5A191",
                 "type": "#89DDFF",
                 "enumMember": "#F78C6C",
+                "enum": "#89DDFF",
                 "struct": "#89DDFF",
                 "property": "#ffdfb6",
             }
@@ -92,7 +93,7 @@
 
     // TypeScript
     "typescript.inlayHints.parameterNames.enabled": "none",
-    "typescript.inlayHints.variableTypes.enabled": true,
+    "typescript.inlayHints.variableTypes.enabled": false,
     // JS
     "javascript.updateImportsOnFileMove.enabled": "always",
 
@@ -106,6 +107,9 @@
     "ocaml.trace.server": "verbose",
     
     // R
+    "r.rpath.linux": "radian",
+    "r.rmarkdown.knit.defaults.knitWorkingDirectory": "workspace root",
+    "r.rmarkdown.knit.useBackgroundProcess": true,
     "[rmd]": {
         "editor.wordWrap": "bounded"
     },
@@ -134,5 +138,6 @@
     "rescript.settings.signatureHelp.enable": true,
 
     // YAML
-    "redhat.telemetry.enabled": false
+    "redhat.telemetry.enabled": false,
+    "workbench.colorTheme": "Community Material Theme Darker High Contrast"
 }
