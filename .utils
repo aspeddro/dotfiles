@@ -12,9 +12,9 @@ open() {
   done
 }
 
-rstudio() {
-  setsid nohup rstudio-bin $1 > /dev/null 2> /dev/null
-}
+# rstudio() {
+#   setsid nohup rstudio-bin $1 > /dev/null 2> /dev/null
+# }
 
 texclear() {
   TEXFILES=(
