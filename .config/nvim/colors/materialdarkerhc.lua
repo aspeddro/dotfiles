@@ -223,7 +223,7 @@ M.plugins = {
   NvimTreeFolderIcon = { fg = c.folder_icon },
   NvimTreeOpenedFolderName = { fg = c.cyan },
   NvimTreeOpenedFile = { fg = c.cyan },
-  NvimTreeVertsplit = { bg = c.bg_alt, fg = c.bg_alt },
+  NvimTreeWinSeparator = { bg = c.bg_alt, fg = c.bg_alt },
 
   GitSignsAdd = { fg = c.diff_add },
   GitSignsChange = { fg = c.diff_change },

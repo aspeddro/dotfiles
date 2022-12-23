@@ -10,11 +10,11 @@
 
 (type_identifier) @type
 
-(list "list{" @function.builtin)
-(list_pattern "list{" @function.builtin)
-; To ensure that the closing curly bracket is the same color (scope) as the opening curly bracket
-(list "}" @function.builtin (#set! "priority" 105))
-(list_pattern "}" @function.builtin (#set! "priority" 105))
+[(list) (list_pattern)] @function.builtin
+; (list_pattern "list{" @function.builtin)
+; ; To ensure that the closing curly bracket is the same color (scope) as the opening curly bracket
+; (list "}" @function.builtin (#set! "priority" 105))
+; (list_pattern "}" @function.builtin (#set! "priority" 105))
 
 ((type_identifier) @type.builtin
  (#any-of? @type.builtin
@@ -22,7 +22,8 @@
 
 (unit_type) @type.builtin
 
-(unit ["(" ")"]) @type.builtin
+(unit) @type.builtin
+; (unit ["(" ")"]) @type.builtin
 
 [
   (variant_identifier)
@@ -79,6 +80,13 @@
 ; Functions
 ;----------
 
+(let_binding
+  (value_identifier) @function
+  [
+    (function)
+    ; (type_annotation)
+  ])
+
 (call_expression
   function: (value_identifier) @function.call)
 
@@ -88,13 +96,9 @@
 (call_expression
   function: (_ (property_identifier) @function.call))
 
-; (binary_expression
-;   operator: ["->" "|>"]
-;   right: (value_identifier) @function)
 
-; (pipe_expression (_) (value_identifier) @function)
-
-; (pipe_expression (_) (_ (value_identifier) @function))
+(pipe_expression (_) (value_identifier) @function)
+(pipe_expression (_) (_ (value_identifier) @function))
 
 ; (function parameter: (value_identifier) @parameter)
 ; (labeled_argument

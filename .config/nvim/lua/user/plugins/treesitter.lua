@@ -50,7 +50,7 @@ require('nvim-treesitter.configs').setup {
     'commonlisp',
     'cpp',
     'css',
-    'erlang',
+    -- 'erlang',
     'elixir',
     'fennel',
     'teal',

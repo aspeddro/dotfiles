@@ -62,7 +62,7 @@ for i = 1, 9, 1 do
 end
 
 -- Diagnostics keymap
-vim.keymap.set('n', '<space>q', function()
+vim.keymap.set('n', '<leader>q', function()
   local items = vim.diagnostic.toqflist(vim.diagnostic.get())
 
   vim.fn.setqflist({}, ' ', { title = 'Workspace Diagnostics', items = items })
@@ -70,7 +70,7 @@ vim.keymap.set('n', '<space>q', function()
   vim.cmd 'botright copen'
 end)
 
-vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
+vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)
 
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
 

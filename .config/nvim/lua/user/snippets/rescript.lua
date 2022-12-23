@@ -8,8 +8,8 @@ return {
   doc = fmt(
     [[
       /**
-        {}
-      */
+       * {}
+       */
       ]],
     { i(0) }
   ),
@@ -21,7 +21,7 @@ return {
       ]],
     { i(0) }
   ),
-  swtich = {
+  switch = {
     t { 'switch ' },
     i(1, ''),
     t { ' {', '| ' },
@@ -69,4 +69,27 @@ return {
     i(2, '(string, int) => string'),
     i(3, 'leftPad'),
   }),
+  component = {
+    t { '@react.component', '' },
+    'let make = (',
+    i(1, ''),
+    ') => {',
+    newline '\t',
+    i(2),
+    newline '}',
+    i(0),
+  },
+  ['for'] = {
+    'for ',
+    i(1),
+    ' in ',
+    i(2),
+    ' to ',
+    i(3),
+    ' {',
+    newline '\t',
+    i(4),
+    newline '}',
+    i(0),
+  },
 }

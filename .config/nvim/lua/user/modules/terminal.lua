@@ -41,8 +41,10 @@ M.get_direction = function(dir)
   return choice
 end
 
-local open = function(opts, buffer)
-  vim.cmd(table.concat(M.get_direction(opts.direction or 'bottom'), ' | '))
+local open = function(buffer, opts)
+  vim.cmd(
+    table.concat(M.get_direction(opts and opts.direction or 'bottom'), ' | ')
+  )
 
   local winr = vim.api.nvim_get_current_win()
 
@@ -56,11 +58,11 @@ local close = function(buffer)
   end
 end
 
-M.toggle = function(buffer)
+M.toggle = function(buffer, opts)
   if buffer.hidden == 0 then
     close(buffer)
   else
-    open({ direction = 'bottom' }, buffer)
+    open(buffer, opts)
   end
 end
 
@@ -101,16 +103,16 @@ end
 local toggles = function(opts)
   local terms = terminals()
 
-  if #terms == 0 then
+  if vim.tbl_isempty(terms) then
     return M.new(opts)
   end
 
   if #terms == 1 then
-    return M.toggle(terms[1])
+    return M.toggle(terms[1], opts)
   end
 
-  for _, term in ipairs(terms) do
-    M.toggle(term)
+  for index, term in ipairs(terms) do
+    M.toggle(term, index == 1 and { direction = 'bottom' } or opts)
   end
 end
 
@@ -127,9 +129,9 @@ vim.api.nvim_create_user_command('TermToggle', function(param)
   toggles { direction = param.args }
 end, {
   nargs = '*',
-  -- complete = function()
-  --   return DIRECTIONS
-  -- end,
+  complete = function()
+    return DIRECTIONS
+  end,
 })
 
 local id_term_plugin_enter =
@@ -145,7 +147,10 @@ vim.api.nvim_create_autocmd('BufEnter', {
 })
 
 vim.keymap.set({ 'n', 't' }, '<a-t>', function()
-  toggles { direction = 'bottom' }
+  local terms = terminals()
+  toggles {
+    direction = (vim.tbl_isempty(terms) or #terms == 1) and 'bottom' or 'right',
+  }
 end)
 
 return M

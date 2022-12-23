@@ -15,7 +15,7 @@ M.sumneko_lua = {
         ),
       },
       diagnostics = {
-        globals = { 'vim', 'it', 'before_each', 'after_each' },
+        globals = { 'vim', 'it', 'before_each', 'after_each', 'describe' },
       },
       format = {
         enable = false,
@@ -122,11 +122,11 @@ M.cssls = {}
 M.yamlls = {}
 
 M.ocamllsp = (function()
-  local root = vim.loop.cwd()
-  -- TODO: handle with sandox using opam switch
-  local cmd = (#vim.fs.find 'bsconfig.json' > 0)
+  local cmd = not vim.tbl_isempty(
+        vim.fs.find('bsconfig.json', { upward = true })
+      )
       -- Melange support
-      and { 'esy', '-P', root, 'ocamllsp', '--fallback-read-dot-merlin' }
+      and { 'opam', 'exec', '--', 'ocamllsp', '--fallback-read-dot-merlin' }
     or { 'opam', 'exec', '--', 'ocamllsp' }
   return { cmd = cmd }
 end)()

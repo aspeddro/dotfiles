@@ -21,12 +21,12 @@ vim.diagnostic.config {
 }
 
 local on_attach = function(client, bufnr)
-  local keymap_set = function(key, fn, desc)
+  local keymap_set = function(key, fn, opts)
     return vim.keymap.set(
-      'n',
+      opts and opts.mode or 'n',
       key,
       fn,
-      { buffer = bufnr, desc = 'LSP ' .. (desc or '') }
+      { buffer = bufnr, desc = 'LSP ' .. (opts and opts.desc or '') }
     )
   end
   if client.server_capabilities.documentFormattingProvider then
@@ -113,23 +113,30 @@ local on_attach = function(client, bufnr)
     }, bufnr)
   end
 
-  if client.name == 'rescriptls' then
-    require('rescript-tools').on_attach(client, bufnr)
-  end
+  require('rescript-tools').on_attach(client, bufnr)
 
   lsp_menu.on_attach(client, bufnr)
 
   keymap_set('gD', vim.lsp.buf.declaration)
 
-  keymap_set('gd', vim.lsp.buf.definition)
+  keymap_set('gd', function()
+    -- vim.lsp.buf.definition
+    require('glance').open 'definitions'
+  end)
 
-  keymap_set('gp', require('goto-preview').goto_preview_definition)
+  -- keymap_set('gp', require('goto-preview').goto_preview_definition)
 
   keymap_set('K', vim.lsp.buf.hover)
 
-  keymap_set('gi', vim.lsp.buf.implementation)
+  keymap_set('gi', function()
+    -- vim.lsp.buf.implementation
+    require('glance').open 'implementations'
+  end)
 
-  keymap_set('gr', vim.lsp.buf.references)
+  keymap_set('gr', function()
+    -- vim.lsp.buf.references
+    require('glance').open 'references'
+  end)
 
   keymap_set('<space>d', vim.lsp.buf.type_definition)
 
@@ -142,6 +149,22 @@ local on_attach = function(client, bufnr)
   keymap_set('<space>wa', vim.lsp.buf.add_workspace_folder)
 
   keymap_set('<space>ca', lsp_menu.codeaction.run)
+
+  keymap_set(
+    '<space>ca',
+    require('lsp_menu').codeaction.run,
+    { mode = { 'v', 'n' } }
+  )
+
+  keymap_set('<space>wr', vim.lsp.buf.remove_workspace_folder)
+
+  keymap_set('<space>wl', function()
+    vim.notify(
+      '[LSP Workspace Folders]: '
+        .. table.concat(vim.lsp.buf.list_workspace_folders(), ', '),
+      vim.log.levels.INFO
+    )
+  end)
 
   keymap_set('<space>g', function()
     local diagnostics = vim.diagnostic.get(bufnr)
@@ -158,33 +181,19 @@ local on_attach = function(client, bufnr)
 
     vim.cmd 'botright copen'
   end)
-
-  vim.keymap.set('v', '<space>ca', function()
-    require('lsp_menu').codeaction.run { range = true }
-  end)
-
-  keymap_set('<space>wr', vim.lsp.buf.remove_workspace_folder)
-
-  keymap_set('<space>wl', function()
-    vim.notify(
-      '[LSP Workspace Folders]: '
-        .. table.concat(vim.lsp.buf.list_workspace_folders(), ', '),
-      vim.log.levels.INFO
-    )
-  end)
 end;
 
 (function()
   local servers = require 'user.lsp.servers'
 
   for server_name, server in pairs(servers) do
-    if not server then
+    local ok, config =
+      pcall(require, 'lspconfig.server_configurations.' .. server_name)
+
+    if not ok then
       vim.notify('Server ' .. server_name .. ' not found', vim.log.levels.ERROR)
       return
     end
-
-    local _, config =
-      pcall(require, 'lspconfig.server_configurations.' .. server_name)
 
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -200,9 +209,6 @@ end;
     }
 
     capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-
-    -- Workaround of https://github.com/hrsh7th/cmp-nvim-lsp/pull/46
-    -- capabilities.textDocument.completion.completionList = nil
 
     server = vim.tbl_deep_extend('force', config.default_config, server)
     server = vim.tbl_deep_extend('force', {

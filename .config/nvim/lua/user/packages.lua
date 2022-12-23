@@ -50,13 +50,6 @@ local function automatize(packer)
       state = 'done'
     end
   end)
-
-  vim.api.nvim_create_autocmd('User', {
-    pattern = 'PackerCompileDone',
-    callback = function()
-      vim.notify 'Packer Compiled'
-    end,
-  })
 end
 
 --- Development local plugins
@@ -80,6 +73,13 @@ M.setup = function()
       use {
         'lewis6991/impatient.nvim',
         rocks = 'mpack',
+      }
+
+      use {
+        'rcarriga/nvim-notify',
+        config = function()
+          vim.notify = require 'notify'
+        end,
       }
 
       -- use {
@@ -199,10 +199,16 @@ M.setup = function()
               }
             end,
           },
+          -- {
+          --   'rmagatti/goto-preview',
+          --   config = function()
+          --     require 'user.plugins.gotopreview'
+          --   end,
+          -- },
           {
-            'rmagatti/goto-preview',
+            'dnlhc/glance.nvim',
             config = function()
-              require 'user.plugins.gotopreview'
+              require('glance').setup {}
             end,
           },
         },
@@ -294,14 +300,13 @@ M.setup = function()
         end,
       }
 
-      use {
-        -- 'akinsho/git-conflict.nvim',
-        here 'git-conflict.nvim',
-        -- tag = "*",
-        config = function()
-          require 'user.plugins.git_conflitc'
-        end,
-      }
+      -- use {
+      --   'akinsho/git-conflict.nvim',
+      --   tag = '*',
+      --   config = function()
+      --     require 'user.plugins.git_conflitc'
+      --   end,
+      -- }
 
       use {
         here 'nvim-autopairs',
@@ -365,9 +370,8 @@ M.setup = function()
       }
 
       use {
-        -- 'phaazon/mind.nvim',
-        -- branch = 'v2.2',
-        here 'mind.nvim',
+        'phaazon/mind.nvim',
+        branch = 'v2.2',
         config = function()
           require 'user.plugins.mind'
         end,
@@ -408,6 +412,15 @@ M.setup = function()
         },
         config = function()
           require 'user.plugins.pandoc'
+        end,
+      }
+
+      use {
+        'folke/twilight.nvim',
+        config = function()
+          require('twilight').setup {
+            context = 0,
+          }
         end,
       }
 

@@ -81,9 +81,10 @@
 
 (lambda_function "\\" @punctuation.special)
 
-[
-  "$"
-] @punctuation.special
+
+; [
+;   "$"
+; ] @punctuation.special
 
 [
  "("
@@ -98,6 +99,8 @@
 (subset2
   "[[" @punctuation.bracket
   "]]" @punctuation.bracket)
+
+(dollar _ "$" @operator)
 
 [
  "in"

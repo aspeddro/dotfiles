@@ -1,4 +1,6 @@
-require('diffview').setup {
+local diffview = require 'diffview'
+
+diffview.setup {
   enhanced_diff_hl = true,
   view = {
     merge_tool = {
@@ -6,14 +8,9 @@ require('diffview').setup {
       disable_diagnostics = true,
     },
   },
-  -- hooks = {
-  --   view_opened = function(v)
-  --     vim.opt_local.relativenumber = false
-  --     -- vim.opt_local.cursorline = false
-  --   end,
-  --   view_closed = function(v)
-  --     vim.opt_local.relativenumber = true
-  --     -- vim.opt_local.cursorline = true
-  --   end,
-  -- },
+  hooks = {
+    view_opened = function()
+      vim.keymap.set('n', 'q', diffview.close, { buffer = true })
+    end,
+  },
 }
