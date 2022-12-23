@@ -107,7 +107,7 @@
     "ocaml.trace.server": "verbose",
     
     // R
-    "r.rpath.linux": "radian",
+    // "r.rpath.linux": "radian",
     "r.rmarkdown.knit.defaults.knitWorkingDirectory": "workspace root",
     "r.rmarkdown.knit.useBackgroundProcess": true,
     "[rmd]": {
