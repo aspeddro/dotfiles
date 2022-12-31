@@ -4,7 +4,7 @@ require('mind').setup {
     window = {
       Normal = 'NvimTreeNormal',
       SignColumn = 'NvimTreeSignColumn',
-      WinSeparator = 'NvimTreeVertSplit',
+      WinSeparator = 'NvimTreeWinSeparator',
     },
   },
 }

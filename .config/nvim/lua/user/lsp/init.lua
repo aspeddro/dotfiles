@@ -8,7 +8,7 @@ require 'user.lsp.commands'
 
 vim.diagnostic.config {
   virtual_text = true,
-  sings = false,
+  signs = false,
   underline = true,
   update_in_insert = false,
   severity_sort = true,
