@@ -1,6 +1,8 @@
 return {
   'nvim-lua/plenary.nvim',
 
+  -- { 'neoclide/coc.nvim', branch = 'release' },
+
   -- {
   --   'lewis6991/impatient.nvim',
   --   rocks = 'mpack',
@@ -10,9 +12,10 @@ return {
     'rcarriga/nvim-notify',
     config = function()
       require('notify').setup {
-        timeout = 1000,
+        timeout = 400,
+        stages = 'slide',
       }
-      vim.notify = require('notify').notify
+      vim.notify = require 'notify'
     end,
   },
 
@@ -54,7 +57,7 @@ return {
 
   -- NOTE: rename to buffernavigation.nvim?
   {
-    'bufferhandler.nvim',
+    'aspeddro/bufferhandler.nvim',
     dev = true,
     config = function()
       require('bufferhandler').setup()
@@ -73,7 +76,7 @@ return {
     dependencies = {
       { 'nvim-treesitter/playground' },
       -- { 'nvim-treesitter/nvim-treesitter-textobjects' },
-      { 'p00f/nvim-ts-rainbow' },
+      { 'mrjones2014/nvim-ts-rainbow' },
       { 'RRethy/nvim-treesitter-textsubjects' },
       { 'RRethy/nvim-treesitter-endwise' },
       { 'windwp/nvim-ts-autotag' },
@@ -100,10 +103,6 @@ return {
     config = function()
       require('fidget').setup()
     end,
-  },
-  {
-    'lsp_menu.nvim',
-    dev = true,
   },
   {
     'mrshmllow/document-color.nvim',
@@ -147,7 +146,7 @@ return {
       { 'petertriho/cmp-git' },
       { 'hrsh7th/cmp-cmdline' },
       {
-        'cmp-pandoc.nvim',
+        'aspeddro/cmp-pandoc.nvim',
         dev = true,
       },
       { 'onsails/lspkind-nvim' },
@@ -228,7 +227,7 @@ return {
   -- }
 
   {
-    'nvim-autopairs',
+    'aspeddro/nvim-autopairs',
     dev = true,
     -- 'windwp/nvim-autopairs',
     config = function()
@@ -258,7 +257,7 @@ return {
   },
 
   {
-    'repl.nvim',
+    'aspeddro/repl.nvim',
     dev = true,
     config = function()
       require 'user.plugins.repl'
@@ -327,7 +326,7 @@ return {
   -- }
 
   {
-    'pandoc.nvim',
+    'aspeddro/pandoc.nvim',
     dev = true,
     dependencies = {
       'nvim-lua/plenary.nvim',
@@ -352,7 +351,7 @@ return {
   'ii14/emmylua-nvim',
 
   {
-    'rescript-tools.nvim',
+    'aspeddro/rescript-tools.nvim',
     dev = true,
   },
 

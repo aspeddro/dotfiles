@@ -26,6 +26,7 @@ cmp.setup {
     ['<Esc>'] = {
       i = cmp.mapping.abort(),
     },
+    ['<C-Space>'] = cmp.mapping.complete(),
   },
   formatting = {
     fields = { 'kind', 'abbr', 'menu' },

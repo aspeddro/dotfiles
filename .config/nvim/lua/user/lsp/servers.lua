@@ -1,4 +1,4 @@
-local util = require 'lspconfig.util'
+local util = require('lspconfig').util
 
 local M = {}
 
@@ -71,7 +71,14 @@ M.r_language_server = {}
 M.rescriptls = {
   cmd = false and {
     'node',
-    '/home/pedro/Desktop/projects/rescript-vscode/server/out/server.js',
+    util.path.join {
+      vim.fn.expand '~/Desktop',
+      'projects',
+      'rescript-vscode',
+      'server',
+      'out',
+      'server.js',
+    },
     '--stdio',
   } or { 'rescript-lsp', '--stdio' },
   init_options = {

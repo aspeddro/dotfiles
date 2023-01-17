@@ -4,8 +4,8 @@ if not vim.loop.fs_stat(lazypath) then
     'git',
     'clone',
     '--filter=blob:none',
-    '--single-branch',
     'https://github.com/folke/lazy.nvim.git',
+    '--branch=stable', -- latest stable release
     lazypath,
   }
 end
@@ -14,7 +14,7 @@ vim.opt.runtimepath:prepend(lazypath)
 local opts = {
   concurrency = 8,
   dev = {
-    path = '~/Desktop/plugins',
+    path = vim.fn.expand('~/Desktop/plugins'),
   },
 }
 

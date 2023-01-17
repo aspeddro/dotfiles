@@ -4,6 +4,8 @@ vim.filetype.add {
     ['.Rprofile'] = 'r',
     ['renv.lock'] = 'json',
     ['.Rhistory'] = 'r',
+    -- R Packages DESCRIPTION file
+    ['DESCRIPTION'] = 'yaml'
   },
   extension = {
     pandoc = 'pandoc',

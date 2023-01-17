@@ -103,6 +103,7 @@ require('nvim-treesitter.configs').setup {
     'swift',
     -- Git
     'gitcommit',
+    'git_rebase',
     'gitignore',
     'gitattributes',
     'diff',

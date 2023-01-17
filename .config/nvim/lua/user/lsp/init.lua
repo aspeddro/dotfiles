@@ -1,5 +1,4 @@
 local lspconfig = require 'lspconfig'
-local lsp_menu = require 'lsp_menu'
 
 require 'user.lsp.handlers'
 require 'user.lsp.commands'
@@ -29,6 +28,9 @@ local on_attach = function(client, bufnr)
       { buffer = bufnr, desc = 'LSP ' .. (opts and opts.desc or '') }
     )
   end
+  -- Enable completion triggered by <c-x><c-o>
+  -- vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
   if client.server_capabilities.documentFormattingProvider then
     -- local group =
     --   vim.api.nvim_create_augroup('LSP/documentFormat', { clear = true })
@@ -115,8 +117,6 @@ local on_attach = function(client, bufnr)
 
   require('rescript-tools').on_attach(client, bufnr)
 
-  lsp_menu.on_attach(client, bufnr)
-
   keymap_set('gD', vim.lsp.buf.declaration)
 
   keymap_set('gd', function()
@@ -140,7 +140,7 @@ local on_attach = function(client, bufnr)
 
   keymap_set('<space>d', vim.lsp.buf.type_definition)
 
-  keymap_set('<space>l', lsp_menu.codelens.run)
+  keymap_set('<space>l', vim.lsp.codelens.run)
 
   keymap_set('<space>k', vim.lsp.buf.signature_help)
 
@@ -148,13 +148,7 @@ local on_attach = function(client, bufnr)
 
   keymap_set('<space>wa', vim.lsp.buf.add_workspace_folder)
 
-  keymap_set('<space>ca', lsp_menu.codeaction.run)
-
-  keymap_set(
-    '<space>ca',
-    require('lsp_menu').codeaction.run,
-    { mode = { 'v', 'n' } }
-  )
+  keymap_set('<space>ca', vim.lsp.buf.code_action, { mode = { 'v', 'n' } })
 
   keymap_set('<space>wr', vim.lsp.buf.remove_workspace_folder)
 

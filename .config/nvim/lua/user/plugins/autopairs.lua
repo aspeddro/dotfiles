@@ -3,11 +3,15 @@ local Rule = require 'nvim-autopairs.rule'
 local ts_conds = require 'nvim-autopairs.ts-conds'
 local cond = require 'nvim-autopairs.conds'
 local cmp_autopairs = require 'nvim-autopairs.completion.cmp'
+-- local handlers = require 'nvim-autopairs.completion.handlers'
 local cmp = require 'cmp'
 
 npairs.setup()
 
-cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
+cmp.event:on(
+  'confirm_done',
+  cmp_autopairs.on_confirm_done()
+)
 
 npairs.remove_rule "'"
 npairs.remove_rule '('
@@ -41,13 +45,15 @@ npairs.add_rules {
     return { cursor[1] - 1, cursor[2] }
   end)),
 
-  Rule("'", "'", { '-rescript' }),
+  -- Rule("'", "'", { 'rescript' }),
 
   Rule('$', '$', { 'markdown', 'rmd' }),
 
-  Rule("'", "'"):with_pair(ts_conds.is_in_range(function(param)
+  Rule("'", "'", 'r'):with_pair(cond.not_before_regex '^#$'),
+
+  Rule("'", "'", 'rescript'):with_pair(ts_conds.is_in_range(function(param)
     if not param then
-      return false
+      return true
     end
     if
       vim.tbl_contains({ 'type_parameters', 'variant_parameters' }, param.type)

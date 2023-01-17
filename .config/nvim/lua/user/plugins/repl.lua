@@ -5,6 +5,7 @@ require('repl').setup {
   sources = {
     -- builtin.node,
     builtin.r.with {
+      bin = 'radian',
       commands = {
         enable = true,
         RStart = {

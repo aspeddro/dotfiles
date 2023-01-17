@@ -248,7 +248,7 @@ local Diagnostics = {
 
 local LSPActive = {
   condition = conditions.lsp_attached,
-  update = { 'LspAttach', 'LspDetach' },
+  update = { 'LspAttach', 'LspDetach', 'BufEnter' },
   provider = function()
     local names = vim.tbl_map(function(client)
       return client.name
@@ -533,4 +533,4 @@ local WinBars = {
   Space,
 }
 
-herline.setup(StatusLine, WinBars, TabLine)
+herline.setup { statusline = StatusLine, winbar = WinBars, tabline = TabLine }
