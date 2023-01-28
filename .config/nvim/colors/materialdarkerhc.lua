@@ -28,7 +28,7 @@ M.base = {
 
   WildMenu = { fg = c.bg_alt, bg = c.blue },
   Folded = { fg = c.blue, bg = c.bg_alt },
-  FoldColumn = { fg = c.blue, bg = c.bg_alt },
+  FoldColumn = { fg = c.blue, bg = c.bg },
   LineNr = { fg = c.line_number },
 
   WinSeparator = { fg = c.line_number },
@@ -236,6 +236,12 @@ M.plugins = {
   IndentBlanklineContextChar = { fg = c.utils.blend(c.gray, c.bg, 0.99) },
   -- diffview.nvim
   DiffviewNormal = { link = 'NvimTreeNormal' },
+
+  ConflictMarkerBegin = { bg = '#2f7366' },
+  ConflictMarkerOurs = { bg = '#2e5049' },
+  ConflictMarkerTheirs = { bg = '#344f69' },
+  ConflictMarkerEnd = { bg = '#2f628e' },
+  ConflictMarkerCommonAncestorsHunk = { bg = '#754a81' },
 }
 
 for _, value in pairs(M) do

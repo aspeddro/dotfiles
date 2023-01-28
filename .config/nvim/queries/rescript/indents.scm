@@ -1,55 +1,66 @@
+; inherits: jsx
+
 [
+  ; (for_expression)
+  ; (while_expression)
+  (if_expression)
+  (let_binding)
+  ; (switch_expression)
+  (expression_statement)
   (array)
   (call_expression)
   (list)
   (module_declaration)
-  (block)
   (record)
-  (object)
-  (ternary_expression)
-  ; (type_declaration)
-  (formal_parameters)
   (variant)
-  (variant_declaration)
-  (function_type)
-  (polyvar_type)
-  (record_type)
+  ; (block)
+  (type_declaration)
+  (ternary_expression)
 ] @indent
 
-; (record) @indent
-(record (record_field) @indent)
-; (type_declaration) @indent
+
+(try_expression (block) @indent)
+
+; (switch_expression) @auto
+
+; (switch_match
+;   body: (sequence_expression) @indent)
+
+; (record (record_field) @indent)
 ; (arguments (block) @indent)
+; (ternary_expression) @indent
+
+; align indent a ? {} : {}
+(ternary_expression
+  consequence: ((block) @aligned_indent (#set! "delimiter" "{"))
+  alternative: ((block) @aligned_indent (#set! "delimiter" "{")))
 
 
-; (ERROR (type_identifier)) @indent
 
-; (function
-;   body: (_) @_body
-;   (#not-has-type? @_body block)
-; ) @indent
 
+; (object_type "}" @indent_end)
+; (record_type "}" @indent_end)
+; (record "}" @indent_end)
+; (block "}" @indent_end)
+; (list "}" @indent_end)
 
 [
-  "("
   ")"
   "}"
-  "{"
   "]"
-  "["
 ] @branch
-
 (block "{" @branch)
 
-[
-  "}"
-  "]"
-  ")"
-] @indent_end
+[ "]" "}" ")" ] @indent_end
 
-; [
-;   (ERROR)
-;   (switch_expression)
-;   (type_declaration)
-;   (binary_expression)
-; ] @auto
+[
+  (comment)
+  (template_string)
+] @ignore
+
+[
+  (variant_declaration)
+  (ERROR)
+] @auto
+
+

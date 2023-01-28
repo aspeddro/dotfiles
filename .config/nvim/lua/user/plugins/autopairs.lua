@@ -8,10 +8,7 @@ local cmp = require 'cmp'
 
 npairs.setup()
 
-cmp.event:on(
-  'confirm_done',
-  cmp_autopairs.on_confirm_done()
-)
+cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
 
 npairs.remove_rule "'"
 npairs.remove_rule '('
@@ -45,9 +42,9 @@ npairs.add_rules {
     return { cursor[1] - 1, cursor[2] }
   end)),
 
-  -- Rule("'", "'", { 'rescript' }),
-
   Rule('$', '$', { 'markdown', 'rmd' }),
+
+  Rule("'", "'", { '-rescript', '-r' }),
 
   Rule("'", "'", 'r'):with_pair(cond.not_before_regex '^#$'),
 

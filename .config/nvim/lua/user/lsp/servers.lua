@@ -8,11 +8,8 @@ M.sumneko_lua = {
       version = 'LuaJIT',
       completion = { callSnippet = 'Disable' },
       workspace = {
-        -- Load only ~/.config/nvim/lua/ files and emmmy-lua plugin
-        library = vim.list_extend(
-          vim.api.nvim_get_runtime_file('lua/user/*/*.lua', true),
-          vim.api.nvim_get_runtime_file('nvim/library/*.lua', true)
-        ),
+        library = vim.api.nvim_get_runtime_file('', true),
+        checkThirdParty = false,
       },
       diagnostics = {
         globals = { 'vim', 'it', 'before_each', 'after_each', 'describe' },
@@ -52,18 +49,6 @@ M.tsserver = {
       },
     },
   },
-  -- init_options = {
-  --   preferences = {
-  --     jsxAttributeCompletionStyle = 'auto',
-  --     includeInlayParameterNameHints = 'all',
-  --     includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-  --     includeInlayFunctionParameterTypeHints = true,
-  --     includeInlayVariableTypeHints = true,
-  --     includeInlayPropertyDeclarationTypeHints = true,
-  --     includeInlayFunctionLikeReturnTypeHints = true,
-  --     includeInlayEnumMemberValueHints = true,
-  --   },
-  -- },
 }
 
 M.r_language_server = {}
@@ -129,13 +114,20 @@ M.cssls = {}
 M.yamlls = {}
 
 M.ocamllsp = (function()
-  local cmd = not vim.tbl_isempty(
-        vim.fs.find('bsconfig.json', { upward = true })
-      )
-      -- Melange support
-      and { 'opam', 'exec', '--', 'ocamllsp', '--fallback-read-dot-merlin' }
-    or { 'opam', 'exec', '--', 'ocamllsp' }
-  return { cmd = cmd }
+  -- TODO: implement vscode/settings.json heuristic
+  -- local cmd = not vim.tbl_isempty(
+  --       vim.fs.find('bsconfig.json', { upward = true })
+  --     )
+  --     -- Melange support
+  --     and { 'opam', 'exec', '--', 'ocamllsp', '--fallback-read-dot-merlin' }
+  --   or { 'opam', 'exec', '--', 'ocamllsp' }
+  return {
+    cmd = { 'opam', 'exec', '--', 'ocamllsp' },
+    filetypes = vim.list_extend(
+      require('lspconfig.server_configurations.ocamllsp').default_config.filetypes,
+      { 'ocamlinterface' }
+    ),
+  }
 end)()
 
 M.pyright = {}

@@ -152,6 +152,8 @@ local on_attach = function(client, bufnr)
 
   keymap_set('<space>wr', vim.lsp.buf.remove_workspace_folder)
 
+  keymap_set('<space>ds', require('telescope.builtin').lsp_document_symbols)
+
   keymap_set('<space>wl', function()
     vim.notify(
       '[LSP Workspace Folders]: '
@@ -162,13 +164,15 @@ local on_attach = function(client, bufnr)
 
   keymap_set('<space>g', function()
     local diagnostics = vim.diagnostic.get(bufnr)
-    if #diagnostics == 0 then
+
+    if vim.tbl_isempty(diagnostics) then
       vim.notify(
         'Diagnostics not found for buffer ' .. bufnr,
         vim.log.levels.INFO
       )
       return
     end
+
     local items = vim.diagnostic.toqflist(diagnostics)
 
     vim.fn.setqflist({}, ' ', { title = 'Buffer Diagnostics', items = items })

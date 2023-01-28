@@ -14,7 +14,7 @@ vim.opt.runtimepath:prepend(lazypath)
 local opts = {
   concurrency = 8,
   dev = {
-    path = vim.fn.expand('~/Desktop/plugins'),
+    path = vim.fn.expand '~/Desktop/plugins',
   },
 }
 

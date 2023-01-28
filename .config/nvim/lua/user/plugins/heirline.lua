@@ -2,7 +2,7 @@ local herline = require 'heirline'
 local conditions = require 'heirline.conditions'
 local u = require 'heirline.utils'
 
-local empty_file_name = '[No Name]'
+local EMPTY_FILENAME = '[No Name]'
 
 local colors = {
   bright_bg = u.get_highlight('Folded').bg,
@@ -24,6 +24,7 @@ local colors = {
   git_del = u.get_highlight('DiagnosticError').fg,
   git_add = u.get_highlight('String').fg,
   git_change = u.get_highlight('Function').fg,
+  normal_bg = u.get_highlight('Normal').bg,
 }
 
 require('heirline').load_colors(colors)
@@ -125,11 +126,11 @@ local FileName = {
   provider = function()
     local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ':.')
     if filename == '' then
-      return empty_file_name
+      return EMPTY_FILENAME
     end
-    if not conditions.width_percent_below(filename:len(), 0.25) then
-      return vim.fn.pathshorten(filename)
-    end
+    -- if not conditions.width_percent_below(filename:len(), 0.25) then
+    --   return vim.fn.pathshorten(filename)
+    -- end
     return filename
   end,
   hl = { fg = 'purple' },
@@ -369,11 +370,73 @@ local FileIcon = {
 -- we redefine the filename component, as we probably only want the tail and not the relative path
 local TablineFileName = {
   provider = function(self)
+    ---@see https://github.com/rebelot/heirline.nvim/discussions/89
+    ---Get the names of all current listed buffers
+    ---@return table
+    local function get_current_filenames()
+      local listed_buffers = vim.tbl_filter(function(bufnr)
+        return vim.bo[bufnr].buflisted and vim.api.nvim_buf_is_loaded(bufnr)
+      end, vim.api.nvim_list_bufs())
+
+      return vim.tbl_map(vim.api.nvim_buf_get_name, listed_buffers)
+    end
+
+    ---Get unique name for the current buffer
+    ---@param filename string
+    ---@param shorten boolean
+    ---@return string
+    local function get_unique_filename(filename, shorten)
+      local filenames = vim.tbl_filter(function(filename_other)
+        return filename_other ~= filename
+      end, get_current_filenames())
+
+      if shorten then
+        filename = vim.fn.pathshorten(filename)
+        filenames = vim.tbl_map(vim.fn.pathshorten, filenames)
+      end
+
+      -- Reverse filenames in order to compare their names
+      filename = string.reverse(filename)
+      filenames = vim.tbl_map(string.reverse, filenames)
+
+      local index
+
+      -- For every other filename, compare it with the name of the current file char-by-char to
+      -- find the minimum index `i` where the i-th character is different for the two filenames
+      -- After doing it for every filename, get the maximum value of `i`
+      if next(filenames) then
+        index = math.max(unpack(vim.tbl_map(function(filename_other)
+          for i = 1, #filename do
+            -- Compare i-th character of both names until they aren't equal
+            if filename:sub(i, i) ~= filename_other:sub(i, i) then
+              return i
+            end
+          end
+          return 1
+        end, filenames)))
+      else
+        index = 1
+      end
+
+      -- Iterate backwards (since filename is reversed) until a "/" is found
+      -- in order to show a valid file path
+      while index <= #filename do
+        if filename:sub(index, index) == '/' then
+          index = index - 1
+          break
+        end
+
+        index = index + 1
+      end
+
+      return string.reverse(string.sub(filename, 1, index))
+    end
     -- self.filename will be defined later, just keep looking at the example!
-    local filename = self.filename
-    filename = filename == '' and empty_file_name
-      or vim.fn.fnamemodify(filename, ':t')
-    return filename
+    -- local filename = self.filename
+    -- filename = filename == '' and empty_file_name
+    --   or vim.fn.fnamemodify(filename, ':t')
+    return self.filename == '' and EMPTY_FILENAME
+      or get_unique_filename(self.filename, false)
   end,
   hl = function(self)
     return self.is_active and 'Normal' or 'NonText'
@@ -390,11 +453,12 @@ local TablineFileNameBlock = {
   end,
   on_click = {
     callback = function(_, minwid, _, button)
-      if button == 'm' then -- close on mouse middle click
-        vim.api.nvim_buf_delete(minwid, { force = false })
-      else
-        vim.api.nvim_win_set_buf(0, minwid)
-      end
+      -- if button == 'm' then -- close on mouse middle click
+      --   vim.api.nvim_buf_delete(minwid, { force = false })
+      -- else
+      --
+      -- end
+      vim.api.nvim_win_set_buf(0, minwid)
     end,
     minwid = function(self)
       return self.bufnr
@@ -415,6 +479,9 @@ local TablineCloseButton = {
     on_click = {
       callback = function(_, minwid)
         vim.api.nvim_buf_delete(minwid, { force = false })
+
+        -- Force redraw
+        vim.cmd.redrawtabline()
       end,
       minwid = function(self)
         return self.bufnr
@@ -426,6 +493,12 @@ local TablineCloseButton = {
 
 -- The final touch!
 local TablineBufferBlock = {
+  {
+    provider = '┃',
+    hl = function(self)
+      return self.is_active and { fg = 'cyan' } or { fg = 'normal_bg' }
+    end,
+  },
   TablineFileNameBlock,
   TablineCloseButton,
   Space,

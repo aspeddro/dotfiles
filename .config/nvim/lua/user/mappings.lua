@@ -26,7 +26,7 @@ for key, value in pairs { s = 'J', w = 'K', d = 'L', a = 'H' } do
 end
 
 -- cuts without affecting yank
-vim.keymap.set({ 'n', 'v' }, 'C', '"_C')
+vim.keymap.set({ 'n', 'v' }, 'c', '"_c')
 
 vim.keymap.set('t', '<esc>', [[<C-\><C-n>]])
 

@@ -5,7 +5,7 @@ vim.filetype.add {
     ['renv.lock'] = 'json',
     ['.Rhistory'] = 'r',
     -- R Packages DESCRIPTION file
-    ['DESCRIPTION'] = 'yaml'
+    ['DESCRIPTION'] = 'yaml',
   },
   extension = {
     pandoc = 'pandoc',
@@ -17,5 +17,6 @@ vim.filetype.add {
     mdx = 'markdown',
     re = 'reason',
     rei = 'reason',
+    mli = 'ocamlinterface',
   },
 }

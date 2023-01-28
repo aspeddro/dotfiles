@@ -1,6 +1,7 @@
 return {
   'nvim-lua/plenary.nvim',
 
+  -- { 'tpope/vim-fugitive', dependencies = { 'tpope/vim-rhubarb' } },
   -- { 'neoclide/coc.nvim', branch = 'release' },
 
   -- {
@@ -218,6 +219,13 @@ return {
     end,
   },
 
+  {
+    'ruifm/gitlinker.nvim',
+    config = function()
+      require 'user.plugins.gitlinker'
+    end,
+  },
+
   -- use {
   --   'akinsho/git-conflict.nvim',
   --   tag = '*',
@@ -227,9 +235,8 @@ return {
   -- }
 
   {
-    'aspeddro/nvim-autopairs',
-    dev = true,
-    -- 'windwp/nvim-autopairs',
+    'windwp/nvim-autopairs',
+    dev = false,
     config = function()
       require 'user.plugins.autopairs'
     end,
@@ -343,6 +350,14 @@ return {
       require('twilight').setup {
         context = 0,
       }
+    end,
+  },
+
+  {
+    'rhysd/conflict-marker.vim',
+    config = function()
+      vim.g.conflict_marker_enable_mappings = 0
+      vim.g.conflict_marker_enable_matchit = 0
     end,
   },
 
