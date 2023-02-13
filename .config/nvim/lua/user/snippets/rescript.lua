@@ -1,27 +1,33 @@
 local ls = require 'luasnip'
 local fmt = require('luasnip.extras.fmt').fmt
+local s = ls.snippet
 local i = ls.insert_node
 local t = ls.text_node
-local newline = require('user.snippets').shared.newline
 
-return {
-  doc = fmt(
-    [[
+ls.add_snippets('rescript', {
+  s(
+    'doc',
+    fmt(
+      [[
       /**
-       * {}
-       */
-      ]],
-    { i(0) }
-  ),
-  docmod = fmt(
-    [[
-      /***
-        {}
+      {}
       */
       ]],
-    { i(0) }
+      { i(0) }
+    )
   ),
-  switch = {
+  s(
+    'docmod',
+    fmt(
+      [[
+      /***
+      {}
+      */
+      ]],
+      { i(0) }
+    )
+  ),
+  s('switch', {
     t { 'switch ' },
     i(1, ''),
     t { ' {', '| ' },
@@ -30,66 +36,78 @@ return {
     i(3, ''),
     t { '', '}' },
     i(0),
-  },
-  module = {
+  }),
+  s('module', {
     t { 'module ' },
     i(1, ''),
     t { ' = {', '\t' },
     i(2),
-    newline '}',
+    t { '', '}' },
     i(0),
-  },
-  moduletype = {
+  }),
+  s('moduletype', {
     t { 'module type ' },
     i(1, ''),
     t { ' = {', '\t' },
     i(2),
-    newline '}',
+    t { '', '}' },
     i(0),
-  },
-  externalobj = fmt([[@val external {}: {} = "{}"]], {
-    i(1, 'setTimeout'),
-    i(2, '(unit => unit, int) => float'),
-    i(0, 'setTimeout'),
   }),
-  externalglobal = fmt([[@scope("{}") @val external {}: {} = "{}"]], {
-    i(1, 'Math'),
-    i(2, 'random'),
-    i(3, 'unit => float'),
-    i(0, 'random'),
-  }),
-  externalmod = fmt([[@module("{}") external {}: {} = "{}"]], {
-    i(1, 'path'),
-    i(2, 'dirname'),
-    i(3, 'string => string'),
-    i(0, 'dirname'),
-  }),
-  externalmodd = fmt([[@module external {}: {} = "{}"]], {
-    i(1, 'leftPad'),
-    i(2, '(string, int) => string'),
-    i(3, 'leftPad'),
-  }),
-  component = {
+  s(
+    'externalobj',
+    fmt([[@val external {}: {} = "{}"]], {
+      i(1, 'setTimeout'),
+      i(2, '(unit => unit, int) => float'),
+      i(0, 'setTimeout'),
+    })
+  ),
+  s(
+    'externalglobal',
+    fmt([[@scope("{}") @val external {}: {} = "{}"]], {
+      i(1, 'Math'),
+      i(2, 'random'),
+      i(3, 'unit => float'),
+      i(0, 'random'),
+    })
+  ),
+  s(
+    'externalmod',
+    fmt([[@module("{}") external {}: {} = "{}"]], {
+      i(1, 'path'),
+      i(2, 'dirname'),
+      i(3, 'string => string'),
+      i(0, 'dirname'),
+    })
+  ),
+  s(
+    'externalmodd',
+    fmt([[@module external {}: {} = "{}"]], {
+      i(1, 'leftPad'),
+      i(2, '(string, int) => string'),
+      i(3, 'leftPad'),
+    })
+  ),
+  s('component', {
     t { '@react.component', '' },
-    'let make = (',
+    t 'let make = (',
     i(1, ''),
-    ') => {',
-    newline '\t',
+    t ') => {',
+    t { '', '\t' },
     i(2),
-    newline '}',
+    t { '', '}' },
     i(0),
-  },
-  ['for'] = {
-    'for ',
+  }),
+  s('for', {
+    t 'for ',
     i(1),
-    ' in ',
+    t ' in ',
     i(2),
-    ' to ',
+    t ' to ',
     i(3),
-    ' {',
-    newline '\t',
+    t ' {',
+    t { '', '\t' },
     i(4),
-    newline '}',
+    t { '', '}' },
     i(0),
-  },
-}
+  }),
+})

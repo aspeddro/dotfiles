@@ -31,8 +31,7 @@ cmp.setup {
   formatting = {
     fields = { 'kind', 'abbr', 'menu' },
     format = function(entry, vim_item)
-      vim_item.kind = require('lspkind').presets.codicons[vim_item.kind] or ''
-      vim_item.menu = ({
+      local menu = ({
         nvim_lsp = '[LSP]',
         buffer = '[Buf]',
         luasnip = '[Snip]',
@@ -41,6 +40,9 @@ cmp.setup {
         git = '[Git]',
         cmp_pandoc = '[Pandoc]',
       })[entry.source.name]
+
+      vim_item.menu = vim_item.kind .. (menu ~= nil and ' ' .. menu or '')
+      vim_item.kind = require('lspkind').presets.codicons[vim_item.kind] or ''
       return vim_item
     end,
   },

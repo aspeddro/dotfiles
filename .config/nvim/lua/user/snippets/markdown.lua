@@ -1,14 +1,14 @@
 local ls = require 'luasnip'
 local t = ls.text_node
 local i = ls.insert_node
-local newline = require('user.snippets').shared.newline
+local s = ls.snippet
 
-return {
-  codeblock = {
+ls.add_snippets('markdown', {
+  s('codeblock', {
     t { '```' },
     i(1),
-    newline '',
+    t { '', '' },
     i(2),
-    newline '```',
-  },
-}
+    t { '', '' },
+  }),
+})

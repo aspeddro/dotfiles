@@ -1,4 +1,5 @@
 local lspconfig = require 'lspconfig'
+local util = lspconfig.util
 
 require 'user.lsp.handlers'
 require 'user.lsp.commands'
@@ -32,24 +33,6 @@ local on_attach = function(client, bufnr)
   -- vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   if client.server_capabilities.documentFormattingProvider then
-    -- local group =
-    --   vim.api.nvim_create_augroup('LSP/documentFormat', { clear = true })
-    -- vim.api.nvim_create_autocmd('BufWritePre', {
-    --   group = group,
-    --   callback = function()
-    --     vim.lsp.buf.format {
-    --       timeout_ms = 2000,
-    --       async = true,
-    --     }
-    --   end,
-    --   buffer = bufnr,
-    -- })
-    -- vim.api.nvim_buf_create_user_command(bufnr, 'FormatLSP', function()
-    --   vim.lsp.buf.format {
-    --     timeout_ms = 2000,
-    --     async = true,
-    --   }
-    -- end, { nargs = 0 })
     keymap_set('<space>f', function()
       vim.lsp.buf.format {
         timeout_ms = 2000,
@@ -78,9 +61,10 @@ local on_attach = function(client, bufnr)
     })
   end
 
-  if client.server_capabilities.inlayHintProvider then
-    require('lsp-inlayhints').on_attach(client, bufnr)
-  end
+  -- ERROR: https://github.com/simrat39/inlay-hints.nvim/issues/10
+  -- if client.server_capabilities.inlayHintProvider then
+  --   require('lsp-inlayhints').on_attach(client, bufnr)
+  -- end
 
   if client.server_capabilities.colorProvider then
     require('document-color').buf_attach(bufnr)
@@ -114,8 +98,6 @@ local on_attach = function(client, bufnr)
       fix_pos = false,
     }, bufnr)
   end
-
-  require('rescript-tools').on_attach(client, bufnr)
 
   keymap_set('gD', vim.lsp.buf.declaration)
 
@@ -179,41 +161,249 @@ local on_attach = function(client, bufnr)
 
     vim.cmd 'botright copen'
   end)
-end;
+end
 
-(function()
-  local servers = require 'user.lsp.servers'
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+capabilities.textDocument.completion.completionItem.resolveSupport = {
+  properties = {
+    'documentation',
+    'detail',
+    'additionalTextEdits',
+  },
+}
+capabilities.textDocument.colorProvider = {
+  dynamicRegistration = true,
+}
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
-  for server_name, server in pairs(servers) do
-    local ok, config =
-      pcall(require, 'lspconfig.server_configurations.' .. server_name)
+local flags = {
+  -- This is the default in Nvim 0.7+
+  debounce_text_changes = 150,
+}
 
-    if not ok then
-      vim.notify('Server ' .. server_name .. ' not found', vim.log.levels.ERROR)
-      return
-    end
-
-    local capabilities = vim.lsp.protocol.make_client_capabilities()
-    capabilities.textDocument.completion.completionItem.snippetSupport = true
-    capabilities.textDocument.completion.completionItem.resolveSupport = {
-      properties = {
-        'documentation',
-        'detail',
-        'additionalTextEdits',
+lspconfig.lua_ls.setup {
+  on_attach = on_attach,
+  flags = flags,
+  capabilities = capabilities,
+  settings = {
+    Lua = {
+      version = 'LuaJIT',
+      completion = { callSnippet = 'Disable' },
+      workspace = {
+        library = vim.api.nvim_get_runtime_file('', true),
+        checkThirdParty = false,
       },
-    }
-    capabilities.textDocument.colorProvider = {
-      dynamicRegistration = true,
-    }
+      diagnostics = {
+        globals = {
+          'vim',
+          'it',
+          'before_each',
+          'after_each',
+          'describe',
+          'jit',
+        },
+      },
+      format = {
+        enable = false,
+      },
+      telemetry = {
+        enable = false,
+      },
+    },
+  },
+}
 
-    capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+require('typescript').setup {
+  disable_commands = false,
+  debug = false,
+  go_to_source_definition = {
+    fallback = true, -- fall back to standard LSP definition on failure
+  },
+  server = {
+    on_attach = on_attach,
+    flags = flags,
+    capabilities = capabilities,
+  },
+}
 
-    server = vim.tbl_deep_extend('force', config.default_config, server)
-    server = vim.tbl_deep_extend('force', {
-      on_attach = on_attach,
-      capabilities = capabilities,
-    }, server)
+lspconfig.r_language_server.setup {
+  on_attach = on_attach,
+  flags = flags,
+  capabilities = capabilities,
+}
 
-    lspconfig[server_name].setup(server)
-  end
-end)()
+lspconfig.rescriptls.setup {
+  on_attach = on_attach,
+  flags = flags,
+  capabilities = capabilities,
+  cmd = false and {
+    'node',
+    util.path.join {
+      vim.fn.expand '~/Desktop',
+      'projects',
+      'rescript-vscode',
+      'server',
+      'out',
+      'server.js',
+    },
+    '--stdio',
+  } or { 'rescript-lsp', '--stdio' },
+  init_options = {
+    extensionConfiguration = {
+      binaryPath = nil,
+      platformPath = nil,
+      askToStartBuild = false,
+      codeLens = true,
+      signatureHelp = {
+        enable = true,
+      },
+      inlayHints = {
+        enable = false,
+      },
+    },
+  },
+  commands = {
+    ResOpenCompiled = {
+      require('rescript-tools').open_compiled,
+      description = 'Open Compiled JS',
+    },
+    ResCreateInterface = {
+      require('rescript-tools').create_interface,
+      description = 'Create Interface file',
+    },
+    ResSwitchImplInt = {
+      require('rescript-tools').switch_impl_intf,
+      description = 'Switch Implementation/Interface',
+    },
+  },
+}
+
+lspconfig.texlab.setup {
+  on_attach = on_attach,
+  flags = flags,
+  capabilities = capabilities,
+  settings = {
+    texlab = {
+      build = {
+        executable = 'tectonic',
+        args = { '%f', '--synctex' },
+        onSave = true,
+        forwardSearchAfter = true,
+        isContinuous = false,
+      },
+      forwardSearch = {
+        onSave = false,
+        executable = 'evince-synctex',
+        args = { '-f', '%l', '%p', os.getenv 'EDITOR' or 'nvim' },
+      },
+    },
+  },
+}
+
+lspconfig.jsonls.setup {
+  on_attach = on_attach,
+  flags = flags,
+  capabilities = capabilities,
+  settings = {
+    json = {
+      schemas = require('schemastore').json.schemas(),
+      validate = { enable = true },
+    },
+  },
+}
+
+lspconfig.html.setup {
+  on_attach = on_attach,
+  flags = flags,
+  capabilities = capabilities,
+}
+lspconfig.cssls.setup {
+  on_attach = on_attach,
+  flags = flags,
+  capabilities = capabilities,
+}
+lspconfig.yamlls.setup {
+  on_attach = on_attach,
+  flags = flags,
+  capabilities = capabilities,
+}
+
+lspconfig.ocamllsp.setup {
+  cmd = { 'opam', 'exec', '--', 'ocamllsp' },
+  filetypes = vim.list_extend(
+    require('lspconfig.server_configurations.ocamllsp').default_config.filetypes,
+    { 'ocamlinterface' }
+  ),
+  on_attach = on_attach,
+  flags = flags,
+  capabilities = capabilities,
+}
+
+lspconfig.pyright.setup {
+  on_attach = on_attach,
+  flags = flags,
+  capabilities = capabilities,
+}
+
+lspconfig.taplo.setup {
+  on_attach = on_attach,
+  flags = flags,
+  capabilities = capabilities,
+}
+lspconfig.vimls.setup {
+  on_attach = on_attach,
+  flags = flags,
+  capabilities = capabilities,
+}
+
+lspconfig.tailwindcss.setup {
+  on_attach = on_attach,
+  flags = flags,
+  capabilities = capabilities,
+  root_dir = util.root_pattern('tailwind.config.js', 'tailwind.config.ts'),
+}
+
+lspconfig.bashls.setup {
+  on_attach = on_attach,
+  flags = flags,
+  capabilities = capabilities,
+}
+
+lspconfig.marksman.setup {
+  on_attach = on_attach,
+  flags = flags,
+  capabilities = capabilities,
+  single_file_support = true,
+}
+
+lspconfig.rust_analyzer.setup {
+  on_attach = on_attach,
+  flags = flags,
+  capabilities = capabilities,
+  settings = {
+    ['rust-analyzer'] = {
+      lens = {
+        run = true,
+        debug = true,
+      },
+      checkOnSave = {
+        enable = true,
+        command = 'clippy',
+      },
+    },
+  },
+}
+
+lspconfig.clangd.setup {
+  on_attach = on_attach,
+  flags = flags,
+  capabilities = capabilities,
+}
+
+lspconfig.elixirls.setup {
+  cmd = { 'elixir-ls' },
+  on_attach = on_attach,
+  flags = flags,
+  capabilities = capabilities,
+}

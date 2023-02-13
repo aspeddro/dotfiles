@@ -2,7 +2,7 @@
   (#make-range! "range" @_start @_end))
 
 (([
-  (let_binding)
+  (let_declaration)
   (call_expression)
   (expression_statement)
   (open_statement)
@@ -38,7 +38,7 @@
   (function)
   (module_declaration)
   (switch_match)
-  (switch_pattern_condition)
+  (guard)
 
   (template_string)
   (template_substitution)

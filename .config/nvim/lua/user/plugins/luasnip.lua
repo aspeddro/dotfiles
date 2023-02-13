@@ -1,5 +1,4 @@
 local ls = require 'luasnip'
-local snips = require 'user.snippets'
 
 ls.config.set_config {
   -- prevent back to snippet when leaving it
@@ -7,16 +6,12 @@ ls.config.set_config {
   updateevents = 'TextChanged,TextChangedI',
 }
 
-for _, filetype in pairs {
-  'all',
-  'lua',
-  'ocaml',
-  'javascript',
-  'markdown',
-  'rescript',
-} do
-  ls.add_snippets(filetype, snips.filetype[filetype])
-end
+require 'user.snippets.all'
+require 'user.snippets.lua'
+require 'user.snippets.markdown'
+require 'user.snippets.rescript'
+require 'user.snippets.javascript'
+-- require('user.snippets.ocaml')
 
 ls.filetype_extend('rmd', { 'markdown' })
 ls.filetype_extend('pandoc', { 'markdown' })

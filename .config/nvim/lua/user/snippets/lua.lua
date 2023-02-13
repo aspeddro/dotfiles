@@ -1,20 +1,22 @@
 local ls = require 'luasnip'
 local i = ls.insert_node
+local s = ls.snippet
+local t = ls.text_node
 local fmt = require('luasnip.extras.fmt').fmt
-local newline = require('user.snippets').shared.newline
 
-return {
-  ignore = '-- stylua: ignore',
-  req = fmt([[local {} = require('{}')]], { i(1), i(0) }),
-  lf = {
-    desc = 'table function',
-    'local ',
+ls.add_snippets('lua', {
+  s('ignore', {
+    t '--stylua: ignore',
+  }),
+  s('req', fmt([[local {} = require('{}')]], { i(1), i(0) })),
+  s('lf', {
+    t 'local ',
     i(1),
-    ' = function(',
+    t ' = function(',
     i(2),
-    ')',
-    newline '  ',
+    t ')',
+    t { '', '\t' },
     i(0),
-    newline 'end',
-  },
-}
+    t { '', 'end' },
+  }),
+})

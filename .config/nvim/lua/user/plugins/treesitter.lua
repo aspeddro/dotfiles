@@ -127,6 +127,24 @@ require('nvim-treesitter.configs').setup {
   },
   autopairs = {
     enable = true,
+    filetypes = {
+      'html',
+      'javascript',
+      'typescript',
+      'javascriptreact',
+      'typescriptreact',
+      'svelte',
+      'vue',
+      'tsx',
+      'jsx',
+      -- 'rescript',
+      'xml',
+      'php',
+      'markdown',
+      'glimmer',
+      'handlebars',
+      'hbs',
+    },
   },
   autotag = {
     enable = true,
@@ -226,10 +244,10 @@ require('nvim-treesitter.configs').setup {
 -- }
 -- require('hlargs').enable()
 
-vim.keymap.set('n', '<leader>tp', ':TSPlaygroundToggle<cr>', { silent = true })
+vim.keymap.set('n', '<leader>tp', vim.cmd.TSPlaygroundToggle, { silent = true })
 vim.keymap.set(
   'n',
   '<leader>th',
-  ':TSHighlightCapturesUnderCursor<cr>',
+  vim.cmd.TSHighlightCapturesUnderCursor,
   { silent = true }
 )

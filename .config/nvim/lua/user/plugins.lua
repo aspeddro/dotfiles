@@ -21,6 +21,7 @@ return {
   },
 
   'tpope/vim-sleuth',
+  'tpope/vim-surround',
 
   -- use {
   --   'kylechui/nvim-surround',
@@ -89,7 +90,11 @@ return {
   {
     'williamboman/mason.nvim',
     config = function()
-      require('mason').setup()
+      require('mason').setup{
+        ui = {
+          height = 0.8
+        }
+      }
     end,
   },
 
@@ -132,6 +137,10 @@ return {
       require('glance').setup {}
     end,
   },
+
+  -- {
+  --   'williamboman/warden.nvim'
+  -- },
 
   {
     'hrsh7th/nvim-cmp',
@@ -376,4 +385,6 @@ return {
       vim.g.ocaml_highlight_operators = 1
     end,
   },
+
+  'jose-elias-alvarez/typescript.nvim',
 }

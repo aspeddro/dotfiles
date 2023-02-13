@@ -25,6 +25,7 @@ local colors = {
   git_add = u.get_highlight('String').fg,
   git_change = u.get_highlight('Function').fg,
   normal_bg = u.get_highlight('Normal').bg,
+  normal_fg = u.get_highlight('Normal').fg,
 }
 
 require('heirline').load_colors(colors)
@@ -260,7 +261,9 @@ local LSPActive = {
 }
 
 local Navic = {
-  condition = require('nvim-navic').is_available,
+  condition = function()
+    return require('nvim-navic').is_available()
+  end,
   update = 'CursorMoved',
   provider = function()
     return require('nvim-navic').get_location()

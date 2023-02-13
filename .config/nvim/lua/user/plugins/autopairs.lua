@@ -64,47 +64,47 @@ npairs.add_rules {
     return { pos[1] - 1, pos[2] }
   end)),
 
-  Rule('<', '>', { 'rust', 'typescript', 'typescriptreact' }):with_pair(
-    ts_conds.is_ts_node {
-      'type_identifier',
-      'parameters',
-      'let_declaration',
-      -- 'type_arguments',
-    }
-  ),
+  -- Rule('<', '>', { 'rust', 'typescript', 'typescriptreact' }):with_pair(
+  --   ts_conds.is_ts_node {
+  --     'type_identifier',
+  --     'parameters',
+  --     'let_declaration',
+  --     -- 'type_arguments',
+  --   }
+  -- ),
 
-  Rule('<', '>', 'lua'):with_pair(ts_conds.is_in_range(function(params)
-    if not params then
-      return false
-    end
-    local words_before_cursor =
-      vim.split(string.sub(params.line, 1, params.cursor[2]), ' ')
-    local last_word =
-      words_before_cursor[#words_before_cursor]:match '[a-zA-Z]+$'
-    if
-      (
-        (params.type == 'source' and params.lang == 'comment')
-        or params.type == 'comment'
-      ) and vim.tbl_contains({ 'array', 'table' }, last_word)
-    then
-      return true
-    end
-    return false
-  end, function()
-    local pos = vim.api.nvim_win_get_cursor(0)
-    return { pos[1] - 1, pos[2] - 1 }
-  end)),
+  -- Rule('<', '>', 'lua'):with_pair(ts_conds.is_in_range(function(params)
+  --   if not params then
+  --     return false
+  --   end
+  --   local words_before_cursor =
+  --     vim.split(string.sub(params.line, 1, params.cursor[2]), ' ')
+  --   local last_word =
+  --     words_before_cursor[#words_before_cursor]:match '[a-zA-Z]+$'
+  --   if
+  --     (
+  --       (params.type == 'source' and params.lang == 'comment')
+  --       or params.type == 'comment'
+  --     ) and vim.tbl_contains({ 'array', 'table' }, last_word)
+  --   then
+  --     return true
+  --   end
+  --   return false
+  -- end, function()
+  --   local pos = vim.api.nvim_win_get_cursor(0)
+  --   return { pos[1] - 1, pos[2] - 1 }
+  -- end)),
 
-  Rule('<', '>', 'rescript'):with_pair(ts_conds.is_in_range(function(params)
-    if not params then
-      return false
-    end
-    if params.type == 'type_identifier' then
-      return true
-    end
-    return false
-  end, function()
-    local pos = vim.api.nvim_win_get_cursor(0)
-    return { pos[1] - 1, pos[2] - 1 }
-  end)),
+  -- Rule('<', '>', 'rescript'):with_pair(ts_conds.is_in_range(function(params)
+  --   if not params then
+  --     return false
+  --   end
+  --   if params.type == 'type_identifier' then
+  --     return true
+  --   end
+  --   return false
+  -- end, function()
+  --   local pos = vim.api.nvim_win_get_cursor(0)
+  --   return { pos[1] - 1, pos[2] - 1 }
+  -- end)),
 }

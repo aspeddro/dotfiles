@@ -29,5 +29,5 @@
 ;   (template_string_content) @json)
 
 ; (((comment) @_doc_comment
-;   (#match? @_doc_comment "^/\\*\\*")) @markdown
+;   (#lua-match? @_doc_comment "^/\\*\\*")) @markdown
 ;   (#offset! @markdown 0 3 0 -3))
