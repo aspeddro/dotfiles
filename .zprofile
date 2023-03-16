@@ -16,6 +16,10 @@ export RSTUDIO_CHROMIUM_ARGUMENTS="--no-sandbox"
 
 export ARCH=x86_64
 
+export BEMENU_BACKEND="x11"
+# export BEMENU_BACKEND="wayland"
+
 if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
 	exec startx
+	# exec sway
 fi

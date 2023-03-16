@@ -22,8 +22,9 @@ autoload -U compinit && compinit
 
 source $ZSH/oh-my-zsh.sh
 
-
 export GPG_TTY=$(tty)
+
+export ANDROID_SDK_ROOT=$HOME/Android/Sdk
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
