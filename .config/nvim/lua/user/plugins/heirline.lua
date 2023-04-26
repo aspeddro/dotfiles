@@ -321,7 +321,7 @@ local BufferWindow = {
       vim.api.nvim_get_current_win()
     )
   end,
-  hl = { fg = 'gray' },
+  hl = { fg = 'comment' },
 }
 
 local StatusLine = {
@@ -451,17 +451,14 @@ local TablineFileNameBlock = {
   init = function(self)
     self.filename = vim.api.nvim_buf_get_name(self.bufnr)
   end,
-  hl = function()
-    return 'Normal'
-  end,
   on_click = {
-    callback = function(_, minwid, _, button)
+    callback = function(_, minwid, _, _)
       -- if button == 'm' then -- close on mouse middle click
       --   vim.api.nvim_buf_delete(minwid, { force = false })
       -- else
       --
       -- end
-      vim.api.nvim_win_set_buf(0, minwid)
+      -- vim.api.nvim_win_set_buf(0, minwid)
     end,
     minwid = function(self)
       return self.bufnr
@@ -499,7 +496,7 @@ local TablineBufferBlock = {
   {
     provider = '┃',
     hl = function(self)
-      return self.is_active and { fg = 'cyan' } or { fg = 'normal_bg' }
+      return self.is_active and { fg = 'orange' } or { fg = 'normal_bg' }
     end,
   },
   TablineFileNameBlock,
@@ -574,39 +571,48 @@ local TabLineOffset = {
 local TabLine = { TabLineOffset, BufferLine, TabPages }
 
 --WinBar
-
-vim.api.nvim_create_autocmd('User', {
-  pattern = 'HeirlineInitWinbar',
-  callback = function(args)
-    local buf = args.buf
-    local buftype =
-      vim.tbl_contains({ 'prompt', 'nofile', 'quickfix' }, vim.bo[buf].buftype)
-    local filetype =
-      vim.tbl_contains({ 'gitcommit', 'fugitive' }, vim.bo[buf].filetype)
-    if buftype or filetype then
-      vim.opt_local.winbar = nil
-    end
-  end,
-})
-
 local WinBars = {
   fallthrough = true,
-  { -- Hide the winbar for special buffers
-    condition = function()
-      return conditions.buffer_matches {
-        -- buftype = { 'nofile', 'prompt', 'help', 'quickfix' },
-        filetype = { 'NvimTree' },
-      }
-    end,
-    init = function()
-      vim.opt_local.winbar = nil
-    end,
-  },
   Space,
   Navic,
   Align,
+  {
+    provider = function()
+      local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ':.')
+      if filename == '' then
+        return EMPTY_FILENAME
+      end
+      return filename
+    end,
+    hl = { fg = 'comment' },
+  },
+  Space,
   BufferWindow,
   Space,
 }
 
-herline.setup { statusline = StatusLine, winbar = WinBars, tabline = TabLine }
+herline.setup {
+  statusline = StatusLine,
+  winbar = WinBars,
+  tabline = TabLine,
+  opts = {
+    -- if the callback returns true, the winbar will be disabled for that window
+    -- the args parameter corresponds to the table argument passed to autocommand callbacks. :h nvim_lua_create_autocmd()
+    disable_winbar_cb = function(args)
+      local buf = args.buf
+      local buftype = vim.tbl_contains(
+        { 'prompt', 'nofile', 'help', 'quickfix' },
+        vim.bo[buf].buftype
+      )
+      local filetype = vim.tbl_contains({
+        'gitcommit',
+        'fugitive',
+        'Trouble',
+        'packer',
+        'NvimTree',
+        'DiffviewFiles',
+      }, vim.bo[buf].filetype)
+      return buftype or filetype
+    end,
+  },
+}

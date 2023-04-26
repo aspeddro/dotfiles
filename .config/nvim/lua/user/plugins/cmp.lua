@@ -3,8 +3,8 @@ local cmp = require 'cmp'
 cmp.setup {
   window = {
     documentation = {
-      border = 'rounded',
-      winhighlight = 'Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None',
+      border = 'single',
+      winhighlight = 'Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:Visual,Search:None',
     },
   },
   snippet = {
@@ -91,14 +91,15 @@ cmp.setup.cmdline({ '/', '?' }, {
   },
 })
 
-cmp.setup.cmdline(':', {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = cmp.config.sources {
-    { name = 'path' },
-    {
-      name = 'cmdline',
-      max_item_count = 30,
-      keyword_length = 2,
-    },
-  },
-})
+-- Somethis completion not work
+-- cmp.setup.cmdline(':', {
+--   mapping = cmp.mapping.preset.cmdline(),
+--   sources = cmp.config.sources {
+--     { name = 'path' },
+--     {
+--       name = 'cmdline',
+--       max_item_count = 30,
+--       keyword_length = 2,
+--     },
+--   },
+-- })

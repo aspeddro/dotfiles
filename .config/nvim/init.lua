@@ -1,3 +1,5 @@
+vim.loader.enable()
+
 require 'user.disable'
 
 vim.cmd.colorscheme 'materialdarkerhc'

@@ -2,8 +2,7 @@
   "languageserver": {
     "rescript": {
       "enable": true,
-      "module": "~/Desktop/projects/rescript-vscode/server/out/server.js",
-      "args": ["--node-ipc"],
+      "module": "/home/pedro/Desktop/projects/rescript-vscode/_build/default/rescript-language-server/bin/main.exe",
       "filetypes": ["rescript"],
       "rootPatterns": ["bsconfig.json"]
     }

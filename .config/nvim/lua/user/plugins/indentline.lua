@@ -9,6 +9,8 @@ require('indent_blankline').setup {
     'glowpreview',
     'tsplayground',
     'help',
+    'lazy',
+    'mason',
   },
   context_patterns = {
     'class',

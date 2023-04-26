@@ -16,10 +16,10 @@
   ; (block)
   (type_declaration)
   (ternary_expression)
-] @indent
+] @indent.begin
 
 
-(try_expression (block) @indent)
+(try_expression (block) @indent.begin)
 
 ; (switch_expression) @auto
 
@@ -32,8 +32,8 @@
 
 ; align indent a ? {} : {}
 (ternary_expression
-  consequence: ((block) @aligned_indent (#set! "delimiter" "{"))
-  alternative: ((block) @aligned_indent (#set! "delimiter" "{")))
+  consequence: ((block) @indent.align (#set! "delimiter" "{"))
+  alternative: ((block) @indent.align (#set! "delimiter" "{")))
 
 
 
@@ -48,19 +48,19 @@
   ")"
   "}"
   "]"
-] @branch
-(block "{" @branch)
+] @indent.branch
+(block "{" @indent.branch)
 
-[ "]" "}" ")" ] @indent_end
+[ "]" "}" ")" ] @indent.end
 
 [
   (comment)
   (template_string)
-] @ignore
+] @indent.ignore
 
 [
   (variant_declaration)
   (ERROR)
-] @auto
+] @indent.auto
 
 

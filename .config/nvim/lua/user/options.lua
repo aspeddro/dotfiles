@@ -83,7 +83,7 @@ vim.opt.clipboard = 'unnamedplus'
 vim.opt.pumheight = 15
 vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
 
-vim.opt.equalalways = false
+vim.opt.equalalways = true
 
 vim.opt.formatoptions = vim.opt.formatoptions
   + {
@@ -113,11 +113,13 @@ vim.opt.showcmd = false
 vim.opt.showmatch = true
 vim.opt.splitbelow = true
 vim.opt.splitright = true
-vim.opt.cmdheight = 0
+vim.opt.cmdheight = 1
 vim.opt.laststatus = 3
 
+vim.opt.splitkeep = 'screen'
+
 vim.opt.title = true
-vim.opt.scrolloff = 10
+vim.opt.scrolloff = 20
 vim.opt.confirm = false
 vim.opt.autowrite = false -- enable auto write when change buffer
 vim.opt.joinspaces = false -- No double spaces with join after a dot

@@ -10,8 +10,8 @@ M.base = {
   Normal = { fg = c.fg, bg = c.bg },
   -- NormalNC = { fg = c.fg, bg = c.bg_alt }, -- normal text in non-current windows
 
-  NormalFloat = { bg = c.bg, fg = c.fg },
-  FloatBorder = { fg = c.line_number, bg = c.none },
+  NormalFloat = { fg = c.fg, bg = c.bg_alt },
+  FloatBorder = { fg = c.bg_alt, bg = c.bg_alt },
 
   SignColumn = { bg = c.bg, fg = c.fg },
 
@@ -107,6 +107,7 @@ M.base = {
   DiagnosticWarn = { fg = c.yellow },
   DiagnosticInfo = { fg = c.paleblue },
   DiagnosticHint = { fg = c.paleblue },
+  DiagnosticUnnecessary = { undercurl = true },
   DiagnosticVirtualTextHint = { fg = c.gray },
 
   DiagnosticFloatingHint = { fg = c.fg },
@@ -122,7 +123,7 @@ M.syntax = {
   Comment = { fg = c.comment },
   Variable = { fg = c.fg }, -- #D6D6D6
   String = { fg = c.green },
-  Identifier = { fg = c.blue },
+  Identifier = { fg = c.fg },
   Function = { fg = c.blue },
   Keyword = { fg = c.purple },
   Conditional = { fg = c.purple },
@@ -214,8 +215,20 @@ M.lsp = {
   LspSignatureActiveParameter = { link = 'LspCodeLens' },
 }
 
+M.tokens = {
+  -- semantic tokens
+  ['@lsp.type.property'] = { link = '@field' },
+  ['@lsp.type.namespace'] = { link = '@namespace' },
+  ['@lsp.type.member'] = { link = '@field' },
+  ['@lsp.typemod.enum.declaration'] = { link = 'Type' },
+  ['@lsp.typemod.struct.declaration'] = { link = 'Type' },
+
+  -- rescript lsp emit tag as interface
+  ['@lsp.type.interface.rescript'] = { link = '@tag' },
+}
+
 M.plugins = {
-  TelescopeBorder = { link = 'FloatBorder' },
+  TelescopeBorder = { fg = c.line_number, bg = c.bg },
   TelescopeSelection = { link = 'Identifier' },
 
   NvimTreeNormal = { fg = c.fg_sidebar, bg = c.bg_alt },
@@ -242,6 +255,14 @@ M.plugins = {
   ConflictMarkerTheirs = { bg = '#344f69' },
   ConflictMarkerEnd = { bg = '#2f628e' },
   ConflictMarkerCommonAncestorsHunk = { bg = '#754a81' },
+
+  TSRainbowRed = { fg = c.rainbow[1] },
+  TSRainbowYellow = { fg = c.rainbow[2] },
+  TSRainbowBlue = { fg = c.rainbow[3] },
+  TSRainbowOrange = { fg = c.rainbow[1] },
+  TSRainbowGreen = { fg = c.rainbow[2] },
+  TSRainbowViolet = { fg = c.rainbow[3] },
+  TSRainbowCyan = { fg = c.rainbow[1] },
 }
 
 for _, value in pairs(M) do

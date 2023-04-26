@@ -1,45 +1,30 @@
 local install = require 'nvim-treesitter.install'
 local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
-local ft_to_parser = require('nvim-treesitter.parsers').filetype_to_parsername
-local c = require 'user.color'
 
 install.prefer_git = true
 
-ft_to_parser.dune = 'clojure'
+-- Extend clojure parse to dune file
+vim.treesitter.language.register('clojure', 'dune')
 
 parser_config.rescript = {
   install_info = {
     url = '~/Desktop/projects/tree-sitter-rescript',
-    -- branch = 'main',
     files = { 'src/parser.c', 'src/scanner.c' },
     requires_generate_from_grammar = true,
   },
   filetype = 'rescript',
 }
 
-local disable = function(_, bufnr)
+local disable = function(lang, bufnr)
   local name = vim.api.nvim_buf_get_name(bufnr)
-  local is_minified_js = vim.tbl_contains({ '.min.js' }, name:match '.min.js')
 
-  if is_minified_js then
+  if lang == 'javascript' and vim.endswith(name, '.min.js') then
     return true
   end
 
   local lines = vim.api.nvim_buf_line_count(bufnr)
 
-  if lines > 10000 then
-    return true
-  end
-
-  for _, line in
-    ipairs(vim.api.nvim_buf_get_lines(0, 0, math.ceil(1 / 3 * lines), true))
-  do
-    if line:len() > 5000 then
-      return true
-    end
-  end
-
-  return false
+  return lines > 2000
 end
 
 require('nvim-treesitter.configs').setup {
@@ -100,6 +85,7 @@ require('nvim-treesitter.configs').setup {
     'cmake',
     'prisma',
     'help',
+    'vimdoc',
     'swift',
     -- Git
     'gitcommit',
@@ -115,12 +101,15 @@ require('nvim-treesitter.configs').setup {
   },
   rainbow = {
     enable = false,
-    disable = disable,
-    extended_mode = {
-      latex = false,
-    },
-    max_file_lines = nil,
-    colors = vim.tbl_flatten { c.rainbow, c.rainbow },
+    query = 'rainbow-parens',
+    -- Highlight the entire buffer all at once
+    strategy = require 'ts-rainbow.strategy.global',
+    -- disable = disable,
+    -- extended_mode = {
+    --   latex = false,
+    -- },
+    -- max_file_lines = nil,
+    -- colors = vim.tbl_flatten { c.rainbow, c.rainbow },
   },
   indent = {
     enable = true,
@@ -244,10 +233,10 @@ require('nvim-treesitter.configs').setup {
 -- }
 -- require('hlargs').enable()
 
-vim.keymap.set('n', '<leader>tp', vim.cmd.TSPlaygroundToggle, { silent = true })
-vim.keymap.set(
-  'n',
-  '<leader>th',
-  vim.cmd.TSHighlightCapturesUnderCursor,
-  { silent = true }
-)
+-- vim.keymap.set('n', '<leader>tp', vim.cmd.TSPlaygroundToggle, { silent = true })
+-- vim.keymap.set(
+--   'n',
+--   '<leader>th',
+--   vim.cmd.TSHighlightCapturesUnderCursor,
+--   { silent = true }
+-- )

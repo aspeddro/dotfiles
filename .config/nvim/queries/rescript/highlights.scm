@@ -5,52 +5,40 @@
 (value_identifier) @variable
 
 ; Escaped identifiers like \"+."
-; ((value_identifier) @constant.macro
-;  (#match? @constant.macro "^\\.*$"))
+((value_identifier) @constant.macro
+ (#match? @constant.macro "^\\.*$"))
 
-(type_identifier) @type
+[
+  (type_identifier)
+  (list)
+  (list_pattern)
+] @type
 
-[(list) (list_pattern)] @function.builtin
-; (list_pattern "list{" @function.builtin)
-; ; To ensure that the closing curly bracket is the same color (scope) as the opening curly bracket
-; (list "}" @function.builtin (#set! "priority" 105))
-; (list_pattern "}" @function.builtin (#set! "priority" 105))
-
-((type_identifier) @type.builtin
- (#any-of? @type.builtin
-  "int" "float" "string" "bool" "array" "list" "promise"))
-
-(unit_type) @type.builtin
-
-(unit) @type.builtin
-; (unit ["(" ")"]) @type.builtin
+[
+  (unit_type)
+  (unit)
+] @type.builtin
 
 [
   (variant_identifier)
   (polyvar_identifier)
 ] @constructor
 
-; (record_type_field (property_identifier) @property)
-; (record_field (property_identifier) @property)
-; (object (field (property_identifier) @property))
-; (object_type (field (property_identifier) @property))
-; (member_expression (property_identifier) @property)
+(polyvar_type_pattern "#" @constructor)
 
-(_ (property_identifier) @property)
-(_ (property_identifier (_) (value_identifier) @property))
-
+(record_type_field (property_identifier) @property)
+(record_field (property_identifier) @property)
+(record_field (property_identifier (_) (value_identifier) @property))
+(object (field (property_identifier) @property))
+(object_type (field (property_identifier) @property))
+(member_expression (property_identifier) @property)
 (module_identifier) @namespace
 
 ; Parameters
 ;----------------
 
-(parameter (value_identifier) @parameter)
-(labeled_parameter (value_identifier) @parameter)
-(function parameter: (value_identifier) @parameter)
-
 ; (list_pattern (value_identifier) @parameter)
 ; (spread_pattern (value_identifier) @parameter)
-; (formal_parameters (value_identifier) @parameter)
 
 ; String literals
 ;----------------
@@ -61,10 +49,10 @@
 ] @string
 
 (template_substitution
-  "${" @punctuation.special
-  "}" @punctuation.special)
+  "${" @punctuation.bracket
+  "}" @punctuation.bracket) @embedded
 
-(character) @character
+(character) @string.special
 (escape_sequence) @string.escape
 
 ; Other literals
@@ -80,41 +68,31 @@
 ; Functions
 ;----------
 
-(let_binding
-  (value_identifier) @function
-  [
-    (function)
-    ; (type_annotation)
-  ])
+; parameter(s) in parens
+; [
+;  (parameter (value_identifier))
+;  (labeled_parameter (value_identifier))
+;  ; single parameter with no parens
+;  (function parameter: (value_identifier))
+; ] @parameter
 
-(call_expression
-  function: (value_identifier) @function.call)
+(parameter (value_identifier) @parameter)
+(labeled_parameter (value_identifier) @parameter)
 
-(call_expression
-  function: (value_identifier_path (value_identifier) @function.call))
+; single parameter with no parens
+(function parameter: (value_identifier) @parameter)
 
-(call_expression
-  function: (_ (property_identifier) @function.call))
-
-
-(pipe_expression (_) (value_identifier) @function)
-(pipe_expression (_) (_ (value_identifier) @function))
-
-; (function parameter: (value_identifier) @parameter)
-; (labeled_argument
-;   label: (value_identifier) @parameter)
-
-; (labeled_parameter (value_identifier) @parameter)
-
+; first-level descructuring (required for nvim-tree-sitter as it only matches direct
+; children and the above patterns do not match destructuring patterns in NeoVim)
+(parameter (tuple_pattern (tuple_item_pattern (value_identifier) @parameter)))
+(parameter (array_pattern (value_identifier) @parameter))
+(parameter (record_pattern (value_identifier) @parameter))
 
 ; Meta
 ;-----
 
-[
- "@"
- "@@"
- (decorator_identifier)
-] @attribute
+; (decorator "@" @attribute)
+(decorator_identifier) @attribute
 
 
 [
@@ -122,16 +100,14 @@
   (extension_identifier)
 ] @prepoc
 
-
 ; Misc
 ;-----
 
-; (subscript_expression index: (string) @property)
-(polyvar_type_pattern "#" @constructor)
+(subscript_expression index: (string) @property)
 
 [
-  "include"
-  "open"
+  ("include")
+  ("open")
 ] @include
 
 [
@@ -140,7 +116,6 @@
   "external"
   "let"
   "module"
-  "of"
   "mutable"
   "private"
   "rec"
@@ -149,13 +124,14 @@
   "assert"
   "await"
   "with"
-  "unpack"
-  "module"
   "lazy"
   "constraint"
+  "of"
 ] @keyword
 
 ((function "async" @keyword))
+
+(module_unpack "unpack" @keyword)
 
 [
   "if"
@@ -186,7 +162,6 @@
   "."
   ","
   "|"
-  ";"
 ] @punctuation.delimiter
 
 [
@@ -213,6 +188,7 @@
   "->"
   "|>"
   ":>"
+  "+="
   (uncurry)
 ] @operator
 
@@ -241,6 +217,7 @@
   "~"
   "?"
   "=>"
+  ".."
   "..."
 ] @punctuation.special
 

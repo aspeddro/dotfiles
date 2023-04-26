@@ -1,5 +1,5 @@
 local float_options = {
-  border = 'rounded',
+  border = 'single',
   max_width = math.ceil(vim.api.nvim_win_get_width(0) * 0.6),
   max_height = math.ceil(vim.api.nvim_win_get_height(0) * 0.8),
 }
@@ -8,10 +8,7 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] =
   vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
     virtual_text = true,
     signs = false,
-    -- underline = true,
-    underline = {
-      severity_limit = 'Warning',
-    },
+    underline = true,
     update_in_insert = false,
     severity_sort = true,
   })

@@ -8,10 +8,10 @@ ls.config.set_config {
 
 require 'user.snippets.all'
 require 'user.snippets.lua'
-require 'user.snippets.markdown'
+-- require 'user.snippets.markdown'
 require 'user.snippets.rescript'
 require 'user.snippets.javascript'
--- require('user.snippets.ocaml')
+require 'user.snippets.ocaml'
 
 ls.filetype_extend('rmd', { 'markdown' })
 ls.filetype_extend('pandoc', { 'markdown' })

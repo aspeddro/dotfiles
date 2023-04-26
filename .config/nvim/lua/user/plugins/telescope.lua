@@ -34,9 +34,6 @@ require('telescope').setup {
       override_file_sorter = true,
       case_mode = 'smart_case',
     },
-    recent_files = {
-      only_cwd = true,
-    },
   },
 }
 

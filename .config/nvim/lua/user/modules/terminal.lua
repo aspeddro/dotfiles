@@ -1,4 +1,5 @@
---TODOS:
+--TODO:
+--0. Save position
 --1. Check if a terminal is in watch mode
 --2. If more than one terminal is found then select one to run codelens
 --3. Save position to restore using TermToggle?
@@ -29,8 +30,8 @@ M.get_direction = function(dir)
   local choice = dir == 'right' and { 'vsplit' } or { 'split' }
 
   if not is_term(vim.api.nvim_get_current_buf()) then
-    local width = math.ceil(vim.o.columns * 0.4)
-    local height = math.ceil(vim.o.lines * 0.3)
+    local width = math.ceil(vim.o.columns * 0.35)
+    local height = math.ceil(vim.o.lines * 0.2)
     vim.list_extend(
       choice,
       dir == 'right' and { 'vertical resize ' .. width }
@@ -78,6 +79,7 @@ M.new = function(opts)
 
   --NOTE: To identify terminal created by this module
   vim.api.nvim_buf_set_var(bufnr, 'termplugin', true)
+  vim.api.nvim_buf_set_option(bufnr, 'filetype', 'term')
 
   vim.api.nvim_win_set_buf(winr, bufnr)
 
@@ -131,18 +133,6 @@ end, {
   nargs = '*',
   complete = function()
     return DIRECTIONS
-  end,
-})
-
-local id_term_plugin_enter =
-  vim.api.nvim_create_augroup('TermEnter', { clear = true })
-
-vim.api.nvim_create_autocmd('BufEnter', {
-  group = id_term_plugin_enter,
-  callback = function(args)
-    if is_term(args.buf) then
-      vim.cmd.startinsert()
-    end
   end,
 })
 

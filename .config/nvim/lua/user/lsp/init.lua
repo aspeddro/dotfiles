@@ -14,7 +14,7 @@ vim.diagnostic.config {
   severity_sort = true,
   float = {
     show_header = true,
-    border = 'rounded',
+    border = 'single',
     focusable = false,
     source = 'always',
   },
@@ -29,6 +29,7 @@ local on_attach = function(client, bufnr)
       { buffer = bufnr, desc = 'LSP ' .. (opts and opts.desc or '') }
     )
   end
+
   -- Enable completion triggered by <c-x><c-o>
   -- vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
@@ -38,7 +39,7 @@ local on_attach = function(client, bufnr)
         timeout_ms = 2000,
         async = true,
       }
-    end)
+    end, { desc = 'Format' })
   end
 
   if client.server_capabilities.documentHighlightProvider then
@@ -50,21 +51,15 @@ local on_attach = function(client, bufnr)
       group = group,
     })
     vim.api.nvim_create_autocmd('CursorMoved', {
-      callback = function()
-        --NOTE: Prevent Error executing vim.schedule lua callback: /usr/share/nvim/runtime/lua/vim/uri.lua:86: Invalid buffer id: number
-        if vim.api.nvim_buf_is_loaded(bufnr) then
-          vim.lsp.buf.clear_references()
-        end
-      end,
+      callback = vim.lsp.buf.clear_references,
       buffer = bufnr,
       group = group,
     })
   end
 
-  -- ERROR: https://github.com/simrat39/inlay-hints.nvim/issues/10
-  -- if client.server_capabilities.inlayHintProvider then
-  --   require('lsp-inlayhints').on_attach(client, bufnr)
-  -- end
+  if client.server_capabilities.inlayHintProvider then
+    require('lsp-inlayhints').on_attach(client, bufnr)
+  end
 
   if client.server_capabilities.colorProvider then
     require('document-color').buf_attach(bufnr)
@@ -76,16 +71,15 @@ local on_attach = function(client, bufnr)
 
   if client.server_capabilities.codeLensProvider then
     local group = vim.api.nvim_create_augroup('LSP/CodeLens', { clear = true })
-    vim.api.nvim_create_autocmd({ 'InsertLeave', 'CursorHold' }, {
+    vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'CursorHold' }, {
       group = group,
-      callback = vim.lsp.codelens.refresh,
+      callback = function(arg)
+        -- Error executing vim.schedule lua callback: /usr/share/nvim/runtime/lua/vim/lsp/codelens.lua:188: Invalid buffer id: 142
+        if vim.api.nvim_buf_is_valid(arg.buf) then
+          vim.lsp.codelens.refresh()
+        end
+      end,
       buffer = bufnr,
-    })
-    vim.api.nvim_create_autocmd('BufEnter', {
-      group = group,
-      callback = vim.lsp.codelens.refresh,
-      buffer = bufnr,
-      once = true,
     })
   end
 
@@ -99,42 +93,64 @@ local on_attach = function(client, bufnr)
     }, bufnr)
   end
 
-  keymap_set('gD', vim.lsp.buf.declaration)
+  keymap_set('gD', vim.lsp.buf.declaration, { desc = 'Declaration' })
 
   keymap_set('gd', function()
     -- vim.lsp.buf.definition
     require('glance').open 'definitions'
-  end)
+  end, { desc = 'Definition' })
 
-  -- keymap_set('gp', require('goto-preview').goto_preview_definition)
-
-  keymap_set('K', vim.lsp.buf.hover)
+  keymap_set('K', vim.lsp.buf.hover, { desc = 'Hover' })
 
   keymap_set('gi', function()
     -- vim.lsp.buf.implementation
     require('glance').open 'implementations'
-  end)
+  end, { desc = 'Implementation' })
 
   keymap_set('gr', function()
     -- vim.lsp.buf.references
     require('glance').open 'references'
-  end)
+  end, { desc = 'References' })
 
-  keymap_set('<space>d', vim.lsp.buf.type_definition)
+  keymap_set(
+    '<space>d',
+    vim.lsp.buf.type_definition,
+    { desc = 'Type Definition' }
+  )
 
-  keymap_set('<space>l', vim.lsp.codelens.run)
+  keymap_set('<space>l', vim.lsp.codelens.run, { desc = 'Code Lens Run' })
 
-  keymap_set('<space>k', vim.lsp.buf.signature_help)
+  keymap_set(
+    '<space>k',
+    vim.lsp.buf.signature_help,
+    { desc = 'Signature Help' }
+  )
 
-  keymap_set('<space>rn', vim.lsp.buf.rename)
+  keymap_set('<space>rn', vim.lsp.buf.rename, { desc = 'Rename' })
 
-  keymap_set('<space>wa', vim.lsp.buf.add_workspace_folder)
+  keymap_set(
+    '<space>wa',
+    vim.lsp.buf.add_workspace_folder,
+    { desc = 'Add Workspace Folder' }
+  )
 
-  keymap_set('<space>ca', vim.lsp.buf.code_action, { mode = { 'v', 'n' } })
+  keymap_set(
+    '<space>ca',
+    vim.lsp.buf.code_action,
+    { mode = { 'v', 'n' }, desc = 'Code Action' }
+  )
 
-  keymap_set('<space>wr', vim.lsp.buf.remove_workspace_folder)
+  keymap_set(
+    '<space>wr',
+    vim.lsp.buf.remove_workspace_folder,
+    { desc = 'Remove Workspace Folder' }
+  )
 
-  keymap_set('<space>ds', require('telescope.builtin').lsp_document_symbols)
+  keymap_set(
+    '<space>ds',
+    require('telescope.builtin').lsp_document_symbols,
+    { desc = 'Document Symbol' }
+  )
 
   keymap_set('<space>wl', function()
     vim.notify(
@@ -142,7 +158,7 @@ local on_attach = function(client, bufnr)
         .. table.concat(vim.lsp.buf.list_workspace_folders(), ', '),
       vim.log.levels.INFO
     )
-  end)
+  end, { desc = 'Workspace Folders' })
 
   keymap_set('<space>g', function()
     local diagnostics = vim.diagnostic.get(bufnr)
@@ -160,22 +176,22 @@ local on_attach = function(client, bufnr)
     vim.fn.setqflist({}, ' ', { title = 'Buffer Diagnostics', items = items })
 
     vim.cmd 'botright copen'
-  end)
+  end, { desc = 'Buffer diagnostics' })
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
+
+-- Completion configuration
+vim.tbl_deep_extend(
+  'force',
+  capabilities,
+  require('cmp_nvim_lsp').default_capabilities()
+)
+
 capabilities.textDocument.completion.completionItem.snippetSupport = true
-capabilities.textDocument.completion.completionItem.resolveSupport = {
-  properties = {
-    'documentation',
-    'detail',
-    'additionalTextEdits',
-  },
-}
 capabilities.textDocument.colorProvider = {
   dynamicRegistration = true,
 }
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 local flags = {
   -- This is the default in Nvim 0.7+
@@ -224,6 +240,47 @@ require('typescript').setup {
     on_attach = on_attach,
     flags = flags,
     capabilities = capabilities,
+    root_dir = lspconfig.util.root_pattern('tsconfig.json', 'jsconfig.json'),
+    single_file_support = true,
+    settings = {
+      typescript = {
+        inlayHints = {
+          includeInlayParameterNameHints = 'all',
+          includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+          includeInlayFunctionParameterTypeHints = true,
+          includeInlayVariableTypeHints = true,
+          includeInlayPropertyDeclarationTypeHints = true,
+          includeInlayFunctionLikeReturnTypeHints = true,
+          includeInlayEnumMemberValueHints = true,
+        },
+      },
+      javascript = {
+        inlayHints = {
+          includeInlayParameterNameHints = 'all',
+          includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+          includeInlayFunctionParameterTypeHints = true,
+          includeInlayVariableTypeHints = true,
+          includeInlayPropertyDeclarationTypeHints = true,
+          includeInlayFunctionLikeReturnTypeHints = true,
+          includeInlayEnumMemberValueHints = true,
+        },
+      },
+    },
+  },
+}
+
+lspconfig.denols.setup {
+  root_dir = lspconfig.util.root_pattern 'deno.json',
+  on_attach = on_attach,
+  flags = flags,
+  capabilities = capabilities,
+  server = {
+    settings = {
+      deno = {
+        enable = true,
+        unstable = true,
+      },
+    },
   },
 }
 
@@ -237,24 +294,56 @@ lspconfig.rescriptls.setup {
   on_attach = on_attach,
   flags = flags,
   capabilities = capabilities,
-  cmd = false and {
-    'node',
-    util.path.join {
-      vim.fn.expand '~/Desktop',
-      'projects',
-      'rescript-vscode',
-      'server',
-      'out',
-      'server.js',
-    },
-    '--stdio',
-  } or { 'rescript-lsp', '--stdio' },
+  root_dir = function(fname)
+    -- Neovim dont send the real cwd to lsp
+    -- TODO:
+    -- 1. Check if exists and bsconfig.json and package.json at root
+    -- 2. If bsconfig.json extist check if exists pinned-deps
+    -- 3. If exists pinned-deps read package.json and check if exists workspaces field
+    -- If has an bsconfig.json with pinned deps and an package.json with workspaces then make
+    -- root_dir = vim.loop.cwd()
+
+    local has_pinned_deps = (function()
+      if vim.fn.filereadable 'bsconfig.json' == 1 then
+        local bsconfig = table.concat(vim.fn.readfile 'bsconfig.json', '\n')
+        local json = vim.json.decode(bsconfig)
+        if not vim.tbl_isempty(json) then
+          local pinned = json['pinned-dependencies']
+          return pinned and #pinned > 0 or false
+        end
+        return false
+      end
+      return false
+    end)()
+
+    return has_pinned_deps and vim.loop.cwd()
+      or util.root_pattern('bsconfig.json', '.git')(fname)
+  end,
+  cmd = not false
+      and {
+        'node',
+        util.path.join {
+          vim.fn.expand '~/Desktop',
+          'projects',
+          'rescript-vscode',
+          'server',
+          'out',
+          'server.js',
+          -- '_build',
+          -- 'default',
+          -- 'rescript-language-server',
+          -- 'bin',
+          -- 'main.exe',
+        },
+        '--stdio',
+      }
+    or { 'rescript-lsp', '--stdio' },
   init_options = {
     extensionConfiguration = {
       binaryPath = nil,
       platformPath = nil,
       askToStartBuild = false,
-      codeLens = true,
+      codeLens = false,
       signatureHelp = {
         enable = true,
       },
@@ -331,6 +420,9 @@ lspconfig.yamlls.setup {
 
 lspconfig.ocamllsp.setup {
   cmd = { 'opam', 'exec', '--', 'ocamllsp' },
+  cmd_env = {
+    OCAMLLSP_HOVER_IS_EXTENDED = true,
+  },
   filetypes = vim.list_extend(
     require('lspconfig.server_configurations.ocamllsp').default_config.filetypes,
     { 'ocamlinterface' }
@@ -389,7 +481,7 @@ lspconfig.rust_analyzer.setup {
       },
       checkOnSave = {
         enable = true,
-        command = 'clippy',
+        -- command = 'clippy',
       },
     },
   },

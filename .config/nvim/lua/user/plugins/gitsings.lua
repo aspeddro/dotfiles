@@ -5,6 +5,6 @@ require('gitsigns').setup {
     virt_text_priority = 500,
   },
   preview_config = {
-    border = 'rounded',
+    border = 'single',
   },
 }

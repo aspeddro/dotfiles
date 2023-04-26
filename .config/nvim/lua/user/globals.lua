@@ -1,13 +1,9 @@
-RELOAD = function(...)
-  return require('plenary.reload').reload_module(...)
-end
-
 P = function(v)
-  vim.pretty_print(v)
+  vim.print(v)
 end
 
-R = function(name)
-  return RELOAD(name)
+R = function(...)
+  return require('plenary.reload').reload_module(...)
 end
 
 ---Print table to buffer

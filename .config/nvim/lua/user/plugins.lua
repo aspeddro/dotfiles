@@ -1,13 +1,7 @@
 return {
   'nvim-lua/plenary.nvim',
 
-  -- { 'tpope/vim-fugitive', dependencies = { 'tpope/vim-rhubarb' } },
-  -- { 'neoclide/coc.nvim', branch = 'release' },
-
-  -- {
-  --   'lewis6991/impatient.nvim',
-  --   rocks = 'mpack',
-  -- },
+  { 'neoclide/coc.nvim', branch = 'release', enabled = false },
 
   {
     'rcarriga/nvim-notify',
@@ -22,15 +16,6 @@ return {
 
   'tpope/vim-sleuth',
   'tpope/vim-surround',
-
-  -- use {
-  --   'kylechui/nvim-surround',
-  --   tag = '*', -- Use for stability; omit to use `main` branch for the latest features
-  --   config = function()
-  --     require('nvim-surround').setup {
-  --     }
-  --   end,
-  -- }
 
   {
     'kyazdani42/nvim-web-devicons',
@@ -57,7 +42,7 @@ return {
     end,
   },
 
-  -- NOTE: rename to buffernavigation.nvim?
+  -- NOTE: move plugin to nvim dir
   {
     'aspeddro/bufferhandler.nvim',
     dev = true,
@@ -76,9 +61,9 @@ return {
       require 'user.plugins.treesitter'
     end,
     dependencies = {
-      { 'nvim-treesitter/playground' },
       -- { 'nvim-treesitter/nvim-treesitter-textobjects' },
-      { 'mrjones2014/nvim-ts-rainbow' },
+      { 'HiPhish/nvim-ts-rainbow2' },
+      -- { 'mrjones2014/nvim-ts-rainbow' },
       { 'RRethy/nvim-treesitter-textsubjects' },
       { 'RRethy/nvim-treesitter-endwise' },
       { 'windwp/nvim-ts-autotag' },
@@ -89,11 +74,12 @@ return {
 
   {
     'williamboman/mason.nvim',
+    build = ':MasonUpdate',
     config = function()
-      require('mason').setup{
+      require('mason').setup {
         ui = {
-          height = 0.8
-        }
+          height = 0.8,
+        },
       }
     end,
   },
@@ -110,6 +96,7 @@ return {
       require('fidget').setup()
     end,
   },
+  -- Archived
   {
     'mrshmllow/document-color.nvim',
   },
@@ -137,10 +124,6 @@ return {
       require('glance').setup {}
     end,
   },
-
-  -- {
-  --   'williamboman/warden.nvim'
-  -- },
 
   {
     'hrsh7th/nvim-cmp',
@@ -192,7 +175,6 @@ return {
     end,
   },
 
-  -- StatusLine, BufferLine and WinBar
   {
     'rebelot/heirline.nvim',
     config = function()
@@ -204,13 +186,6 @@ return {
     'NvChad/nvim-colorizer.lua',
     config = function()
       require 'user.plugins.colorizer'
-    end,
-  },
-
-  {
-    'mfussenegger/nvim-lint',
-    config = function()
-      require 'user.plugins.lint'
     end,
   },
 
@@ -235,17 +210,8 @@ return {
     end,
   },
 
-  -- use {
-  --   'akinsho/git-conflict.nvim',
-  --   tag = '*',
-  --   config = function()
-  --     require 'user.plugins.git_conflitc'
-  --   end,
-  -- }
-
   {
     'windwp/nvim-autopairs',
-    dev = false,
     config = function()
       require 'user.plugins.autopairs'
     end,
@@ -297,23 +263,6 @@ return {
     end,
   },
 
-  -- DEPREACTED: remove in 0.9
-  {
-    'luukvbaal/stabilize.nvim',
-    config = function()
-      require('stabilize').setup()
-    end,
-  },
-
-  {
-    'phaazon/mind.nvim',
-    -- branch = 'v2.2',
-    dev = true,
-    config = function()
-      require 'user.plugins.mind'
-    end,
-  },
-
   {
     'toppair/peek.nvim',
     build = 'deno task --quiet build:fast',
@@ -346,7 +295,6 @@ return {
     dev = true,
     dependencies = {
       'nvim-lua/plenary.nvim',
-      'jbyuki/nabla.nvim', -- optional
     },
     config = function()
       require 'user.plugins.pandoc'
@@ -370,6 +318,8 @@ return {
     end,
   },
 
+  'rawnly/gist.nvim',
+
   -- Langs support
 
   'ii14/emmylua-nvim',
@@ -383,6 +333,8 @@ return {
     'ocaml/vim-ocaml',
     config = function()
       vim.g.ocaml_highlight_operators = 1
+      -- Disable mappings
+      vim.g.no_plugin_maps = 0
     end,
   },
 
