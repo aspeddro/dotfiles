@@ -8,14 +8,14 @@
     "editor.fontSize": 14,
     "editor.fontFamily": "JetBrainsMono Nerd Font",
     "editor.fontWeight": "normal",
-    "editor.fontLigatures": true,
+    "editor.fontLigatures": false,
     "editor.rulers": [80],
     "editor.wordWrapColumn": 80,
     "editor.wordWrap": "on",
     "editor.tabSize": 4,
     "editor.stickyTabStops": true,
     "editor.minimap.enabled": false,
-    "editor.cursorSmoothCaretAnimation": true,
+    "editor.cursorSmoothCaretAnimation": "on",
     "editor.renderLineHighlight": "all",
     "editor.autoClosingDelete": "auto",
     "editor.semanticHighlighting.enabled": true,
@@ -88,10 +88,16 @@
         "**/*.idx": true,
         "**/*.ilg": true,
         "**/*.ind": true,
-        "**/*.gz": false
+        "**/*.gz": false,
+        "**/*.cmi": true,
+        "**/*.cmt": true,
+        "**/*.cmj": true
     },
 
+    "gitlens.codeLens.enabled": false,
+
     // TypeScript
+    "typescript.tsserver.log": "off",
     "typescript.inlayHints.parameterNames.enabled": "none",
     "typescript.inlayHints.variableTypes.enabled": false,
     // JS
@@ -101,10 +107,8 @@
     "markdown.updateLinksOnFileMove.enabled": "prompt",
 
     // OCaml
-    "ocaml.server.extraEnv": {
-        "OCAMLLSP_SEMANTIC_HIGHLIGHTING": "full"
-    },
-    "ocaml.trace.server": "verbose",
+    "ocaml.trace.server": "off",
+    "ocaml.server.extraEnv": {"OCAMLLSP_HOVER_IS_EXTENDED": "1"},
     
     // R
     // "r.rpath.linux": "radian",
@@ -125,8 +129,7 @@
         "editor.wordWrap": "bounded"
     },
     // Rust
-    "rust-analyzer.checkOnSave.enable": false,
-    "rust-analyzer.trace.server": "off",
+    "rust-analyzer.trace.server": "verbose",
 
     // ReScript
     "[rescript]": {
@@ -134,10 +137,8 @@
     },
     "rescript.settings.askToStartBuild": false,
     "rescript.settings.codeLens": true,
-    "rescript.settings.inlayHints.enable": true,
-    "rescript.settings.signatureHelp.enable": true,
+    "rescript.settings.inlayHints.enable": false,
 
     // YAML
-    "redhat.telemetry.enabled": false,
-    "workbench.colorTheme": "Community Material Theme Darker High Contrast"
+    "redhat.telemetry.enabled": false
 }
