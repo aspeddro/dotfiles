@@ -59,7 +59,7 @@ schemes:
       cursor: '0xffffff'
 
     primary:
-      background: '#151515'
+      background: '#161616'
       foreground: '#eeffff'
 
     # Normal colors
