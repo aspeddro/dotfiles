@@ -16,6 +16,9 @@ local root_has_file = function(pattern)
 end
 
 local make = function(opts)
+  if not opts.require then
+    return opts.run
+  end
   return function()
     if not root_has_file(opts.require) then
       return
@@ -58,11 +61,31 @@ local prettier = make {
   },
 }
 
+local black = make {
+  run = {
+    exe = 'black',
+    args = {
+      '-q',
+      '-',
+    },
+    stdin = true,
+  },
+}
+
+local sql_formatter = make {
+  run = {
+    exe = 'sql-formatter',
+    stdin = true,
+  },
+}
+
 formatter.setup {
   filetype = {
     lua = { stylua },
+    python = { black },
     javascript = { prettier },
     typescript = { prettier },
     markdown = { prettier },
+    sql = { sql_formatter },
   },
 }
