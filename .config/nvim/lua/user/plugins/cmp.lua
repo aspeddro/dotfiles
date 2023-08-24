@@ -64,32 +64,32 @@ require('cmp_pandoc').setup {
 }
 
 require('cmp_git').setup {
-  filetypes = { 'gitcommit', 'markdown' },
+  filetypes = { 'gitcommit' },
 }
 
-cmp.setup.filetype({ 'markdown', 'rmd', 'pandoc' }, {
-  sources = cmp.config.sources {
-    { name = 'buffer', keyword_length = 3 },
-    { name = 'emoji' },
-    { name = 'luasnip' },
-    { name = 'cmp_pandoc' },
-    { name = 'path' },
-  },
-})
+-- cmp.setup.filetype({ 'markdown', 'rmd', 'pandoc' }, {
+--   sources = cmp.config.sources {
+--     { name = 'buffer', keyword_length = 3 },
+--     { name = 'emoji' },
+--     { name = 'luasnip' },
+--     { name = 'cmp_pandoc' },
+--     { name = 'path' },
+--   },
+-- })
 
-cmp.setup.filetype('gitcommit', {
-  sources = cmp.config.sources {
-    { name = 'buffer' },
-    { name = 'git' },
-  },
-})
+-- cmp.setup.filetype('gitcommit', {
+--   sources = cmp.config.sources {
+--     { name = 'buffer' },
+--     { name = 'git' },
+--   },
+-- })
 
-cmp.setup.cmdline({ '/', '?' }, {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = {
-    { name = 'buffer' },
-  },
-})
+-- cmp.setup.cmdline({ '/', '?' }, {
+--   mapping = cmp.mapping.preset.cmdline(),
+--   sources = {
+--     { name = 'buffer' },
+--   },
+-- })
 
 -- Somethis completion not work
 -- cmp.setup.cmdline(':', {

@@ -12,6 +12,7 @@ require 'user.snippets.lua'
 require 'user.snippets.rescript'
 require 'user.snippets.javascript'
 require 'user.snippets.ocaml'
+require 'user.snippets.python'
 
 ls.filetype_extend('rmd', { 'markdown' })
 ls.filetype_extend('pandoc', { 'markdown' })

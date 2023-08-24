@@ -45,7 +45,8 @@ end
 local pallete = {
   none = 'NONE',
   bg = '#212121',
-  bg_alt = '#1A1A1A',
+  -- bg_alt = '#1A1A1A',
+  bg_alt = '#161616',
   -- fg = '#EEFFFF',
   fg = '#e7e6e8',
   white = '#ffffff',

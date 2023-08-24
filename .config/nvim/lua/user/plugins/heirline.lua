@@ -89,21 +89,21 @@ local ViMode = {
       ['!'] = '!',
       t = 'Term',
     },
-    mode_colors = {
-      n = 'cyan',
-      i = 'green',
-      v = 'orange',
-      V = 'orange',
-      ['^V'] = 'orange',
-      c = 'orange',
-      s = 'purple',
-      S = 'purple',
-      ['^S'] = 'purple',
-      R = 'orange',
-      r = 'orange',
-      ['!'] = 'red',
-      t = 'red',
-    },
+    -- mode_colors = {
+    --   n = 'cyan',
+    --   i = 'green',
+    --   v = 'orange',
+    --   V = 'orange',
+    --   ['^V'] = 'orange',
+    --   c = 'orange',
+    --   s = 'purple',
+    --   S = 'purple',
+    --   ['^S'] = 'purple',
+    --   R = 'orange',
+    --   r = 'orange',
+    --   ['!'] = 'red',
+    --   t = 'red',
+    -- },
   },
   -- We can now access the value of mode() that, by now, would have been
   -- computed by `init()` and use it to index our strings dictionary.
@@ -117,9 +117,8 @@ local ViMode = {
     return mode and mode:upper() or self.mode
   end,
   -- Same goes for the highlight. Now the foreground will change according to the current mode.
-  hl = function(self)
-    local mode = self.mode:sub(1, 1) -- get only the first mode character
-    return { fg = self.mode_colors[mode] }
+  hl = function()
+    return { fg = 'cyan' }
   end,
 }
 
@@ -260,16 +259,16 @@ local LSPActive = {
   hl = { fg = 'green' },
 }
 
-local Navic = {
-  condition = function()
-    return require('nvim-navic').is_available()
-  end,
-  update = 'CursorMoved',
-  provider = function()
-    return require('nvim-navic').get_location()
-  end,
-  hl = { fg = 'comment' },
-}
+-- local Navic = {
+--   condition = function()
+--     return require('nvim-navic').is_available()
+--   end,
+--   update = 'CursorMoved',
+--   provider = function()
+--     return require('nvim-navic').get_location()
+--   end,
+--   hl = { fg = 'comment' },
+-- }
 
 local Ruler = {
   provider = '%l:%c/%L',
@@ -452,7 +451,7 @@ local TablineFileNameBlock = {
     self.filename = vim.api.nvim_buf_get_name(self.bufnr)
   end,
   on_click = {
-    callback = function(_, minwid, _, _)
+    callback = function(_, _, _, _)
       -- if button == 'm' then -- close on mouse middle click
       --   vim.api.nvim_buf_delete(minwid, { force = false })
       -- else
@@ -474,7 +473,7 @@ local TablineFileNameBlock = {
 local TablineCloseButton = {
   Space,
   {
-    provider = '',
+    provider = '󱎘',
     hl = { fg = 'gray' },
     on_click = {
       callback = function(_, minwid)
@@ -573,8 +572,8 @@ local TabLine = { TabLineOffset, BufferLine, TabPages }
 --WinBar
 local WinBars = {
   fallthrough = true,
-  Space,
-  Navic,
+  -- Space,
+  -- Navic,
   Align,
   {
     provider = function()

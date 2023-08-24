@@ -7,13 +7,13 @@ local M = {}
 
 -- UI Highlights (:h highlight-groups)
 M.base = {
-  Normal = { fg = c.fg, bg = c.bg },
+  Normal = { fg = c.fg, bg = c.bg_alt },
   -- NormalNC = { fg = c.fg, bg = c.bg_alt }, -- normal text in non-current windows
 
   NormalFloat = { fg = c.fg, bg = c.bg_alt },
   FloatBorder = { fg = c.bg_alt, bg = c.bg_alt },
 
-  SignColumn = { bg = c.bg, fg = c.fg },
+  SignColumn = { bg = c.bg_alt, fg = c.fg },
 
   SpellBad = { fg = c.red, underline = true },
   SpellCap = { underline = true },
@@ -80,7 +80,7 @@ M.base = {
   -- Tabs
   TabLine = { fg = c.gray, bg = c.bg_alt },
   TabLineSel = { fg = c.orange, bg = c.bg_alt },
-  TabLineFill = { bg = c.bg },
+  TabLineFill = { bg = c.bg_alt },
 
   -- Status Line
   StatusLine = { link = 'Normal' },
@@ -96,7 +96,7 @@ M.base = {
   NonText = { fg = c.line_number },
   Whitespace = { fg = c.line_number },
 
-  MsgArea = { fg = c.fg, bg = c.bg },
+  MsgArea = { fg = c.fg, bg = c.bg_alt },
   ModeMsg = { fg = c.fg, bg = c.bg },
   MsgSeparator = { fg = c.fg, bg = c.bg },
   ErrorMsg = { fg = c.error, bg = c.none },
@@ -228,7 +228,7 @@ M.tokens = {
 }
 
 M.plugins = {
-  TelescopeBorder = { fg = c.line_number, bg = c.bg },
+  TelescopeBorder = { fg = c.line_number, bg = c.bg_alt },
   TelescopeSelection = { link = 'Identifier' },
 
   NvimTreeNormal = { fg = c.fg_sidebar, bg = c.bg_alt },
@@ -256,13 +256,13 @@ M.plugins = {
   ConflictMarkerEnd = { bg = '#2f628e' },
   ConflictMarkerCommonAncestorsHunk = { bg = '#754a81' },
 
-  TSRainbowRed = { fg = c.rainbow[1] },
-  TSRainbowYellow = { fg = c.rainbow[2] },
-  TSRainbowBlue = { fg = c.rainbow[3] },
-  TSRainbowOrange = { fg = c.rainbow[1] },
-  TSRainbowGreen = { fg = c.rainbow[2] },
-  TSRainbowViolet = { fg = c.rainbow[3] },
-  TSRainbowCyan = { fg = c.rainbow[1] },
+  -- TSRainbowRed = { fg = c.rainbow[1] },
+  -- TSRainbowYellow = { fg = c.rainbow[2] },
+  -- TSRainbowBlue = { fg = c.rainbow[3] },
+  -- TSRainbowOrange = { fg = c.rainbow[1] },
+  -- TSRainbowGreen = { fg = c.rainbow[2] },
+  -- TSRainbowViolet = { fg = c.rainbow[3] },
+  -- TSRainbowCyan = { fg = c.rainbow[1] },
 }
 
 for _, value in pairs(M) do

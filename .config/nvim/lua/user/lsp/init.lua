@@ -9,7 +9,7 @@ require 'user.lsp.commands'
 vim.diagnostic.config {
   virtual_text = true,
   signs = false,
-  underline = true,
+  underline = false,
   update_in_insert = false,
   severity_sort = true,
   float = {
@@ -32,6 +32,10 @@ local on_attach = function(client, bufnr)
 
   -- Enable completion triggered by <c-x><c-o>
   -- vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  if vim.tbl_contains({ 'lua_ls' }, client.name) then
+    client.server_capabilities.semanticTokensProvider = nil
+  end
 
   if client.server_capabilities.documentFormattingProvider then
     keymap_set('<space>f', function()
@@ -61,13 +65,13 @@ local on_attach = function(client, bufnr)
     require('lsp-inlayhints').on_attach(client, bufnr)
   end
 
-  if client.server_capabilities.colorProvider then
-    require('document-color').buf_attach(bufnr)
-  end
+  -- if client.server_capabilities.colorProvider then
+  --   require('document-color').buf_attach(bufnr)
+  -- end
 
-  if client.server_capabilities.documentSymbolProvider then
-    require('nvim-navic').attach(client, bufnr)
-  end
+  -- if client.server_capabilities.documentSymbolProvider then
+  --   require('nvim-navic').attach(client, bufnr)
+  -- end
 
   if client.server_capabilities.codeLensProvider then
     local group = vim.api.nvim_create_augroup('LSP/CodeLens', { clear = true })
@@ -188,26 +192,25 @@ vim.tbl_deep_extend(
   require('cmp_nvim_lsp').default_capabilities()
 )
 
+capabilities.textDocument.completion.completionItem.insertReplaceSupport = false
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 capabilities.textDocument.colorProvider = {
   dynamicRegistration = true,
 }
 
-local flags = {
-  -- This is the default in Nvim 0.7+
-  debounce_text_changes = 150,
-}
-
 lspconfig.lua_ls.setup {
   on_attach = on_attach,
-  flags = flags,
   capabilities = capabilities,
   settings = {
     Lua = {
       version = 'LuaJIT',
       completion = { callSnippet = 'Disable' },
       workspace = {
-        library = vim.api.nvim_get_runtime_file('', true),
+        library = {
+          vim.env.VIMRUNTIME,
+          vim.fn.expand '~/.config/nvim',
+          vim.fn.expand '~/.local/share/nvim/lazy/emmylua-nvim',
+        },
         checkThirdParty = false,
       },
       diagnostics = {
@@ -230,69 +233,69 @@ lspconfig.lua_ls.setup {
   },
 }
 
-require('typescript').setup {
-  disable_commands = false,
-  debug = false,
-  go_to_source_definition = {
-    fallback = true, -- fall back to standard LSP definition on failure
-  },
-  server = {
-    on_attach = on_attach,
-    flags = flags,
-    capabilities = capabilities,
-    root_dir = lspconfig.util.root_pattern('tsconfig.json', 'jsconfig.json'),
-    single_file_support = true,
-    settings = {
-      typescript = {
-        inlayHints = {
-          includeInlayParameterNameHints = 'all',
-          includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-          includeInlayFunctionParameterTypeHints = true,
-          includeInlayVariableTypeHints = true,
-          includeInlayPropertyDeclarationTypeHints = true,
-          includeInlayFunctionLikeReturnTypeHints = true,
-          includeInlayEnumMemberValueHints = true,
-        },
-      },
-      javascript = {
-        inlayHints = {
-          includeInlayParameterNameHints = 'all',
-          includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-          includeInlayFunctionParameterTypeHints = true,
-          includeInlayVariableTypeHints = true,
-          includeInlayPropertyDeclarationTypeHints = true,
-          includeInlayFunctionLikeReturnTypeHints = true,
-          includeInlayEnumMemberValueHints = true,
-        },
-      },
-    },
-  },
+require('typescript-tools').setup {
+  on_attach = on_attach,
 }
 
-lspconfig.denols.setup {
-  root_dir = lspconfig.util.root_pattern 'deno.json',
-  on_attach = on_attach,
-  flags = flags,
-  capabilities = capabilities,
-  server = {
-    settings = {
-      deno = {
-        enable = true,
-        unstable = true,
-      },
-    },
-  },
-}
+-- require('typescript').setup {
+--   disable_commands = false,
+--   debug = false,
+--   go_to_source_definition = {
+--     fallback = true, -- fall back to standard LSP definition on failure
+--   },
+--   server = {
+--     on_attach = on_attach,
+--     capabilities = capabilities,
+--     root_dir = lspconfig.util.root_pattern('tsconfig.json', 'jsconfig.json'),
+--     single_file_support = true,
+--     settings = {
+--       typescript = {
+--         inlayHints = {
+--           includeInlayParameterNameHints = 'all',
+--           includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+--           includeInlayFunctionParameterTypeHints = true,
+--           includeInlayVariableTypeHints = true,
+--           includeInlayPropertyDeclarationTypeHints = true,
+--           includeInlayFunctionLikeReturnTypeHints = true,
+--           includeInlayEnumMemberValueHints = true,
+--         },
+--       },
+--       javascript = {
+--         inlayHints = {
+--           includeInlayParameterNameHints = 'all',
+--           includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+--           includeInlayFunctionParameterTypeHints = true,
+--           includeInlayVariableTypeHints = true,
+--           includeInlayPropertyDeclarationTypeHints = true,
+--           includeInlayFunctionLikeReturnTypeHints = true,
+--           includeInlayEnumMemberValueHints = true,
+--         },
+--       },
+--     },
+--   },
+-- }
+
+-- lspconfig.denols.setup {
+--   root_dir = lspconfig.util.root_pattern 'deno.json',
+--   on_attach = on_attach,
+--   capabilities = capabilities,
+--   server = {
+--     settings = {
+--       deno = {
+--         enable = true,
+--         unstable = true,
+--       },
+--     },
+--   },
+-- }
 
 lspconfig.r_language_server.setup {
   on_attach = on_attach,
-  flags = flags,
   capabilities = capabilities,
 }
 
 lspconfig.rescriptls.setup {
   on_attach = on_attach,
-  flags = flags,
   capabilities = capabilities,
   root_dir = function(fname)
     -- Neovim dont send the real cwd to lsp
@@ -309,7 +312,7 @@ lspconfig.rescriptls.setup {
         local json = vim.json.decode(bsconfig)
         if not vim.tbl_isempty(json) then
           local pinned = json['pinned-dependencies']
-          return pinned and #pinned > 0 or false
+          return pinned and not vim.tbl_isempty(pinned)
         end
         return false
       end
@@ -370,7 +373,6 @@ lspconfig.rescriptls.setup {
 
 lspconfig.texlab.setup {
   on_attach = on_attach,
-  flags = flags,
   capabilities = capabilities,
   settings = {
     texlab = {
@@ -392,7 +394,6 @@ lspconfig.texlab.setup {
 
 lspconfig.jsonls.setup {
   on_attach = on_attach,
-  flags = flags,
   capabilities = capabilities,
   settings = {
     json = {
@@ -404,18 +405,27 @@ lspconfig.jsonls.setup {
 
 lspconfig.html.setup {
   on_attach = on_attach,
-  flags = flags,
   capabilities = capabilities,
 }
 lspconfig.cssls.setup {
   on_attach = on_attach,
-  flags = flags,
   capabilities = capabilities,
 }
 lspconfig.yamlls.setup {
   on_attach = on_attach,
-  flags = flags,
   capabilities = capabilities,
+  settings = {
+    yaml = {
+      schemaStore = {
+        -- You must disable built-in schemaStore support if you want to use
+        -- this plugin and its advanced options like `ignore`.
+        enable = false,
+        -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
+        url = '',
+      },
+      schemas = require('schemastore').yaml.schemas(),
+    },
+  },
 }
 
 lspconfig.ocamllsp.setup {
@@ -428,50 +438,42 @@ lspconfig.ocamllsp.setup {
     { 'ocamlinterface' }
   ),
   on_attach = on_attach,
-  flags = flags,
   capabilities = capabilities,
 }
 
 lspconfig.pyright.setup {
   on_attach = on_attach,
-  flags = flags,
   capabilities = capabilities,
 }
 
 lspconfig.taplo.setup {
   on_attach = on_attach,
-  flags = flags,
   capabilities = capabilities,
 }
 lspconfig.vimls.setup {
   on_attach = on_attach,
-  flags = flags,
   capabilities = capabilities,
 }
 
 lspconfig.tailwindcss.setup {
   on_attach = on_attach,
-  flags = flags,
   capabilities = capabilities,
   root_dir = util.root_pattern('tailwind.config.js', 'tailwind.config.ts'),
 }
 
 lspconfig.bashls.setup {
   on_attach = on_attach,
-  flags = flags,
   capabilities = capabilities,
 }
 
 lspconfig.marksman.setup {
   on_attach = on_attach,
-  flags = flags,
   capabilities = capabilities,
   single_file_support = true,
 }
 
 lspconfig.rust_analyzer.setup {
   on_attach = on_attach,
-  flags = flags,
   capabilities = capabilities,
   settings = {
     ['rust-analyzer'] = {
@@ -489,13 +491,11 @@ lspconfig.rust_analyzer.setup {
 
 lspconfig.clangd.setup {
   on_attach = on_attach,
-  flags = flags,
   capabilities = capabilities,
 }
 
 lspconfig.elixirls.setup {
   cmd = { 'elixir-ls' },
   on_attach = on_attach,
-  flags = flags,
   capabilities = capabilities,
 }

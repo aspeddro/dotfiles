@@ -1,4 +1,4 @@
-local bufferhandler = require 'bufferhandler'
+local buffer = require 'user.modules.buffer'
 
 -- move block
 vim.keymap.set('n', '<a-k>', [[<Esc>:m .-2<CR>==]])
@@ -41,19 +41,19 @@ for _, direction in ipairs { 'left', 'right', 'down', 'up' } do
 end
 
 -- Buffer navigation
-vim.keymap.set('n', '<leader>v', bufferhandler.split)
-vim.keymap.set('n', '<leader>x', function()
-  bufferhandler.split { side = false }
-end)
-vim.keymap.set('n', '<leader>t', bufferhandler.new)
+-- vim.keymap.set('n', '<leader>v', bufferhandler.split)
+-- vim.keymap.set('n', '<leader>x', function()
+--   bufferhandler.split { side = false }
+-- end)
+vim.keymap.set('n', '<leader>t', buffer.new)
 vim.keymap.set('n', '<leader>w', function()
-  bufferhandler.close()
+  buffer.close()
   -- vim.cmd 'bd!'
 end)
 
 for i = 1, 9, 1 do
   vim.keymap.set('n', ('<a-%d>'):format(i), function()
-    bufferhandler.go_to(i)
+    buffer.go_to(i)
   end)
 end
 

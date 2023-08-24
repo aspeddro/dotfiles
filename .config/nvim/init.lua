@@ -2,7 +2,7 @@ vim.loader.enable()
 
 require 'user.disable'
 
-vim.cmd.colorscheme 'materialdarkerhc'
+vim.cmd.colorscheme 'material'
 
 require 'user.options'
 require 'user.plugins.lazy'

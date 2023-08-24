@@ -1,8 +1,6 @@
 return {
   'nvim-lua/plenary.nvim',
 
-  { 'neoclide/coc.nvim', branch = 'release', enabled = false },
-
   {
     'rcarriga/nvim-notify',
     config = function()
@@ -15,7 +13,6 @@ return {
   },
 
   'tpope/vim-sleuth',
-  'tpope/vim-surround',
 
   {
     'kyazdani42/nvim-web-devicons',
@@ -39,15 +36,6 @@ return {
           Norm = { cmd = 'norm' },
         },
       }
-    end,
-  },
-
-  -- NOTE: move plugin to nvim dir
-  {
-    'aspeddro/bufferhandler.nvim',
-    dev = true,
-    config = function()
-      require('bufferhandler').setup()
     end,
   },
 
@@ -92,18 +80,19 @@ return {
   {
     -- UI LSP progress
     'j-hui/fidget.nvim',
+    tag = 'legacy',
     config = function()
       require('fidget').setup()
     end,
   },
   -- Archived
-  {
-    'mrshmllow/document-color.nvim',
-  },
+  -- {
+  --   'mrshmllow/document-color.nvim',
+  -- },
   { 'ray-x/lsp_signature.nvim' },
-  {
-    'SmiteshP/nvim-navic',
-  },
+  -- {
+  --   'SmiteshP/nvim-navic',
+  -- },
   {
     'lvimuser/lsp-inlayhints.nvim',
     config = function()
@@ -135,7 +124,7 @@ return {
       { 'hrsh7th/cmp-path' },
       { 'hrsh7th/cmp-nvim-lsp' },
       { 'saadparwaiz1/cmp_luasnip' },
-      { 'hrsh7th/cmp-emoji' },
+      -- { 'hrsh7th/cmp-emoji' },
       { 'petertriho/cmp-git' },
       { 'hrsh7th/cmp-cmdline' },
       {
@@ -301,14 +290,14 @@ return {
     end,
   },
 
-  {
-    'folke/twilight.nvim',
-    config = function()
-      require('twilight').setup {
-        context = 0,
-      }
-    end,
-  },
+  -- {
+  --   'folke/twilight.nvim',
+  --   config = function()
+  --     require('twilight').setup {
+  --       context = 0,
+  --     }
+  --   end,
+  -- },
 
   {
     'rhysd/conflict-marker.vim',
@@ -338,5 +327,10 @@ return {
     end,
   },
 
-  'jose-elias-alvarez/typescript.nvim',
+  {
+    'pmizio/typescript-tools.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
+  },
+
+  -- 'jose-elias-alvarez/typescript.nvim',
 }
