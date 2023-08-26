@@ -53,7 +53,7 @@ return {
       { 'HiPhish/nvim-ts-rainbow2' },
       -- { 'mrjones2014/nvim-ts-rainbow' },
       { 'RRethy/nvim-treesitter-textsubjects' },
-      { 'RRethy/nvim-treesitter-endwise' },
+      -- { 'RRethy/nvim-treesitter-endwise' },
       { 'windwp/nvim-ts-autotag' },
       { 'JoosepAlviste/nvim-ts-context-commentstring' },
       -- { 'm-demare/hlargs.nvim' },
@@ -261,10 +261,6 @@ return {
   },
 
   -- use {
-  --   'kdheepak/lazygit.nvim',
-  -- }
-
-  -- use {
   --   here 'gitui.nvim',
   --   config = function()
   --     require('gitui').setup()
@@ -309,9 +305,19 @@ return {
 
   'rawnly/gist.nvim',
 
+   {
+    "sourcegraph/sg.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+
+    -- If you have a recent version of lazy.nvim, you don't need to add this!
+    build = "nvim -l build/init.lua",
+  },
+
   -- Langs support
 
-  'ii14/emmylua-nvim',
+  -- 'ii14/emmylua-nvim',
+  { "folke/neodev.nvim", opts = {} },
+
 
   {
     'aspeddro/rescript-tools.nvim',
@@ -331,6 +337,4 @@ return {
     'pmizio/typescript-tools.nvim',
     dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
   },
-
-  -- 'jose-elias-alvarez/typescript.nvim',
 }

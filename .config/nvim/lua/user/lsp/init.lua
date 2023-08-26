@@ -65,14 +65,6 @@ local on_attach = function(client, bufnr)
     require('lsp-inlayhints').on_attach(client, bufnr)
   end
 
-  -- if client.server_capabilities.colorProvider then
-  --   require('document-color').buf_attach(bufnr)
-  -- end
-
-  -- if client.server_capabilities.documentSymbolProvider then
-  --   require('nvim-navic').attach(client, bufnr)
-  -- end
-
   if client.server_capabilities.codeLensProvider then
     local group = vim.api.nvim_create_augroup('LSP/CodeLens', { clear = true })
     vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'CursorHold' }, {
@@ -197,7 +189,14 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 capabilities.textDocument.colorProvider = {
   dynamicRegistration = true,
 }
+capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
 
+
+require("neodev").setup{
+  library = {
+    plugins = false,
+  }
+}
 lspconfig.lua_ls.setup {
   on_attach = on_attach,
   capabilities = capabilities,
@@ -206,11 +205,11 @@ lspconfig.lua_ls.setup {
       version = 'LuaJIT',
       completion = { callSnippet = 'Disable' },
       workspace = {
-        library = {
-          vim.env.VIMRUNTIME,
-          vim.fn.expand '~/.config/nvim',
-          vim.fn.expand '~/.local/share/nvim/lazy/emmylua-nvim',
-        },
+        -- library = {
+        --   vim.env.VIMRUNTIME,
+        --   vim.fn.stdpath 'config',
+        --   vim.fn.stdpath 'data' .. '/lazy/emmylua-nvim',
+        -- },
         checkThirdParty = false,
       },
       diagnostics = {
@@ -314,7 +313,6 @@ lspconfig.rescriptls.setup {
           local pinned = json['pinned-dependencies']
           return pinned and not vim.tbl_isempty(pinned)
         end
-        return false
       end
       return false
     end)()
@@ -430,13 +428,19 @@ lspconfig.yamlls.setup {
 
 lspconfig.ocamllsp.setup {
   cmd = { 'opam', 'exec', '--', 'ocamllsp' },
-  cmd_env = {
-    OCAMLLSP_HOVER_IS_EXTENDED = true,
+  settings = {
+    extendedHover = { enable = true },
+    codelens = { enable = false },
   },
-  filetypes = vim.list_extend(
-    require('lspconfig.server_configurations.ocamllsp').default_config.filetypes,
-    { 'ocamlinterface' }
-  ),
+  filetypes = {
+    'ocaml',
+    'ocaml.menhir',
+    'ocaml.interface',
+    'ocaml.ocamllex',
+    'reason',
+    'dune',
+    'ocamlinterface',
+  },
   on_attach = on_attach,
   capabilities = capabilities,
 }
@@ -483,7 +487,6 @@ lspconfig.rust_analyzer.setup {
       },
       checkOnSave = {
         enable = true,
-        -- command = 'clippy',
       },
     },
   },
@@ -498,4 +501,8 @@ lspconfig.elixirls.setup {
   cmd = { 'elixir-ls' },
   on_attach = on_attach,
   capabilities = capabilities,
+}
+
+require("sg").setup {
+  on_attach = on_attach
 }

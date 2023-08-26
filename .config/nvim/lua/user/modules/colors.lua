@@ -42,16 +42,18 @@ end
 -- '#e7e6e8'
 -- '#00be89'
 
-local pallete = {
+local dark_pallete = {
   none = 'NONE',
-  bg = '#212121',
+  -- bg = '#212121',
   -- bg_alt = '#1A1A1A',
-  bg_alt = '#161616',
+  bg = '#161616',
   -- fg = '#EEFFFF',
+  comment = '#5a5a5a',
   fg = '#e7e6e8',
   white = '#ffffff',
   black = '#000000',
   red = '#f07178',
+  red2 = '#EC5A5A',
   orange = '#F78C6C',
   yellow = '#FFCB6B',
   green = '#C3E88D',
@@ -84,38 +86,41 @@ local pallete = {
   },
 }
 
-M = pallete
-M.utils = {
+M = {
+  palletes = { dark = dark_pallete },
   blend = blend,
 }
+-- M.utils = {
+--   blend = blend,
+-- }
 
--- TODO: more colors
--- #6bffb5 (green)
+-- -- TODO: more colors
+-- -- #6bffb5 (green)
 
-M.selection = '#383838'
-M.comment = '#5A5A5A'
+-- M.selection = '#383838'
+-- M.comment = '#5A5A5A'
 
-M.error = '#EC5A5A'
-M.bg_layer = '#2B2B2B' -- REMOVE:
-M.text_pop_menu = '#848484'
-M.vertical_split = '#212121'
-M.line_highlight = '#171717'
-M.line_number = '#424242'
-M.line_number_highlight = '#848484'
-M.indent_char = '#292929'
-M.bg_add = '#2F3A3E'
-M.diff_add = blend('#5E6C49', pallete.bg, 0.3)
-M.diff_change = blend('#455575', pallete.bg, 0.3)
-M.diff_delete = blend('#6F3F42', pallete.bg, 0.3)
-M.git_sings_add = '#586643'
-M.git_sings_change = '#455575'
-M.git_sings_delete = '#523435'
+-- M.error = '#EC5A5A'
+-- M.bg_layer = '#2B2B2B' -- REMOVE:
+-- M.text_pop_menu = '#848484'
+-- M.vertical_split = '#212121'
+-- M.line_highlight = '#171717'
+-- M.line_number = '#424242'
+-- M.line_number_highlight = '#848484'
+-- M.indent_char = '#292929'
+-- M.bg_add = '#2F3A3E'
+-- M.diff_add = blend('#5E6C49', dark_pallete.bg, 0.3)
+-- M.diff_change = blend('#455575', dark_pallete.bg, 0.3)
+-- M.diff_delete = blend('#6F3F42', dark_pallete.bg, 0.3)
+-- M.git_sings_add = '#586643'
+-- M.git_sings_change = '#455575'
+-- M.git_sings_delete = '#523435'
 
--- Sidebar
-M.fg_sidebar = '#848484'
-M.folder_icon = '#90A4AE'
-M.git_add = '#c3e88d8f'
-M.git_change = '#82aaff8f'
-M.git_delete = '#573F42'
+-- -- Sidebar
+-- M.fg_sidebar = '#848484'
+-- M.folder_icon = '#90A4AE'
+-- M.git_add = '#c3e88d8f'
+-- M.git_change = '#82aaff8f'
+-- M.git_delete = '#573F42'
 
 return M

@@ -3,7 +3,13 @@ local M = {}
 M.close = function()
   local buffers = vim.fn.getbufinfo { buflisted = 1 }
 
+  local bufnr = vim.api.nvim_get_current_buf()
+
   if #buffers == 1 then
+    if vim.bo.modified then
+      vim.notify("No write since last change for buffer " .. bufnr, vim.log.levels.WARN)
+      return
+    end
     vim.cmd.bd()
     return
   end
@@ -15,7 +21,6 @@ M.close = function()
   -- Index 2 because index 1 is the current buffer
   local last_used_buffer = buffers[2]
 
-  local bufnr = vim.api.nvim_get_current_buf()
 
   vim.cmd.buffer(last_used_buffer.bufnr)
   vim.cmd.bd(bufnr)

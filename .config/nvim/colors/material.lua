@@ -1,5 +1,7 @@
--- My version of Material Theme Darker High Contrast
-local c = require 'user.color'
+-- My version of Material Theme
+local colors = require 'user.modules.colors'
+
+local c = colors.palletes.dark
 
 vim.o.background = 'dark'
 
@@ -7,13 +9,13 @@ local M = {}
 
 -- UI Highlights (:h highlight-groups)
 M.base = {
-  Normal = { fg = c.fg, bg = c.bg_alt },
+  Normal = { fg = c.fg, bg = c.bg },
   -- NormalNC = { fg = c.fg, bg = c.bg_alt }, -- normal text in non-current windows
 
-  NormalFloat = { fg = c.fg, bg = c.bg_alt },
-  FloatBorder = { fg = c.bg_alt, bg = c.bg_alt },
+  NormalFloat = { fg = c.fg, bg = c.bg },
+  FloatBorder = { fg = c.bg, bg = c.bg },
 
-  SignColumn = { bg = c.bg_alt, fg = c.fg },
+  SignColumn = { bg = c.bg, fg = c.fg },
 
   SpellBad = { fg = c.red, underline = true },
   SpellCap = { underline = true },
@@ -21,47 +23,47 @@ M.base = {
   SpellRare = { underline = true },
 
   -- Pop-up Menu
-  Pmenu = { fg = c.text_pop_menu, bg = c.bg_alt },
+  Pmenu = { fg = '#848484', bg = c.bg },
   PmenuSel = { fg = c.cyan, bg = c.bg_layer },
-  PmenuSbar = { bg = c.bg_alt },
+  PmenuSbar = { bg = c.bg },
   PmenuThumb = { bg = c.white, fg = c.orange },
 
-  WildMenu = { fg = c.bg_alt, bg = c.blue },
-  Folded = { fg = c.blue, bg = c.bg_alt },
+  WildMenu = { fg = c.bg, bg = c.blue },
+  Folded = { fg = c.blue, bg = c.bg },
   FoldColumn = { fg = c.blue, bg = c.bg },
-  LineNr = { fg = c.line_number },
+  LineNr = { fg = c.comment },
 
-  WinSeparator = { fg = c.line_number },
+  WinSeparator = { fg = c.gray },
 
-  CursorLine = { bg = c.bg_alt },
-  CursorLineNr = { fg = c.line_number_highlight },
-  CursorColumn = { bg = c.bg_alt },
-  ColorColumn = { bg = c.bg_alt },
+  CursorLine = { bg = c.bg },
+  CursorLineNr = { fg = c.gray },
+  CursorColumn = { bg = c.bg },
+  ColorColumn = { bg = c.bg },
   Cursor = { fg = c.fg, bg = c.none },
   lCursor = { fg = c.fg, bg = c.none },
   CursorIM = { fg = c.fg, bg = c.bg },
 
-  Visual = { bg = c.selection },
-  VisualNOS = { bg = c.selection },
+  Visual = { bg = colors.blend(c.bg, c.comment, 0.7) },
+  VisualNOS = { bg = c.gray1 },
 
   Title = { fg = '#ff8eeb' },
 
-  DiffText = { fg = c.none, bg = c.diff_change, underline = false },
-  DiffAdd = { fg = c.none, bg = c.diff_add, underline = false },
+  DiffText = { fg = c.none, bg = '#2c313a', underline = false },
+  DiffAdd = { fg = c.none, bg = '#33382d', underline = false },
   DiffChange = {
     fg = c.none,
-    bg = c.diff_change,
+    bg = '#2c313a',
     underline = false,
     bold = false,
   },
   DiffDelete = {
     fg = c.none,
-    bg = c.diff_delete,
+    bg = '#382a2b',
     underline = false,
     bold = false,
   },
 
-  QuickFixLine = { bg = c.bg_alt },
+  QuickFixLine = { bg = c.bg },
 
   MatchParen = { bg = c.gray },
 
@@ -78,9 +80,9 @@ M.base = {
   IncSearch = { bg = c.gray },
 
   -- Tabs
-  TabLine = { fg = c.gray, bg = c.bg_alt },
-  TabLineSel = { fg = c.orange, bg = c.bg_alt },
-  TabLineFill = { bg = c.bg_alt },
+  TabLine = { fg = c.gray, bg = c.bg },
+  TabLineSel = { fg = c.orange, bg = c.bg },
+  TabLineFill = { bg = c.bg },
 
   -- Status Line
   StatusLine = { link = 'Normal' },
@@ -88,26 +90,26 @@ M.base = {
   -- StatusLineTerm
   -- StatusLineTermNC
 
-  Substitute = { fg = c.bg_alt, bg = c.blue },
+  Substitute = { fg = c.bg, bg = c.blue },
   MoreMsg = { fg = c.cyan },
   Question = { fg = c.cyan },
-  EndOfBuffer = { fg = c.line_number },
+  EndOfBuffer = { fg = c.comment },
 
-  NonText = { fg = c.line_number },
-  Whitespace = { fg = c.line_number },
+  NonText = { fg = c.comment },
+  Whitespace = { fg = c.comment },
 
-  MsgArea = { fg = c.fg, bg = c.bg_alt },
+  MsgArea = { fg = c.fg, bg = c.bg },
   ModeMsg = { fg = c.fg, bg = c.bg },
   MsgSeparator = { fg = c.fg, bg = c.bg },
-  ErrorMsg = { fg = c.error, bg = c.none },
+  ErrorMsg = { fg = c.red2, bg = c.none },
   WarningMsg = { fg = c.yellow, bg = c.none },
 
   -- Diagnostics
-  DiagnosticError = { fg = c.error },
+  DiagnosticError = { fg = c.red2 },
   DiagnosticWarn = { fg = c.yellow },
   DiagnosticInfo = { fg = c.paleblue },
   DiagnosticHint = { fg = c.paleblue },
-  DiagnosticUnnecessary = { undercurl = true },
+  DiagnosticUnnecessary = { undercurl = false },
   DiagnosticVirtualTextHint = { fg = c.gray },
 
   DiagnosticFloatingHint = { fg = c.fg },
@@ -201,6 +203,7 @@ M.treesitter = {
   ['@text.math'] = { fg = c.blue },
   ['@text.reference'] = { fg = '#ff6c92', italic = true },
   ['@text.literal'] = { fg = '#6bffb5' },
+  ['@text.uri.comment'] = { italic = true },
   ['@text.note'] = { link = 'Todo' },
   ['@text.danger'] = { link = 'Todo' },
 }
@@ -228,25 +231,25 @@ M.tokens = {
 }
 
 M.plugins = {
-  TelescopeBorder = { fg = c.line_number, bg = c.bg_alt },
+  TelescopeBorder = { fg = c.gray, bg = c.bg },
   TelescopeSelection = { link = 'Identifier' },
 
-  NvimTreeNormal = { fg = c.fg_sidebar, bg = c.bg_alt },
-  NvimTreeFolderName = { fg = c.fg_sidebar },
-  NvimTreeFolderIcon = { fg = c.folder_icon },
-  NvimTreeOpenedFolderName = { fg = c.cyan },
-  NvimTreeOpenedFile = { fg = c.cyan },
-  NvimTreeWinSeparator = { bg = c.bg_alt, fg = c.bg_alt },
+  -- NvimTreeNormal = { fg = c.extra.gray, bg = c.bg_alt },
+  -- NvimTreeFolderName = { fg = c.fg },
+  -- NvimTreeFolderIcon = { fg = c.gray },
+  -- NvimTreeOpenedFolderName = { fg = c.cyan },
+  -- NvimTreeOpenedFile = { fg = c.cyan },
+  NvimTreeWinSeparator = { bg = c.bg, fg = c.bg },
 
-  GitSignsAdd = { fg = c.diff_add },
-  GitSignsChange = { fg = c.diff_change },
-  GitSignsDelete = { fg = c.diff_delete },
+  GitSignsAdd = { fg = c.green },
+  GitSignsChange = { fg = c.blue },
+  GitSignsDelete = { fg = c.red },
   GitSignsCurrentLineBlame = { link = 'Comment' },
   -- nvim-lspconfig
   LspInfoBorder = { link = 'FloatBorder' },
   -- Indent Blank line
-  IndentBlanklineChar = { fg = c.utils.blend(c.gray, c.bg, 0.3) },
-  IndentBlanklineContextChar = { fg = c.utils.blend(c.gray, c.bg, 0.99) },
+  IndentBlanklineChar = { fg = '#2d2d2d' },
+  IndentBlanklineContextChar = { fg = '#4a4a4a' },
   -- diffview.nvim
   DiffviewNormal = { link = 'NvimTreeNormal' },
 

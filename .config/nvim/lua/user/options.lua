@@ -119,7 +119,7 @@ vim.opt.laststatus = 3
 vim.opt.splitkeep = 'screen'
 
 vim.opt.title = true
-vim.opt.scrolloff = 20
+vim.opt.scrolloff = 0
 vim.opt.confirm = false
 vim.opt.autowrite = false -- enable auto write when change buffer
 vim.opt.joinspaces = false -- No double spaces with join after a dot
