@@ -1,15 +1,16 @@
-P = function(v)
-  vim.print(v)
-end
-
+---Reload module
+---@param ... unknown
+---@return nil
 R = function(...)
   return require('plenary.reload').reload_module(...)
 end
 
 ---Print table to buffer
+---@param v any
+---@return nil
 PB = function(v)
   if type(v) ~= 'table' then
-    return P(v)
+    return vim.print(v)
   else
     local bufnr = vim.api.nvim_create_buf(false, false)
     vim.api.nvim_buf_set_lines(

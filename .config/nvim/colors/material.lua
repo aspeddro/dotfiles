@@ -12,8 +12,8 @@ M.base = {
   Normal = { fg = c.fg, bg = c.bg },
   -- NormalNC = { fg = c.fg, bg = c.bg_alt }, -- normal text in non-current windows
 
-  NormalFloat = { fg = c.fg, bg = c.bg },
-  FloatBorder = { fg = c.bg, bg = c.bg },
+  NormalFloat = { fg = c.fg, bg = c.gray2 },
+  FloatBorder = { fg = c.bg, bg = c.gray2 },
 
   SignColumn = { bg = c.bg, fg = c.fg },
 
@@ -24,7 +24,7 @@ M.base = {
 
   -- Pop-up Menu
   Pmenu = { fg = '#848484', bg = c.bg },
-  PmenuSel = { fg = c.cyan, bg = c.bg_layer },
+  PmenuSel = { fg = c.cyan, bg = colors.blend(c.gray, c.bg, 0.3) },
   PmenuSbar = { bg = c.bg },
   PmenuThumb = { bg = c.white, fg = c.orange },
 
@@ -48,17 +48,25 @@ M.base = {
 
   Title = { fg = '#ff8eeb' },
 
-  DiffText = { fg = c.none, bg = '#2c313a', underline = false },
-  DiffAdd = { fg = c.none, bg = '#33382d', underline = false },
+  DiffText = {
+    fg = c.none,
+    bg = colors.blend(c.blue, c.bg, 0.1),
+    underline = false,
+  },
+  DiffAdd = {
+    fg = c.none,
+    bg = colors.blend(c.green, c.bg, 0.1),
+    underline = false,
+  },
   DiffChange = {
     fg = c.none,
-    bg = '#2c313a',
+    bg = colors.blend(c.blue, c.bg, 0.1),
     underline = false,
     bold = false,
   },
   DiffDelete = {
     fg = c.none,
-    bg = '#382a2b',
+    bg = colors.blend(c.red, c.bg, 0.1),
     underline = false,
     bold = false,
   },
@@ -134,11 +142,11 @@ M.syntax = {
   Italic = { italic = true },
   Type = { fg = c.cyan }, -- int, long, char, etc.
   StorageClass = { fg = c.cyan }, -- static, register, volatile, etc.
-  Structure = { fg = c.puple }, -- struct, union, enum, etc.
-  Constant = { fg = c.red, italic = true }, -- any constant
+  Structure = { fg = c.cyan }, -- struct, union, enum, etc.
+  Constant = { fg = c.red }, -- any constant
   Character = { fg = c.green, italic = true }, -- any character constant: 'c', '\n'
   Number = { fg = c.orange }, -- a number constant: 5
-  Boolean = { fg = c.orange }, -- a boolean constant: TRUE, false
+  Boolean = { fg = c.red }, -- a boolean constant: TRUE, false
   Float = { fg = c.orange }, -- a floating point constant: 2.3e10
   Statement = { fg = c.purple }, -- any statement
   Label = { fg = c.purple }, -- case, default, etc.
@@ -173,7 +181,7 @@ M.treesitter = {
   ['@attribute'] = { fg = c.pink },
   ['@constructor'] = { fg = c.orange },
   ['@prepoc'] = { link = 'PreProc' },
-  ['@constant'] = { fg = c.orange, italic = true },
+  ['@constant'] = { link = 'Constant' },
   ['@constant.comment'] = {
     --[[ c.orange ]]
     fg = '#ff8eeb',
@@ -183,15 +191,16 @@ M.treesitter = {
     link = '@constant',
   },
   ['@field'] = { fg = '#ffdfb6' }, -- For fields. -- TEST: #FFD7A3
-  ['@property'] = { link = '@field' },
+  -- ['@property'] = { link = '@field' },
   -- TODO: fund a color for @amespace
   ['@namespace'] = { --[[ fg = '#FFECB3' ]]
     fg = '#F5A191',
   },
   ['@parameter'] = { fg = c.none },
   -- ['@parameter.reference'] = { link = '@parameter' },
-  ['@punctuation.bracket'] = { fg = c.rainbow[1] },
+  ['@punctuation.bracket'] = { link = 'Keyword' },
   ['@punctuation.special'] = { fg = c.cyan },
+  -- ['@punctuation.delimiter'] = { fg = c.cyan },
   ['@string.regex'] = { fg = c.blue },
   ['@string.escape'] = { fg = c.gray },
   ['@symbol'] = { fg = c.yellow },
@@ -241,15 +250,15 @@ M.plugins = {
   -- NvimTreeOpenedFile = { fg = c.cyan },
   NvimTreeWinSeparator = { bg = c.bg, fg = c.bg },
 
-  GitSignsAdd = { fg = c.green },
-  GitSignsChange = { fg = c.blue },
-  GitSignsDelete = { fg = c.red },
+  GitSignsAdd = { fg = colors.blend(c.green, c.bg, 0.5) },
+  GitSignsChange = { fg = colors.blend(c.blue, c.bg, 0.5) },
+  GitSignsDelete = { fg = colors.blend(c.red, c.bg, 0.5) },
   GitSignsCurrentLineBlame = { link = 'Comment' },
   -- nvim-lspconfig
-  LspInfoBorder = { link = 'FloatBorder' },
+  -- LspInfoBorder = { link = 'FloatBorder' },
   -- Indent Blank line
-  IndentBlanklineChar = { fg = '#2d2d2d' },
-  IndentBlanklineContextChar = { fg = '#4a4a4a' },
+  IndentBlanklineChar = { fg = colors.blend(c.gray, c.bg, 0.3) },
+  IndentBlanklineContextChar = { fg = colors.blend(c.gray, c.bg, 0.6) },
   -- diffview.nvim
   DiffviewNormal = { link = 'NvimTreeNormal' },
 

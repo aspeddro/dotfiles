@@ -11,6 +11,9 @@ vim.keymap.set('v', '<a-j>', [[:m '>+1<CR>gv-gv]])
 vim.keymap.set('v', '>', '>gv')
 vim.keymap.set('v', '<', '<gv')
 
+-- dont sent to clipboard
+vim.keymap.set('n', 'C', [["_C]])
+
 -- Cursor navigation
 for key, value in pairs { s = 'j', w = 'k', d = 'l', a = 'h' } do
   vim.keymap.set({ 'n', 't' }, ('<a-%s>'):format(key), function()

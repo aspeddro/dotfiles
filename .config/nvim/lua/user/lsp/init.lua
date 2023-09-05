@@ -191,11 +191,10 @@ capabilities.textDocument.colorProvider = {
 }
 capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
 
-
-require("neodev").setup{
+require('neodev').setup {
   library = {
     plugins = false,
-  }
+  },
 }
 lspconfig.lua_ls.setup {
   on_attach = on_attach,
@@ -234,6 +233,7 @@ lspconfig.lua_ls.setup {
 
 require('typescript-tools').setup {
   on_attach = on_attach,
+  single_file_support = true,
 }
 
 -- require('typescript').setup {
@@ -448,6 +448,15 @@ lspconfig.ocamllsp.setup {
 lspconfig.pyright.setup {
   on_attach = on_attach,
   capabilities = capabilities,
+  settings = {
+    python = {
+      analysis = {
+        autoSearchPaths = true,
+        diagnosticMode = 'openFilesOnly',
+        useLibraryCodeForTypes = true,
+      },
+    },
+  },
 }
 
 lspconfig.taplo.setup {
@@ -503,6 +512,6 @@ lspconfig.elixirls.setup {
   capabilities = capabilities,
 }
 
-require("sg").setup {
-  on_attach = on_attach
-}
+-- require('sg').setup {
+--   on_attach = on_attach,
+-- }

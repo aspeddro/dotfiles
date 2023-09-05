@@ -1,8 +1,7 @@
 --TODO:
 --0. Save position
---1. Check if a terminal is in watch mode
---2. If more than one terminal is found then select one to run codelens
---3. Save position to restore using TermToggle?
+--1. If more than one terminal is found then select one to run codelens
+--2. Save position to restore using TermToggle?
 
 local M = {}
 
@@ -127,14 +126,14 @@ end, {
   end,
 })
 
-vim.api.nvim_create_user_command('TermToggle', function(param)
-  toggles { direction = param.args }
-end, {
-  nargs = '*',
-  complete = function()
-    return DIRECTIONS
-  end,
-})
+-- vim.api.nvim_create_user_command('TermToggle', function(param)
+--   toggles { direction = param.args }
+-- end, {
+--   nargs = '*',
+--   complete = function()
+--     return DIRECTIONS
+--   end,
+-- })
 
 vim.keymap.set({ 'n', 't' }, '<a-t>', function()
   local terms = terminals()

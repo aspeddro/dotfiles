@@ -118,7 +118,7 @@ local ViMode = {
   end,
   -- Same goes for the highlight. Now the foreground will change according to the current mode.
   hl = function()
-    return { fg = 'cyan' }
+    return { fg = 'orange' }
   end,
 }
 
@@ -133,7 +133,7 @@ local FileName = {
     -- end
     return filename
   end,
-  hl = { fg = 'purple' },
+  hl = { fg = 'gray' },
 }
 
 -- local WorkDir = {
@@ -156,7 +156,7 @@ local Git = {
       or self.status_dict.changed ~= 0
   end,
 
-  hl = { fg = 'orange' },
+  hl = { fg = 'gray' },
 
   { -- git branch name
     provider = function(self)
@@ -175,21 +175,21 @@ local Git = {
       local count = self.status_dict.added or 0
       return count > 0 and ('+' .. count .. ' ')
     end,
-    hl = { fg = 'git_add' },
+    hl = { fg = 'gray' },
   },
   {
     provider = function(self)
       local count = self.status_dict.removed or 0
       return count > 0 and ('-' .. count .. ' ')
     end,
-    hl = { fg = 'git_del' },
+    hl = { fg = 'gray' },
   },
   {
     provider = function(self)
       local count = self.status_dict.changed or 0
       return count > 0 and ('~' .. count .. ' ')
     end,
-    hl = { fg = 'git_change' },
+    hl = { fg = 'gray' },
   },
   {
     condition = function(self)
@@ -225,25 +225,25 @@ local Diagnostics = {
       -- 0 is just another output, we can decide to print it or not!
       return self.errors > 0 and (self.error_icon .. self.errors .. ' ')
     end,
-    hl = { fg = 'diag_error' },
+    hl = { fg = 'gray' },
   },
   {
     provider = function(self)
       return self.warnings > 0 and (self.warn_icon .. self.warnings .. ' ')
     end,
-    hl = { fg = 'diag_warn' },
+    hl = { fg = 'gray' },
   },
   {
     provider = function(self)
       return self.info > 0 and (self.info_icon .. self.info .. ' ')
     end,
-    hl = { fg = 'diag_info' },
+    hl = { fg = 'gray' },
   },
   {
     provider = function(self)
       return self.hints > 0 and (self.hint_icon .. self.hints)
     end,
-    hl = { fg = 'diag_hint' },
+    hl = { fg = 'gray' },
   },
 }
 
@@ -256,7 +256,7 @@ local LSPActive = {
     end, vim.lsp.get_active_clients { bufnr = 0 })
     return ' [' .. table.concat(names, ' ') .. ']'
   end,
-  hl = { fg = 'green' },
+  hl = { fg = 'gray' },
 }
 
 -- local Navic = {
@@ -272,25 +272,28 @@ local LSPActive = {
 
 local Ruler = {
   provider = '%l:%c/%L',
+  hl = { fg = 'gray' },
 }
 
 local FileType = {
   provider = function()
     return vim.bo.filetype
   end,
-  hl = { fg = 'orange' },
+  hl = { fg = 'gray' },
 }
 
 local FileEncoding = {
   provider = function()
     return vim.bo.fileencoding ~= '' and vim.bo.fileencoding or vim.o.enc -- :h 'enc'
   end,
+  hl = { fg = 'gray' },
 }
 
 local FileFormat = {
   provider = function()
     return vim.bo.fileformat
   end,
+  hl = { fg = 'gray' },
 }
 
 local FileFlags = {
@@ -300,7 +303,7 @@ local FileFlags = {
         return '[+]'
       end
     end,
-    hl = { fg = 'orange' },
+    hl = { fg = 'gray' },
   },
   {
     provider = function()
@@ -308,7 +311,7 @@ local FileFlags = {
         return ''
       end
     end,
-    hl = { fg = 'orange' },
+    hl = { fg = 'gray' },
   },
 }
 
@@ -320,7 +323,7 @@ local BufferWindow = {
       vim.api.nvim_get_current_win()
     )
   end,
-  hl = { fg = 'comment' },
+  hl = { fg = 'gray' },
 }
 
 local StatusLine = {

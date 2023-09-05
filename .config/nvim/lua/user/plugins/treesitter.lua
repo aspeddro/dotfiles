@@ -16,6 +16,10 @@ parser_config.rescript = {
 }
 
 local disable = function(lang, bufnr)
+  if vim.tbl_contains({ 'rescript' }, lang) then
+    return true
+  end
+
   local name = vim.api.nvim_buf_get_name(bufnr)
 
   if lang == 'javascript' and vim.endswith(name, '.min.js') then
@@ -84,7 +88,7 @@ require('nvim-treesitter.configs').setup {
     'zig',
     'cmake',
     'prisma',
-    'help',
+    -- 'help',
     'vimdoc',
     'swift',
     -- Git
@@ -96,48 +100,36 @@ require('nvim-treesitter.configs').setup {
   },
   highlight = {
     enable = true,
-    additional_vim_regex_highlighting = false,
+    additional_vim_regex_highlighting = { 'rescript' },
     disable = disable,
   },
-  rainbow = {
-    enable = false,
-    query = 'rainbow-parens',
-    -- Highlight the entire buffer all at once
-    strategy = require 'ts-rainbow.strategy.global',
-    -- disable = disable,
-    -- extended_mode = {
-    --   latex = false,
-    -- },
-    -- max_file_lines = nil,
-    -- colors = vim.tbl_flatten { c.rainbow, c.rainbow },
-  },
   indent = {
-    enable = true,
+    enable = false,
   },
-  autopairs = {
-    enable = true,
-    filetypes = {
-      'html',
-      'javascript',
-      'typescript',
-      'javascriptreact',
-      'typescriptreact',
-      'svelte',
-      'vue',
-      'tsx',
-      'jsx',
-      -- 'rescript',
-      'xml',
-      'php',
-      'markdown',
-      'glimmer',
-      'handlebars',
-      'hbs',
-    },
-  },
-  autotag = {
-    enable = true,
-  },
+  -- autopairs = {
+  --   enable = true,
+  --   filetypes = {
+  --     'html',
+  --     'javascript',
+  --     'typescript',
+  --     'javascriptreact',
+  --     'typescriptreact',
+  --     'svelte',
+  --     'vue',
+  --     'tsx',
+  --     'jsx',
+  --     -- 'rescript',
+  --     'xml',
+  --     'php',
+  --     'markdown',
+  --     'glimmer',
+  --     'handlebars',
+  --     'hbs',
+  --   },
+  -- },
+  -- autotag = {
+  --   enable = true,
+  -- },
   -- endwise = {
   --   enable = true,
   -- },
@@ -156,55 +148,6 @@ require('nvim-treesitter.configs').setup {
       node_decremental = 'grm',
     },
   },
-  -- textobjects = {
-  --   select = {
-  --     enable = true,
-  --     -- Automatically jump forward to textobj, similar to targets.vim
-  --     lookahead = true,
-  --     keymaps = {
-  --       -- You can use the capture groups defined in textobjects.scm
-  --       ['af'] = '@function.outer',
-  --       ['if'] = '@function.inner',
-  --       ['ac'] = '@call.outer',
-  --       ['ic'] = '@call.inner',
-  --       ['ci'] = '@conditional.inner',
-  --       ['co'] = '@conditional.outer',
-  --       ['li'] = '@loop.inner',
-  --       ['lo'] = '@loop.outer',
-  --       ['pi'] = '@parameter.inner',
-  --       ['po'] = '@parameter.outer',
-  --     },
-  --   },
-  -- },
-  -- swap = {
-  --   enable = true,
-  --   swap_next = {
-  --     ['<leader>a'] = '@parameter.inner',
-  --   },
-  --   swap_previous = {
-  --     ['<leader>A'] = '@parameter.inner',
-  --   },
-  -- },
-  -- move = {
-  --   enable = true,
-  --   set_jumps = true, -- whether to set jumps in the jumplist
-  --   goto_next_start = {
-  --     [']m'] = '@function.outer',
-  --     [']]'] = '@parameter.inner',
-  --   },
-  --   goto_next_end = {
-  --     [']M'] = '@function.outer',
-  --     [']['] = '@class.outer',
-  --   },
-  --   goto_previous_start = {
-  --     ['[m'] = '@function.outer',
-  --     ['[['] = '@class.outer',
-  --   },
-  --   goto_previous_end = {
-  --     ['[M'] = '@function.outer',
-  --     ['[]'] = '@class.outer',
-  --   },
-  -- },
   textsubjects = {
     enable = true,
     prev_selection = ',',
@@ -232,11 +175,3 @@ require('nvim-treesitter.configs').setup {
 --   color = color.yellow,
 -- }
 -- require('hlargs').enable()
-
--- vim.keymap.set('n', '<leader>tp', vim.cmd.TSPlaygroundToggle, { silent = true })
--- vim.keymap.set(
---   'n',
---   '<leader>th',
---   vim.cmd.TSHighlightCapturesUnderCursor,
---   { silent = true }
--- )

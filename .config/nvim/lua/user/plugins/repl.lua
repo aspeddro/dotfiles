@@ -29,15 +29,14 @@ require('repl').setup {
       mappings = {
         n = {
           ['<leader>l'] = function(repl, params)
-            -- P(params)
+            -- vim.print(params)
             if params.lang == 'r' then
               repl:send(params.line)
             end
           end,
           ['<leader>r'] = function(repl, params)
-            -- P(params)
             local block = utils.get_block {
-              scope = { 'binary', 'pipe', 'left_assignment' },
+              scope = { 'binary', 'pipe', 'left_assignment', 'call' },
             }
             if params.ft == 'r' then
               repl:send(block)

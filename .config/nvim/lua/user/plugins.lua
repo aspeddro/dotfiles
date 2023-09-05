@@ -50,7 +50,7 @@ return {
     end,
     dependencies = {
       -- { 'nvim-treesitter/nvim-treesitter-textobjects' },
-      { 'HiPhish/nvim-ts-rainbow2' },
+      -- { 'HiPhish/nvim-ts-rainbow2' },
       -- { 'mrjones2014/nvim-ts-rainbow' },
       { 'RRethy/nvim-treesitter-textsubjects' },
       -- { 'RRethy/nvim-treesitter-endwise' },
@@ -305,19 +305,18 @@ return {
 
   'rawnly/gist.nvim',
 
-   {
-    "sourcegraph/sg.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
+  -- {
+  --   'sourcegraph/sg.nvim',
+  --   dependencies = { 'nvim-lua/plenary.nvim' },
 
-    -- If you have a recent version of lazy.nvim, you don't need to add this!
-    build = "nvim -l build/init.lua",
-  },
+  --   -- If you have a recent version of lazy.nvim, you don't need to add this!
+  --   build = 'nvim -l build/init.lua',
+  -- },
 
   -- Langs support
 
   -- 'ii14/emmylua-nvim',
-  { "folke/neodev.nvim", opts = {} },
-
+  { 'folke/neodev.nvim', opts = {} },
 
   {
     'aspeddro/rescript-tools.nvim',

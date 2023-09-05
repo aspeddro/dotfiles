@@ -74,7 +74,10 @@ local black = make {
 
 local sql_formatter = make {
   run = {
-    exe = 'sql-formatter',
+    exe = 'sqlfmt',
+    args = {
+      '-',
+    },
     stdin = true,
   },
 }
