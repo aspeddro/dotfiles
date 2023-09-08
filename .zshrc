@@ -33,8 +33,9 @@ export ANDROID_SDK_ROOT=$HOME/Android/Sdk
 
 alias dot='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 
+# Start SSH agent on login
+# https://stackoverflow.com/questions/18880024/start-ssh-agent-on-login/18915067#18915067
 SSH_ENV=$HOME/.ssh/environment
-# start the ssh-agent
 function start_agent {
     echo "Initializing new SSH agent..."
     # spawn ssh-agent
