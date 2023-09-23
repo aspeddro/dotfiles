@@ -7,12 +7,13 @@ options(
   # tinytex.latexmk.emulation = FALSE,
   repos = c(CRAN = "https://cloud.r-project.org"),
   # LSP
-  languageserver.diagnostics = TRUE,
+  languageserver.diagnostics = FALSE,
   languageserver.lint_cache = TRUE,
   languageserver.max_completions = 100,
   languageserver.rich_documentation = FALSE,
-  languageserver.server_capabilities = list(
-    documentFormattingProvider = TRUE
-  ),
+  languageserver.snippet_support = FALSE,
+  # languageserver.server_capabilities = list(
+  #   documentFormattingProvider = TRUE
+  # ),
   browser = "google-chrome-stable"
 )
