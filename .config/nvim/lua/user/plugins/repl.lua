@@ -90,7 +90,17 @@ require('repl').setup {
                 'type_alias_statement',
               },
             }
-            repl:send(block)
+            -- TODO: config with tab
+            local lines = vim.split(block, '\n')
+
+            for _, line in pairs(lines) do
+              repl:send(line)
+            end
+
+            if #lines > 1 then
+              repl:send '\n'
+            end
+            -- repl:send(block .. '\n')
           end,
           -- Run Above
           ['<leader>ra'] = function(repl)

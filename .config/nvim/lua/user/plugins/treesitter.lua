@@ -104,7 +104,7 @@ require('nvim-treesitter.configs').setup {
     disable = disable,
   },
   indent = {
-    enable = false,
+    enable = { 'r' },
   },
   -- autopairs = {
   --   enable = true,

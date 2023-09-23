@@ -49,7 +49,10 @@ local on_attach = function(client, bufnr)
   if client.server_capabilities.documentHighlightProvider then
     local group =
       vim.api.nvim_create_augroup('LSP/documentHighlight', { clear = true })
-    vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+
+    vim.api.nvim_clear_autocmds { group = group, buffer = bufnr }
+
+    vim.api.nvim_create_autocmd({ 'CursorHold' }, {
       callback = vim.lsp.buf.document_highlight,
       buffer = bufnr,
       group = group,
@@ -67,14 +70,12 @@ local on_attach = function(client, bufnr)
 
   if client.server_capabilities.codeLensProvider then
     local group = vim.api.nvim_create_augroup('LSP/CodeLens', { clear = true })
+
+    vim.api.nvim_clear_autocmds { group = group, buffer = bufnr }
+
     vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'CursorHold' }, {
       group = group,
-      callback = function(arg)
-        -- Error executing vim.schedule lua callback: /usr/share/nvim/runtime/lua/vim/lsp/codelens.lua:188: Invalid buffer id: 142
-        if vim.api.nvim_buf_is_valid(arg.buf) then
-          vim.lsp.codelens.refresh()
-        end
-      end,
+      callback = vim.lsp.codelens.refresh,
       buffer = bufnr,
     })
   end
@@ -231,48 +232,36 @@ lspconfig.lua_ls.setup {
   },
 }
 
-require('typescript-tools').setup {
+lspconfig.tsserver.setup {
   on_attach = on_attach,
+  capabilities = capabilities,
+  root_dir = lspconfig.util.root_pattern('tsconfig.json', 'jsconfig.json'),
   single_file_support = true,
+  settings = {
+    typescript = {
+      inlayHints = {
+        includeInlayParameterNameHints = 'all',
+        includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+        includeInlayFunctionParameterTypeHints = true,
+        includeInlayVariableTypeHints = true,
+        includeInlayPropertyDeclarationTypeHints = true,
+        includeInlayFunctionLikeReturnTypeHints = true,
+        includeInlayEnumMemberValueHints = true,
+      },
+    },
+    javascript = {
+      inlayHints = {
+        includeInlayParameterNameHints = 'all',
+        includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+        includeInlayFunctionParameterTypeHints = true,
+        includeInlayVariableTypeHints = true,
+        includeInlayPropertyDeclarationTypeHints = true,
+        includeInlayFunctionLikeReturnTypeHints = true,
+        includeInlayEnumMemberValueHints = true,
+      },
+    },
+  },
 }
-
--- require('typescript').setup {
---   disable_commands = false,
---   debug = false,
---   go_to_source_definition = {
---     fallback = true, -- fall back to standard LSP definition on failure
---   },
---   server = {
---     on_attach = on_attach,
---     capabilities = capabilities,
---     root_dir = lspconfig.util.root_pattern('tsconfig.json', 'jsconfig.json'),
---     single_file_support = true,
---     settings = {
---       typescript = {
---         inlayHints = {
---           includeInlayParameterNameHints = 'all',
---           includeInlayParameterNameHintsWhenArgumentMatchesName = false,
---           includeInlayFunctionParameterTypeHints = true,
---           includeInlayVariableTypeHints = true,
---           includeInlayPropertyDeclarationTypeHints = true,
---           includeInlayFunctionLikeReturnTypeHints = true,
---           includeInlayEnumMemberValueHints = true,
---         },
---       },
---       javascript = {
---         inlayHints = {
---           includeInlayParameterNameHints = 'all',
---           includeInlayParameterNameHintsWhenArgumentMatchesName = false,
---           includeInlayFunctionParameterTypeHints = true,
---           includeInlayVariableTypeHints = true,
---           includeInlayPropertyDeclarationTypeHints = true,
---           includeInlayFunctionLikeReturnTypeHints = true,
---           includeInlayEnumMemberValueHints = true,
---         },
---       },
---     },
---   },
--- }
 
 -- lspconfig.denols.setup {
 --   root_dir = lspconfig.util.root_pattern 'deno.json',
@@ -320,7 +309,7 @@ lspconfig.rescriptls.setup {
     return has_pinned_deps and vim.loop.cwd()
       or util.root_pattern('bsconfig.json', '.git')(fname)
   end,
-  cmd = not false
+  cmd = false
       and {
         'node',
         util.path.join {

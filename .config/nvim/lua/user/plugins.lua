@@ -303,7 +303,7 @@ return {
     end,
   },
 
-  'rawnly/gist.nvim',
+  { 'rawnly/gist.nvim' },
 
   -- {
   --   'sourcegraph/sg.nvim',
