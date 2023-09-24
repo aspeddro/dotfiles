@@ -140,5 +140,9 @@
     "rescript.settings.inlayHints.enable": false,
 
     // YAML
-    "redhat.telemetry.enabled": false
+    "redhat.telemetry.enabled": false,
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
+    "notebook.diff.ignoreMetadata": true
 }
