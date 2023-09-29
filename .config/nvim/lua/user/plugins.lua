@@ -215,8 +215,9 @@ return {
 
   {
     'lukas-reineke/indent-blankline.nvim',
+    main = 'ibl',
     config = function()
-      require 'user.plugins.indentline'
+      require 'user.plugins.ibl'
     end,
   },
 

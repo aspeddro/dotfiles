@@ -1,16 +1,16 @@
-require('indent_blankline').setup {
-  show_current_context = true,
+require('ibl').setup {
   show_first_indent_level = false,
-  filetype_exclude = {
-    'NvimTree',
-    'lsp-installer',
-    'terminal',
-    'toggleterm',
-    'glowpreview',
-    'tsplayground',
-    'help',
-    'lazy',
-    'mason',
+  scope = { enabled = false },
+  exclude = {
+    filetypes = {
+      'NvimTree',
+      'terminal',
+      'toggleterm',
+      'glowpreview',
+      'help',
+      'lazy',
+      'mason',
+    },
   },
   context_patterns = {
     'class',

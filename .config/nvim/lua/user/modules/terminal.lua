@@ -30,7 +30,7 @@ M.get_direction = function(dir)
 
   if not is_term(vim.api.nvim_get_current_buf()) then
     local width = math.ceil(vim.o.columns * 0.35)
-    local height = math.ceil(vim.o.lines * 0.2)
+    local height = math.ceil(vim.o.lines * 0.25)
     vim.list_extend(
       choice,
       dir == 'right' and { 'vertical resize ' .. width }
