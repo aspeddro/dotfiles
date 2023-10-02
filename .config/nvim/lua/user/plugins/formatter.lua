@@ -78,7 +78,11 @@ local sql_formatter = make {
     args = {
       '-',
     },
-    stdin = true,
+    -- exe = 'sql-formatter',
+    -- args = {
+    --   '-l bigquery',
+    -- },
+    -- stdin = true,
   },
 }
 

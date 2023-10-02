@@ -257,8 +257,7 @@ M.plugins = {
   -- nvim-lspconfig
   -- LspInfoBorder = { link = 'FloatBorder' },
   -- Indent Blank line
-  IndentBlanklineChar = { fg = colors.blend(c.gray, c.bg, 0.3) },
-  IndentBlanklineContextChar = { fg = colors.blend(c.gray, c.bg, 0.6) },
+  IblIndent = { fg = colors.blend(c.gray, c.bg, 0.3) },
   -- diffview.nvim
   DiffviewNormal = { link = 'NvimTreeNormal' },
 

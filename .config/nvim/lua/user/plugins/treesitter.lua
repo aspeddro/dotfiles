@@ -105,7 +105,7 @@ require('nvim-treesitter.configs').setup {
   },
   indent = {
     enable = { 'r' },
-    disable = { 'rescript' },
+    disable = { 'rescript', 'ocaml' },
   },
   -- autopairs = {
   --   enable = true,
