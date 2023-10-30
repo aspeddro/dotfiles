@@ -6,7 +6,7 @@ local t = ls.text_node
 
 ls.add_snippets('rescript', {
   s(
-    'doc',
+    'doctemplate',
     fmt(
       [[
       /**
@@ -17,7 +17,7 @@ ls.add_snippets('rescript', {
     )
   ),
   s(
-    'docmod',
+    'docmodtemplate',
     fmt(
       [[
       /***

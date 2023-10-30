@@ -221,10 +221,17 @@ return {
     end,
   },
 
+  -- {
+  --   'mhartington/formatter.nvim',
+  --   config = function()
+  --     require 'user.plugins.formatter'
+  --   end,
+  -- },
+
   {
-    'mhartington/formatter.nvim',
+    'stevearc/conform.nvim',
     config = function()
-      require 'user.plugins.formatter'
+      require 'user.plugins.conform'
     end,
   },
 
@@ -336,5 +343,9 @@ return {
   {
     'pmizio/typescript-tools.nvim',
     dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
+  },
+
+  {
+    'godlygeek/tabular',
   },
 }

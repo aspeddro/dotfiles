@@ -5,12 +5,27 @@ M.close = function()
 
   local bufnr = vim.api.nvim_get_current_buf()
 
+  local ask_close = function(buf, last_used_buffer)
+    vim.ui.select({ 'Yes', 'No' }, {
+      prompt = string.format(
+        'No write since last change for buffer %d. Force close:',
+        bufnr
+      ),
+    }, function(choice)
+      if choice == 'Yes' then
+        if last_used_buffer ~= nil then
+          vim.cmd.buffer(last_used_buffer.bufnr)
+        end
+        vim.cmd('bd! ' .. buf)
+      else
+        return
+      end
+    end)
+  end
+
   if #buffers == 1 then
     if vim.bo.modified then
-      vim.notify(
-        'No write since last change for buffer ' .. bufnr,
-        vim.log.levels.WARN
-      )
+      ask_close(bufnr, nil)
       return
     end
     vim.cmd.bd()
@@ -25,22 +40,7 @@ M.close = function()
   local last_used_buffer = buffers[2]
 
   if vim.bo.modified then
-    vim.ui.select({ 'Yes', 'No' }, {
-      prompt = string.format(
-        'No write since last change for buffer %d. Force close:',
-        bufnr
-      ),
-      -- format_item = function(item)
-      --   return "I'd like to choose " .. item
-      -- end,
-    }, function(choice)
-      if choice == 'Yes' then
-        vim.cmd.buffer(last_used_buffer.bufnr)
-        vim.cmd('bd! ' .. bufnr)
-      else
-        return
-      end
-    end)
+    ask_close(bufnr, last_used_buffer)
     return
   end
 

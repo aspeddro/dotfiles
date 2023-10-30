@@ -15,7 +15,7 @@ vim.diagnostic.config {
   float = {
     show_header = true,
     border = 'single',
-    focusable = false,
+    focusable = true,
     source = 'always',
   },
 }
@@ -48,7 +48,7 @@ local on_attach = function(client, bufnr)
 
   if client.server_capabilities.documentHighlightProvider then
     local group =
-      vim.api.nvim_create_augroup('LSP/documentHighlight', { clear = true })
+      vim.api.nvim_create_augroup('LSP/documentHighlight', { clear = false })
 
     vim.api.nvim_clear_autocmds { group = group, buffer = bufnr }
 
@@ -190,6 +190,9 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 capabilities.textDocument.colorProvider = {
   dynamicRegistration = true,
 }
+
+-- PERF: didChangeWatchedFiles is too slow
+-- https://github.com/neovim/neovim/issues/23291#issuecomment-1686709265
 capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
 
 require('neodev').setup {
@@ -309,16 +312,17 @@ lspconfig.rescriptls.setup {
     return has_pinned_deps and vim.loop.cwd()
       or util.root_pattern('bsconfig.json', '.git')(fname)
   end,
-  cmd = false
-      and {
-        'node',
+  cmd = (function()
+    local inDev = true
+    if inDev then
+      return {
         util.path.join {
           vim.fn.expand '~/Desktop',
           'projects',
           'rescript-vscode',
           'server',
           'out',
-          'server.js',
+          'cli.js',
           -- '_build',
           -- 'default',
           -- 'rescript-language-server',
@@ -327,7 +331,12 @@ lspconfig.rescriptls.setup {
         },
         '--stdio',
       }
-    or { 'rescript-lsp', '--stdio' },
+    end
+
+    local new_path = vim.fn.stdpath 'data'
+      .. '/mason/packages/rescript-lsp/extension/server/out/cli.js'
+    return { new_path, '--stdio' }
+  end)(),
   init_options = {
     extensionConfiguration = {
       binaryPath = nil,
@@ -460,7 +469,22 @@ lspconfig.vimls.setup {
 lspconfig.tailwindcss.setup {
   on_attach = on_attach,
   capabilities = capabilities,
-  root_dir = util.root_pattern('tailwind.config.js', 'tailwind.config.ts'),
+  root_dir = util.root_pattern(
+    'tailwind.config.js',
+    'tailwind.config.ts',
+    'tailwind.config.mjs'
+  ),
+  settings = {
+    tailwindCSS = {
+      experimental = {
+        -- Enable completion for template string ``
+        -- https://github.com/tailwindlabs/tailwindcss/issues/7553
+        classRegex = {
+          '`([^`]*)',
+        },
+      },
+    },
+  },
 }
 
 lspconfig.bashls.setup {

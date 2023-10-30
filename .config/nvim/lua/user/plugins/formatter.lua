@@ -1,4 +1,4 @@
-local formatter = require 'formatter'
+-- local formatter = require 'formatter'
 
 local root_has_file = function(pattern)
   if #vim.fs.find(pattern, { upward = true }) > 0 then
@@ -86,13 +86,13 @@ local sql_formatter = make {
   },
 }
 
-formatter.setup {
-  filetype = {
-    lua = { stylua },
-    python = { black },
-    javascript = { prettier },
-    typescript = { prettier },
-    markdown = { prettier },
-    sql = { sql_formatter },
-  },
-}
+-- formatter.setup {
+--   filetype = {
+--     lua = { stylua },
+--     python = { black },
+--     javascript = { prettier },
+--     typescript = { prettier },
+--     markdown = { prettier },
+--     sql = { sql_formatter },
+--   },
+-- }

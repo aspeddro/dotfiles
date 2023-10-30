@@ -4,7 +4,8 @@ require('nvim-tree').setup {
     root_folder_label = false,
   },
   git = {
-    enable = false,
+    -- TODO: enable
+    enable = true,
   },
   trash = {
     cmd = 'rip',

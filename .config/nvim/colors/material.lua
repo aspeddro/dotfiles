@@ -13,7 +13,7 @@ M.base = {
   -- NormalNC = { fg = c.fg, bg = c.bg_alt }, -- normal text in non-current windows
 
   NormalFloat = { fg = c.fg, bg = c.gray2 },
-  FloatBorder = { fg = c.bg, bg = c.gray2 },
+  FloatBorder = { fg = c.gray2, bg = c.gray2 },
 
   SignColumn = { bg = c.bg, fg = c.fg },
 
@@ -213,8 +213,12 @@ M.treesitter = {
   ['@text.reference'] = { fg = '#ff6c92', italic = true },
   ['@text.literal'] = { fg = '#6bffb5' },
   ['@text.uri.comment'] = { italic = true },
+  ['@text.uri'] = { italic = true, fg = c.red },
   ['@text.note'] = { link = 'Todo' },
   ['@text.danger'] = { link = 'Todo' },
+
+  -- css
+  ['@property.css'] = { link = '@field' },
 }
 
 ---@see h lsp-highlight

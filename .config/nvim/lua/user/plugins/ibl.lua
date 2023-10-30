@@ -1,5 +1,6 @@
 require('ibl').setup {
   -- show_first_indent_level = false,
+  indent = { char = '▏' },
   scope = { enabled = false },
   exclude = {
     filetypes = {
