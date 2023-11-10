@@ -90,9 +90,9 @@ return {
   --   'mrshmllow/document-color.nvim',
   -- },
   { 'ray-x/lsp_signature.nvim' },
-  -- {
-  --   'SmiteshP/nvim-navic',
-  -- },
+  {
+    'SmiteshP/nvim-navic',
+  },
   {
     'lvimuser/lsp-inlayhints.nvim',
     config = function()

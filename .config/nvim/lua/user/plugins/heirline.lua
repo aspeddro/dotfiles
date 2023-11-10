@@ -259,16 +259,17 @@ local LSPActive = {
   hl = { fg = 'gray' },
 }
 
--- local Navic = {
---   condition = function()
---     return require('nvim-navic').is_available()
---   end,
---   update = 'CursorMoved',
---   provider = function()
---     return require('nvim-navic').get_location()
---   end,
---   hl = { fg = 'comment' },
--- }
+local Navic = {
+  condition = function()
+    return require('nvim-navic').is_available()
+  end,
+  update = 'CursorMoved',
+  provider = function()
+    local location = require('nvim-navic').get_location()
+    return string.len(location) > 0 and ' > ' .. location or nil
+  end,
+  hl = { fg = 'comment' },
+}
 
 local Ruler = {
   provider = '%l:%c/%L',
@@ -575,22 +576,24 @@ local TabLine = { TabLineOffset, BufferLine, TabPages }
 --WinBar
 local WinBars = {
   fallthrough = true,
-  -- Space,
-  -- Navic,
-  Align,
+  Space,
+  Space,
   {
+    condition = function()
+      return not vim.tbl_contains({ 'term' }, vim.bo.filetype)
+    end,
     provider = function()
       local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ':.')
       if filename == '' then
         return EMPTY_FILENAME
       end
-      return filename
+      return string.gsub(filename, '%/', ' > ')
     end,
     hl = { fg = 'comment' },
   },
-  Space,
+  Navic,
+  Align,
   BufferWindow,
-  Space,
 }
 
 herline.setup {
@@ -603,7 +606,7 @@ herline.setup {
     disable_winbar_cb = function(args)
       local buf = args.buf
       local buftype = vim.tbl_contains(
-        { 'prompt', 'nofile', 'help', 'quickfix' },
+        { 'prompt', 'nofile', 'help', 'quickfix', 'term' },
         vim.bo[buf].buftype
       )
       local filetype = vim.tbl_contains({

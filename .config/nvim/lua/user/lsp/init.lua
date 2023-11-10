@@ -90,6 +90,10 @@ local on_attach = function(client, bufnr)
     }, bufnr)
   end
 
+  if client.server_capabilities.documentSymbolProvider then
+    require('nvim-navic').attach(client, bufnr)
+  end
+
   keymap_set('gD', vim.lsp.buf.declaration, { desc = 'Declaration' })
 
   keymap_set('gd', function()
@@ -201,6 +205,41 @@ require('neodev').setup {
   },
 }
 lspconfig.lua_ls.setup {
+  on_init = function(client)
+    local path = client.workspace_folders[1].name
+    if
+      not vim.loop.fs_stat(path .. '/.luarc.json')
+      and not vim.loop.fs_stat(path .. '/.luarc.jsonc')
+    then
+      client.config.settings =
+        vim.tbl_deep_extend('force', client.config.settings, {
+          Lua = {
+            runtime = {
+              -- Tell the language server which version of Lua you're using
+              -- (most likely LuaJIT in the case of Neovim)
+              version = 'LuaJIT',
+            },
+            -- Make the server aware of Neovim runtime files
+            workspace = {
+              checkThirdParty = false,
+              library = {
+                vim.env.VIMRUNTIME,
+                -- "${3rd}/luv/library"
+                -- "${3rd}/busted/library",
+              },
+              -- or pull in all of 'runtimepath'. NOTE: this is a lot slower
+              -- library = vim.api.nvim_get_runtime_file("", true)
+            },
+          },
+        })
+
+      client.notify(
+        'workspace/didChangeConfiguration',
+        { settings = client.config.settings }
+      )
+    end
+    return true
+  end,
   on_attach = on_attach,
   capabilities = capabilities,
   settings = {
@@ -333,9 +372,7 @@ lspconfig.rescriptls.setup {
       }
     end
 
-    local new_path = vim.fn.stdpath 'data'
-      .. '/mason/packages/rescript-lsp/extension/server/out/cli.js'
-    return { new_path, '--stdio' }
+    return { 'rescript-language-server', '--stdio' }
   end)(),
   init_options = {
     extensionConfiguration = {
@@ -480,7 +517,8 @@ lspconfig.tailwindcss.setup {
         -- Enable completion for template string ``
         -- https://github.com/tailwindlabs/tailwindcss/issues/7553
         classRegex = {
-          '`([^`]*)',
+          -- '`([^`]*)',
+          '["\'`]([^"\'`]*).*?["\'`]',
         },
       },
     },

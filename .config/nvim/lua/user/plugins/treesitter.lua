@@ -6,14 +6,14 @@ install.prefer_git = true
 -- Extend clojure parse to dune file
 vim.treesitter.language.register('clojure', 'dune')
 
-parser_config.rescript = {
-  install_info = {
-    url = '~/Desktop/projects/tree-sitter-rescript',
-    files = { 'src/parser.c', 'src/scanner.c' },
-    requires_generate_from_grammar = true,
-  },
-  filetype = 'rescript',
-}
+-- parser_config.rescript = {
+--   install_info = {
+--     url = '~/Desktop/projects/tree-sitter-rescript',
+--     files = { 'src/parser.c', 'src/scanner.c' },
+--     requires_generate_from_grammar = true,
+--   },
+--   filetype = 'rescript',
+-- }
 
 local disable = function(lang, bufnr)
   if vim.tbl_contains({ 'rescript' }, lang) then
@@ -40,7 +40,7 @@ require('nvim-treesitter.configs').setup {
     'cpp',
     'css',
     -- 'erlang',
-    'elixir',
+    -- 'elixir',
     -- 'fennel',
     -- 'teal',
     'scss',
@@ -56,13 +56,14 @@ require('nvim-treesitter.configs').setup {
     'latex',
     'bibtex',
     'lua',
+    'luadoc',
     'ocaml',
     'ocaml_interface',
     'ocamllex',
     'python',
     'r',
-    'go',
-    'gomod',
+    -- 'go',
+    -- 'gomod',
     'graphql',
     -- 'ruby',
     -- 'perl',
