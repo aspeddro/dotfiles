@@ -12,9 +12,9 @@ syntax keyword resBoolean true false
 " Keywords
 syntax keyword resKeyword let rec type external mutable lazy private of with
 syntax keyword resKeyword if else switch when
-syntax keyword resKeyword and as module in constraint import export
+syntax keyword resKeyword and as module constraint import export
 syntax keyword resInclude open include
-syntax keyword resRepeat for to downto while
+syntax keyword resRepeat for to downto while in
 syntax keyword resException try catch exception assert
 syntax keyword resKeyword async await
 
@@ -61,14 +61,14 @@ syntax match resArrowPipe "\v\-\>"
 syntax match resArrowPipe "\v\|\>"
 syntax match resArrowPipe "\v\@\@"
 
-" Builtion fucntions
+" Builtin functions
 syntax match resFunction "list{\@="
 
 " Comment
 syntax region resSingleLineComment start="//" end="$" contains=resTodo,@Spell
 syntax region resMultiLineComment start="/\*\s*" end="\*/" contains=@Spell,resTodo,resMultiLineComment
 
-" syntax keyword resTodo contained TODO FIXME XXX NOTE
+syntax keyword resTodo contained TODO FIXME XXX NOTE
 
 " Char
 syntax match resChar "\v'\\.'|'.'"
@@ -154,3 +154,4 @@ highlight default link resFunction Function
 highlight default link resCustomOperator String
 
 let b:current_syntax = "rescript"
+

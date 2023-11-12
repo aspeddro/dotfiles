@@ -1,5 +1,4 @@
 require('ibl').setup {
-  -- show_first_indent_level = false,
   indent = { char = '▏' },
   scope = { enabled = false },
   exclude = {
@@ -13,28 +12,4 @@ require('ibl').setup {
       'mason',
     },
   },
-  -- context_patterns = {
-  --   'class',
-  --   '^func',
-  --   'method',
-  --   '^if',
-  --   'while',
-  --   'for',
-  --   'with',
-  --   'try',
-  --   'except',
-  --   'arguments',
-  --   'argument_list',
-  --   'object',
-  --   'dictionary',
-  --   'element',
-  --   'table',
-  --   'tuple',
-  --   -- Rescript
-  --   'type_declaration',
-  --   'module_declaration',
-  --   'block',
-  --   'switch_match',
-  --   'jsx_fragment',
-  -- },
 }

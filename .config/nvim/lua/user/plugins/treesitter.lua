@@ -89,7 +89,6 @@ require('nvim-treesitter.configs').setup {
     -- 'zig',
     'cmake',
     'prisma',
-    -- 'help',
     'vimdoc',
     -- 'swift',
     -- Git
@@ -108,27 +107,9 @@ require('nvim-treesitter.configs').setup {
     enable = { 'r' },
     disable = { 'rescript', 'ocaml', 'sql', 'javascript', 'typescript' },
   },
-  -- autopairs = {
-  --   enable = true,
-  --   filetypes = {
-  --     'html',
-  --     'javascript',
-  --     'typescript',
-  --     'javascriptreact',
-  --     'typescriptreact',
-  --     'svelte',
-  --     'vue',
-  --     'tsx',
-  --     'jsx',
-  --     -- 'rescript',
-  --     'xml',
-  --     'php',
-  --     'markdown',
-  --     'glimmer',
-  --     'handlebars',
-  --     'hbs',
-  --   },
-  -- },
+  rainbow = {
+    enable = false,
+  },
   -- autotag = {
   --   enable = true,
   -- },

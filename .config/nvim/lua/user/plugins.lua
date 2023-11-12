@@ -50,8 +50,8 @@ return {
     end,
     dependencies = {
       -- { 'nvim-treesitter/nvim-treesitter-textobjects' },
-      -- { 'HiPhish/nvim-ts-rainbow2' },
       -- { 'mrjones2014/nvim-ts-rainbow' },
+      { url = 'https://gitlab.com/HiPhish/nvim-ts-rainbow2.git' },
       { 'RRethy/nvim-treesitter-textsubjects' },
       -- { 'RRethy/nvim-treesitter-endwise' },
       { 'windwp/nvim-ts-autotag' },
@@ -93,6 +93,7 @@ return {
   {
     'SmiteshP/nvim-navic',
   },
+
   {
     'lvimuser/lsp-inlayhints.nvim',
     config = function()
@@ -221,13 +222,6 @@ return {
     end,
   },
 
-  -- {
-  --   'mhartington/formatter.nvim',
-  --   config = function()
-  --     require 'user.plugins.formatter'
-  --   end,
-  -- },
-
   {
     'stevearc/conform.nvim',
     config = function()
@@ -340,10 +334,10 @@ return {
     end,
   },
 
-  {
-    'pmizio/typescript-tools.nvim',
-    dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
-  },
+  -- {
+  --   'pmizio/typescript-tools.nvim',
+  --   dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
+  -- },
 
   {
     'godlygeek/tabular',
