@@ -27,12 +27,21 @@ font pango:$font
 # Set wallpaper
 exec --no-startup-id feh --bg-fill $HOME/Pictures/wallpaper2.jpg
 
+# Start picom
+exec --no-startup-id picom
+
 # Open nnn (terminal file manager)
 bindsym $mod+n exec alacritty -e nnn -CdDEFnQrux
 
 # Screenshot
 bindsym $mod+Print exec maim --select --hidecursor | xclip -selection clipboard -t image/png
+# Fullscreenshot
 bindsym $mod+shift+Print exec maim --hidecursor | xclip -selection clipboard -t image/png
+
+# Screen record
+# bindsym $mod+shift+Print exec alacritty -e screensave
+# Stop recording
+# bindsym Ctrl+Shift+BackSpace exec killall -s SIGINT ffmpeg
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -49,8 +58,6 @@ bindsym XF86AudioPrev exec playerctl previous
 # brightness control
 bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
 bindsym XF86MonBrightnessUp exec brightnessctl set 5%+
-
-bindsym XF86Calculator exec alacritty -e 'node'
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
