@@ -352,8 +352,8 @@ lspconfig.rescriptls.setup {
       or util.root_pattern('bsconfig.json', '.git')(fname)
   end,
   cmd = (function()
-    local inDev = true
-    if inDev then
+    local isDev = true
+    if isDev then
       return {
         util.path.join {
           vim.fn.expand '~/Desktop',
@@ -376,8 +376,8 @@ lspconfig.rescriptls.setup {
   end)(),
   init_options = {
     extensionConfiguration = {
-      binaryPath = nil,
-      platformPath = nil,
+      -- binaryPath = nil,
+      -- platformPath = nil,
       askToStartBuild = false,
       codeLens = false,
       signatureHelp = {

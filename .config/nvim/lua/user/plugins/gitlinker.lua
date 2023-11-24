@@ -1,7 +1,4 @@
-require('gitlinker').setup {
-  opts = {
-    action_callback = function(url)
-      require('plenary.job'):new({ command = 'xdg-open', args = { url } }):start()
-    end,
-  },
+local gitlinker = require 'gitlinker'
+gitlinker.setup {
+  highlight_duration = 100,
 }

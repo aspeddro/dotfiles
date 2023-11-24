@@ -266,7 +266,7 @@ local Navic = {
   update = 'CursorMoved',
   provider = function()
     local location = require('nvim-navic').get_location()
-    return string.len(location) > 0 and ' > ' .. location or nil
+    return string.len(location) > 0 and ' ' .. location or nil
   end,
   hl = { fg = 'comment' },
 }
@@ -585,9 +585,9 @@ local WinBars = {
     provider = function()
       local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ':.')
       if filename == '' then
-        return EMPTY_FILENAME
+        return nil
       end
-      return string.gsub(filename, '%/', ' > ')
+      return string.gsub(filename, '%/', ' ')
     end,
     hl = { fg = 'comment' },
   },

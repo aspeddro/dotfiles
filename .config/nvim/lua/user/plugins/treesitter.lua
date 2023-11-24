@@ -6,6 +6,15 @@ install.prefer_git = true
 -- Extend clojure parse to dune file
 vim.treesitter.language.register('clojure', 'dune')
 
+parser_config.css = {
+  install_info = {
+    url = '~/Desktop/projects/tree-sitter-css',
+    files = { 'src/parser.c', 'src/scanner.c' },
+    requires_generate_from_grammar = true,
+  },
+  filetype = 'css',
+}
+
 -- parser_config.rescript = {
 --   install_info = {
 --     url = '~/Desktop/projects/tree-sitter-rescript',
@@ -139,9 +148,6 @@ require('nvim-treesitter.configs').setup {
       [';'] = 'textsubjects-container-outer',
       ['i;'] = 'textsubjects-container-inner',
     },
-  },
-  context_commentstring = {
-    enable = true,
   },
 }
 

@@ -55,9 +55,15 @@ return {
       { 'RRethy/nvim-treesitter-textsubjects' },
       -- { 'RRethy/nvim-treesitter-endwise' },
       { 'windwp/nvim-ts-autotag' },
-      { 'JoosepAlviste/nvim-ts-context-commentstring' },
       -- { 'm-demare/hlargs.nvim' },
     },
+  },
+
+  {
+    'JoosepAlviste/nvim-ts-context-commentstring',
+    config = function()
+      require('ts_context_commentstring').setup { enable_autocmd = false }
+    end,
   },
 
   {
@@ -80,16 +86,13 @@ return {
   {
     -- UI LSP progress
     'j-hui/fidget.nvim',
-    tag = 'legacy',
     config = function()
       require('fidget').setup()
     end,
   },
-  -- Archived
-  -- {
-  --   'mrshmllow/document-color.nvim',
-  -- },
+
   { 'ray-x/lsp_signature.nvim' },
+
   {
     'SmiteshP/nvim-navic',
   },
@@ -194,7 +197,7 @@ return {
   },
 
   {
-    'ruifm/gitlinker.nvim',
+    'linrongbin16/gitlinker.nvim',
     config = function()
       require 'user.plugins.gitlinker'
     end,
@@ -288,15 +291,6 @@ return {
     end,
   },
 
-  -- {
-  --   'folke/twilight.nvim',
-  --   config = function()
-  --     require('twilight').setup {
-  --       context = 0,
-  --     }
-  --   end,
-  -- },
-
   {
     'rhysd/conflict-marker.vim',
     config = function()
@@ -318,6 +312,7 @@ return {
   -- Langs support
 
   -- 'ii14/emmylua-nvim',
+
   { 'folke/neodev.nvim', opts = {} },
 
   {
@@ -333,11 +328,6 @@ return {
       vim.g.no_plugin_maps = 0
     end,
   },
-
-  -- {
-  --   'pmizio/typescript-tools.nvim',
-  --   dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
-  -- },
 
   {
     'godlygeek/tabular',

@@ -12,6 +12,7 @@ require('nvim-tree').setup {
   },
   filters = {
     custom = { '.git$', '.cmi$', '.cmj$', '.cmt$' },
+    git_ignored = false,
   },
   view = {
     width = 35,
