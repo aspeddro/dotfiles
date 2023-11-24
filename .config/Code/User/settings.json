@@ -20,6 +20,10 @@
     "editor.autoClosingDelete": "auto",
     "editor.semanticHighlighting.enabled": true,
 
+    // Needed to start vscode under wayland
+    // https://github.com/microsoft/vscode/issues/146349#issuecomment-1120386009
+    "window.titleBarStyle": "custom",
+
 
     "editor.semanticTokenColorCustomizations": {
         "[Community Material Theme Darker High Contrast]": {
@@ -96,6 +100,7 @@
 
     "gitlens.codeLens.enabled": false,
 
+
     // TypeScript
     "typescript.tsserver.log": "off",
     "typescript.inlayHints.parameterNames.enabled": "none",
@@ -144,5 +149,7 @@
     "[python]": {
         "editor.defaultFormatter": "ms-python.black-formatter"
     },
-    "notebook.diff.ignoreMetadata": true
+
+    "notebook.diff.ignoreMetadata": true,
+    "git.openRepositoryInParentFolders": "never",
 }
