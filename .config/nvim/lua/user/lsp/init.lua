@@ -32,7 +32,6 @@ local on_attach = function(client, bufnr)
 
   -- Enable completion triggered by <c-x><c-o>
   -- vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-
   if vim.tbl_contains({ 'lua_ls' }, client.name) then
     client.server_capabilities.semanticTokensProvider = nil
   end
@@ -352,7 +351,7 @@ lspconfig.rescriptls.setup {
       or util.root_pattern('bsconfig.json', '.git')(fname)
   end,
   cmd = (function()
-    local isDev = true
+    local isDev = false
     if isDev then
       return {
         util.path.join {

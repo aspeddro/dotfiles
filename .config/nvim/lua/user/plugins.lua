@@ -169,6 +169,17 @@ return {
   },
 
   {
+    'tamago324/lir.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'kyazdani42/nvim-web-devicons',
+    },
+    config = function()
+      require 'user.plugins.lir'
+    end,
+  },
+
+  {
     'rebelot/heirline.nvim',
     config = function()
       require 'user.plugins.heirline'
@@ -314,6 +325,8 @@ return {
   -- 'ii14/emmylua-nvim',
 
   { 'folke/neodev.nvim', opts = {} },
+
+  { 'rescript-lang/vim-rescript' },
 
   {
     'aspeddro/rescript-tools.nvim',
