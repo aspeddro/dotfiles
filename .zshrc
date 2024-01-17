@@ -22,6 +22,10 @@ autoload -U compinit && compinit
 
 source $ZSH/oh-my-zsh.sh
 
+# Add gcloub, bq and other google cloud binaries on PATH
+# https://aur.archlinux.org/packages/google-cloud-cli
+source /etc/profile.d/google-cloud-cli.sh
+
 export GPG_TTY=$(tty)
 
 export ANDROID_SDK_ROOT=$HOME/Android/Sdk
