@@ -15,3 +15,6 @@ disabled = true
 
 [rlang]
 disabled = true
+
+[gcloud]
+disabled = true
