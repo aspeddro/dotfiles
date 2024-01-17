@@ -63,9 +63,37 @@ update-pkg-list() {
 }
 
 screensave() {
-  screencast \
-    --select-region \
-    --fps 60 \
-    --auto-filename \
-    --audio-input none
+  if [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
+    wf-recorder -g "$(slurp)"
+  else
+    # screencast \
+    #   --select-region \
+    #   --fps 60 \
+    #   --auto-filename \
+    #   --audio-input none
+
+    screen_region="$(slop -o -f '%x %y %w %h')"
+    video_position_x="$(printf '%s' "$screen_region" | awk '{ print $1 }')"
+    video_position_y="$(printf '%s' "$screen_region" | awk '{ print $2 }')"
+    video_width="$(     printf '%s' "$screen_region" | awk '{ print $3 }')"
+    video_height="$(    printf '%s' "$screen_region" | awk '{ print $4 }')"
+
+    video_size="${video_width}x${video_height}"
+    video_position="${video_position_x}.${video_position_y}"
+
+    output_file="screenrecord_$(date +'%Y_%m_%d_%H_%M_%S').mp4"
+
+    # -an: disable audio
+    ffmpeg \
+      -f pulse \
+      -i default \
+      -ac 2 \
+      -acodec vorbis \
+      -f x11grab \
+      -r 25 \
+      -s ${video_size} \
+      -i :${video_position} \
+      -an \
+      -vcodec libx264 ${output_file}
+  fi
 }
