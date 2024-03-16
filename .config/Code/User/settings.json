@@ -150,6 +150,10 @@
         "editor.defaultFormatter": "ms-python.black-formatter"
     },
 
+    "notebook.lineNumbers": "on",
     "notebook.diff.ignoreMetadata": true,
+    
     "git.openRepositoryInParentFolders": "never",
+    "extensions.ignoreRecommendations": true,
+    "workbench.sideBar.location": "right",
 }
