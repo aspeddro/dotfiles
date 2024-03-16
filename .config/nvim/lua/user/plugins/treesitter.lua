@@ -6,28 +6,19 @@ install.prefer_git = true
 -- Extend clojure parse to dune file
 vim.treesitter.language.register('clojure', 'dune')
 
-parser_config.css = {
+parser_config.rescript = {
   install_info = {
-    url = '~/Desktop/projects/tree-sitter-css',
+    url = '~/Desktop/projects/tree-sitter-rescript',
     files = { 'src/parser.c', 'src/scanner.c' },
     requires_generate_from_grammar = true,
   },
-  filetype = 'css',
+  filetype = 'rescript',
 }
 
--- parser_config.rescript = {
---   install_info = {
---     url = '~/Desktop/projects/tree-sitter-rescript',
---     files = { 'src/parser.c', 'src/scanner.c' },
---     requires_generate_from_grammar = true,
---   },
---   filetype = 'rescript',
--- }
-
 local disable = function(lang, bufnr)
-  if vim.tbl_contains({ 'rescript' }, lang) then
-    return true
-  end
+  -- if vim.tbl_contains({ 'rescript' }, lang) then
+  --   return true
+  -- end
 
   local name = vim.api.nvim_buf_get_name(bufnr)
 
@@ -37,7 +28,20 @@ local disable = function(lang, bufnr)
 
   local lines = vim.api.nvim_buf_line_count(bufnr)
 
-  return lines > 2000
+  if lines > 2000 then
+    return true
+  end
+
+  if lines == 1 then
+    local column_len =
+      string.len(vim.api.nvim_buf_get_lines(bufnr, 0, -1, true)[1])
+
+    if column_len > 2000 then
+      return true
+    end
+  end
+
+  return false
 end
 
 require('nvim-treesitter.configs').setup {
@@ -114,7 +118,7 @@ require('nvim-treesitter.configs').setup {
   },
   indent = {
     enable = { 'r' },
-    disable = { 'rescript', 'ocaml', 'sql', 'javascript', 'typescript' },
+    disable = { 'rescript', 'ocaml', 'javascript', 'typescript' },
   },
   rainbow = {
     enable = false,

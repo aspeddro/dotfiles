@@ -40,9 +40,7 @@ ls.add_snippets('rescript', {
   s('module', {
     t { 'module ' },
     i(1, ''),
-    t { ' = {', '\t' },
-    i(2),
-    t { '', '}' },
+    t { ' = ' },
     i(0),
   }),
   s('moduletype', {

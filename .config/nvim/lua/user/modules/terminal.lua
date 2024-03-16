@@ -2,7 +2,7 @@
 --0. Save position
 --1. If more than one terminal is found then select one to run codelens
 --2. Save position to restore using TermToggle?
-
+-- local buffer_manager = require("user.modules.buffer")
 local M = {}
 
 local DIRECTIONS = { 'right', 'bottom' }
@@ -85,7 +85,9 @@ M.new = function(opts)
   local job_id = vim.fn.termopen(vim.o.shell, {
     cwd = vim.loop.cwd(),
     on_exit = function()
-      vim.api.nvim_buf_delete(bufnr, { force = true })
+      if vim.api.nvim_buf_is_valid(bufnr) then
+        vim.api.nvim_buf_delete(bufnr, { force = true })
+      end
     end,
   })
 
@@ -141,5 +143,33 @@ vim.keymap.set({ 'n', 't' }, '<a-t>', function()
     direction = (vim.tbl_isempty(terms) or #terms == 1) and 'bottom' or 'right',
   }
 end)
+
+-- TODO: When a terminal buffer (:term) is closed go to last listed buffer
+vim.api.nvim_create_autocmd('TermClose', {
+  group = vim.api.nvim_create_augroup('OnTermClose', { clear = true }),
+  pattern = '*',
+  callback = function(arg)
+    local ok, is_term_plugin =
+      pcall(vim.api.nvim_buf_get_var, arg.buf, 'termplugin')
+
+    if ok and is_term_plugin then
+      return
+    end
+
+    local buffers = vim.fn.getbufinfo { buflisted = 1 }
+
+    table.sort(buffers, function(a, b)
+      return a.lastused > b.lastused
+    end)
+
+    local last_buffer = buffers[2]
+
+    if last_buffer then
+      vim.cmd.buffer(last_buffer.bufnr)
+    end
+    -- Delete term buffer
+    vim.cmd('bd! ' .. arg.buf)
+  end,
+})
 
 return M

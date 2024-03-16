@@ -1,8 +1,9 @@
+local lir = require 'lir'
 local actions = require 'lir.actions'
 local mark_actions = require 'lir.mark.actions'
 local clipboard_actions = require 'lir.clipboard.actions'
 
-require('lir').setup {
+lir.setup {
   show_hidden_files = false,
   ignore = {}, -- { ".DS_Store", "node_modules" } etc.
   devicons = {
@@ -10,10 +11,22 @@ require('lir').setup {
     highlight_dirname = true,
   },
   mappings = {
-    ['l'] = actions.edit,
+    ['l'] = function()
+      -- TODO: open xlsx and pdf file
+      -- local ctx = lir.get_context()
+      -- local current = ctx:current()
+      -- -- vim.print(filepath)
+      -- if not current.is_dir and vim.endswith(current.fullpath, '.xlsx') then
+      --   vim.print({vim.fn.shellescape(current.fullpath), current})
+      --   vim.fn.system('open ' .. vim.fn.shellescape(current.fullpath))
+      --   return
+      -- end
+      -- vim.api.nvim
+      actions.edit()
+    end,
     ['<C-s>'] = actions.split,
     ['<C-v>'] = actions.vsplit,
-    ['<C-t>'] = actions.tabedit,
+    -- ['<C-t>'] = actions.tabedit,
 
     ['h'] = actions.up,
     ['q'] = actions.quit,
@@ -21,7 +34,7 @@ require('lir').setup {
     ['K'] = actions.mkdir,
     ['N'] = actions.newfile,
     ['R'] = actions.rename,
-    ['@'] = actions.cd,
+    -- ['@'] = actions.cd,
     ['Y'] = actions.yank_path,
     ['.'] = actions.toggle_show_hidden,
     ['D'] = actions.delete,
@@ -76,3 +89,11 @@ require('lir').setup {
 --     vim.api.nvim_echo({ { vim.fn.expand '%:p', 'Normal' } }, false, {})
 --   end,
 -- })
+
+vim.keymap.set('n', '<leader>n', function()
+  vim.cmd.edit '.'
+end, { desc = 'Open Lir' })
+
+vim.keymap.set('n', '-', function()
+  vim.cmd.edit '%:h'
+end, { desc = 'Open Lir parent dir of buffer' })

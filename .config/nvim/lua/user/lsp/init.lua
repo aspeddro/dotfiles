@@ -32,7 +32,7 @@ local on_attach = function(client, bufnr)
 
   -- Enable completion triggered by <c-x><c-o>
   -- vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-  if vim.tbl_contains({ 'lua_ls' }, client.name) then
+  if vim.tbl_contains({ 'lua_ls', 'tsserver', 'rescriptls' }, client.name) then
     client.server_capabilities.semanticTokensProvider = nil
   end
 
@@ -218,14 +218,26 @@ lspconfig.lua_ls.setup {
               -- (most likely LuaJIT in the case of Neovim)
               version = 'LuaJIT',
             },
+            completion = { callSnippet = 'Disable' },
+            diagnostics = {
+              globals = {
+                'vim',
+                'it',
+                'before_each',
+                'after_each',
+                'describe',
+                'jit',
+              },
+            },
+            format = {
+              enable = false,
+            },
+            telemetry = {
+              enable = false,
+            },
             -- Make the server aware of Neovim runtime files
             workspace = {
               checkThirdParty = false,
-              library = {
-                vim.env.VIMRUNTIME,
-                -- "${3rd}/luv/library"
-                -- "${3rd}/busted/library",
-              },
               -- or pull in all of 'runtimepath'. NOTE: this is a lot slower
               -- library = vim.api.nvim_get_runtime_file("", true)
             },
@@ -241,36 +253,6 @@ lspconfig.lua_ls.setup {
   end,
   on_attach = on_attach,
   capabilities = capabilities,
-  settings = {
-    Lua = {
-      version = 'LuaJIT',
-      completion = { callSnippet = 'Disable' },
-      workspace = {
-        -- library = {
-        --   vim.env.VIMRUNTIME,
-        --   vim.fn.stdpath 'config',
-        --   vim.fn.stdpath 'data' .. '/lazy/emmylua-nvim',
-        -- },
-        checkThirdParty = false,
-      },
-      diagnostics = {
-        globals = {
-          'vim',
-          'it',
-          'before_each',
-          'after_each',
-          'describe',
-          'jit',
-        },
-      },
-      format = {
-        enable = false,
-      },
-      telemetry = {
-        enable = false,
-      },
-    },
-  },
 }
 
 lspconfig.tsserver.setup {
@@ -283,40 +265,26 @@ lspconfig.tsserver.setup {
       inlayHints = {
         includeInlayParameterNameHints = 'all',
         includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-        includeInlayFunctionParameterTypeHints = true,
-        includeInlayVariableTypeHints = true,
-        includeInlayPropertyDeclarationTypeHints = true,
-        includeInlayFunctionLikeReturnTypeHints = true,
-        includeInlayEnumMemberValueHints = true,
+        includeInlayFunctionParameterTypeHints = false,
+        includeInlayVariableTypeHints = false,
+        includeInlayPropertyDeclarationTypeHints = false,
+        includeInlayFunctionLikeReturnTypeHints = false,
+        includeInlayEnumMemberValueHints = false,
       },
     },
     javascript = {
       inlayHints = {
         includeInlayParameterNameHints = 'all',
         includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-        includeInlayFunctionParameterTypeHints = true,
-        includeInlayVariableTypeHints = true,
-        includeInlayPropertyDeclarationTypeHints = true,
-        includeInlayFunctionLikeReturnTypeHints = true,
-        includeInlayEnumMemberValueHints = true,
+        includeInlayFunctionParameterTypeHints = false,
+        includeInlayVariableTypeHints = false,
+        includeInlayPropertyDeclarationTypeHints = false,
+        includeInlayFunctionLikeReturnTypeHints = false,
+        includeInlayEnumMemberValueHints = false,
       },
     },
   },
 }
-
--- lspconfig.denols.setup {
---   root_dir = lspconfig.util.root_pattern 'deno.json',
---   on_attach = on_attach,
---   capabilities = capabilities,
---   server = {
---     settings = {
---       deno = {
---         enable = true,
---         unstable = true,
---       },
---     },
---   },
--- }
 
 lspconfig.r_language_server.setup {
   on_attach = on_attach,
@@ -361,11 +329,6 @@ lspconfig.rescriptls.setup {
           'server',
           'out',
           'cli.js',
-          -- '_build',
-          -- 'default',
-          -- 'rescript-language-server',
-          -- 'bin',
-          -- 'main.exe',
         },
         '--stdio',
       }
@@ -375,8 +338,6 @@ lspconfig.rescriptls.setup {
   end)(),
   init_options = {
     extensionConfiguration = {
-      -- binaryPath = nil,
-      -- platformPath = nil,
       askToStartBuild = false,
       codeLens = false,
       signatureHelp = {
@@ -384,6 +345,9 @@ lspconfig.rescriptls.setup {
       },
       inlayHints = {
         enable = false,
+      },
+      incrementalTypechecking = {
+        enabled = true,
       },
     },
   },
@@ -488,10 +452,28 @@ lspconfig.pyright.setup {
         autoSearchPaths = true,
         diagnosticMode = 'openFilesOnly',
         useLibraryCodeForTypes = true,
+        -- ignore = { '*' },
       },
     },
+    -- pyright = {
+    --   -- Using Ruff's import organizer
+    --   disableOrganizeImports = true,
+    -- },
   },
 }
+
+-- lspconfig.ruff_lsp.setup {
+--   on_attach = on_attach,
+--   capabilities = capabilities,
+--   init_options = {
+--     settings = {
+--       -- Any extra CLI arguments for `ruff` go here.
+--       lint = {
+--         args = { '--select=E,F,I' },
+--       },
+--     },
+--   },
+-- }
 
 lspconfig.taplo.setup {
   on_attach = on_attach,
@@ -510,18 +492,18 @@ lspconfig.tailwindcss.setup {
     'tailwind.config.ts',
     'tailwind.config.mjs'
   ),
-  settings = {
-    tailwindCSS = {
-      experimental = {
-        -- Enable completion for template string ``
-        -- https://github.com/tailwindlabs/tailwindcss/issues/7553
-        classRegex = {
-          -- '`([^`]*)',
-          '["\'`]([^"\'`]*).*?["\'`]',
-        },
-      },
-    },
-  },
+  -- settings = {
+  --   tailwindCSS = {
+  --     experimental = {
+  --       -- Enable completion for template string ``
+  --       -- https://github.com/tailwindlabs/tailwindcss/issues/7553
+  --       classRegex = {
+  --         -- '`([^`]*)',
+  --         '["\'`]([^"\'`]*).*?["\'`]',
+  --       },
+  --     },
+  --   },
+  -- },
 }
 
 lspconfig.bashls.setup {
@@ -561,6 +543,8 @@ lspconfig.elixirls.setup {
   on_attach = on_attach,
   capabilities = capabilities,
 }
+
+lspconfig.dockerls.setup {}
 
 -- require('sg').setup {
 --   on_attach = on_attach,

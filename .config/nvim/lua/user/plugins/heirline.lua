@@ -335,8 +335,8 @@ local StatusLine = {
   Space,
   ViMode,
   Space,
-  FileName,
-  Space,
+  -- FileName,
+  -- Space,
   Git,
   Align,
   Diagnostics,
@@ -606,7 +606,7 @@ herline.setup {
     disable_winbar_cb = function(args)
       local buf = args.buf
       local buftype = vim.tbl_contains(
-        { 'prompt', 'nofile', 'help', 'quickfix', 'term' },
+        { 'prompt', 'nofile', 'help', 'quickfix', 'term', 'terminal' },
         vim.bo[buf].buftype
       )
       local filetype = vim.tbl_contains({

@@ -1,11 +1,10 @@
 require('colorizer').setup {
   filetypes = {
-    'css',
-    'scss',
-    '!vim',
-    '!packer',
-    '!NvimTree',
     '!mason',
     '!lazy',
+  },
+  user_default_options = {
+    mode = 'virtualtext',
+    tailwind = true,
   },
 }

@@ -1,4 +1,5 @@
 local conform = require 'conform'
+local util = require 'conform.util'
 
 conform.formatters.sqlfmt = {
   command = 'sqlfmt',
@@ -6,11 +7,16 @@ conform.formatters.sqlfmt = {
 }
 
 conform.setup {
+  formatters = {
+    ruff_format = {
+      command = util.find_executable({ '.venv/bin/ruff' }, 'ruff'),
+    },
+  },
   formatters_by_ft = {
     lua = { 'stylua' },
-    python = { 'isort', 'black' },
+    python = { { 'ruff_format', 'black' } },
     javascript = { 'prettier' },
-    sql = { 'sqlfmt', 'sql_formatter' },
+    sql = { { 'sqlfmt', 'sql_formatter' } },
     markdown = { 'prettier' },
   },
   -- Disable

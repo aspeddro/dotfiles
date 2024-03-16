@@ -1,9 +1,13 @@
 local M = {}
 
-M.close = function()
+--TODO: quando fecho um buffer e tenho terminal aberto ele
+--nao leva ao ultimo buffer
+---@param bufnr number|nil
+M.close = function(bufnr)
   local buffers = vim.fn.getbufinfo { buflisted = 1 }
 
-  local bufnr = vim.api.nvim_get_current_buf()
+  ---@diagnostic disable-next-line: redefined-local
+  local bufnr = bufnr or vim.api.nvim_get_current_buf()
 
   local ask_close = function(buf, last_used_buffer)
     vim.ui.select({ 'Yes', 'No' }, {
@@ -29,6 +33,7 @@ M.close = function()
       return
     end
     vim.cmd.bd()
+    vim.cmd.enew()
     return
   end
 
@@ -57,7 +62,12 @@ M.go_to = function(idx)
 
   local target = buffers[idx]
 
-  -- TODO: if target is terminal?
+  -- TODO: if current buffer is terminal plugin
+  local ok, is_term_plugin = pcall(vim.api.nvim_buf_get_var, 0, 'termplugin')
+
+  if ok and is_term_plugin then
+    return
+  end
 
   if not target then
     vim.notify('Buffer ' .. idx .. ' not found', vim.log.levels.INFO)

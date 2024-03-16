@@ -162,11 +162,18 @@ return {
   },
 
   {
-    'kyazdani42/nvim-tree.lua',
+    'mfussenegger/nvim-lint',
     config = function()
-      require 'user.plugins.nvimtree'
+      require 'user.plugins.lint'
     end,
   },
+
+  -- {
+  --   'kyazdani42/nvim-tree.lua',
+  --   config = function()
+  --     require 'user.plugins.nvimtree'
+  --   end,
+  -- },
 
   {
     'tamago324/lir.nvim',
@@ -312,6 +319,8 @@ return {
 
   { 'rawnly/gist.nvim' },
 
+  { 'tpope/vim-fugitive' },
+
   -- {
   --   'sourcegraph/sg.nvim',
   --   dependencies = { 'nvim-lua/plenary.nvim' },
@@ -344,5 +353,27 @@ return {
 
   {
     'godlygeek/tabular',
+  },
+
+  {
+    'kristijanhusak/vim-dadbod-ui',
+    dependencies = {
+      { 'tpope/vim-dadbod', lazy = true },
+      {
+        'kristijanhusak/vim-dadbod-completion',
+        ft = { 'sql', 'mysql', 'plsql' },
+        lazy = true,
+      },
+    },
+    cmd = {
+      'DBUI',
+      'DBUIToggle',
+      'DBUIAddConnection',
+      'DBUIFindBuffer',
+    },
+    init = function()
+      -- Your DBUI configuration
+      vim.g.db_ui_use_nerd_fonts = 1
+    end,
   },
 }

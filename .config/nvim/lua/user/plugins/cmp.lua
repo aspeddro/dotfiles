@@ -67,6 +67,10 @@ require('cmp_git').setup {
   filetypes = { 'gitcommit' },
 }
 
+cmp.setup.filetype({ 'sql', 'mysql', 'plsql' }, {
+  sources = cmp.config.sources { { name = 'vim-dadbod-completion' } },
+})
+
 -- cmp.setup.filetype({ 'markdown', 'rmd', 'pandoc' }, {
 --   sources = cmp.config.sources {
 --     { name = 'buffer', keyword_length = 3 },

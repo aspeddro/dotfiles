@@ -2,7 +2,6 @@
 
 ; Identifiers
 ;------------
-(value_identifier) @variable
 
 ; Escaped identifiers like \"+."
 ((value_identifier) @constant.macro
@@ -10,25 +9,18 @@
 
 [
   (type_identifier)
+  (unit_type)
   (list)
   (list_pattern)
 ] @type
 
 [
-  (unit_type)
-  (unit)
-] @type.builtin
-
-[
   (variant_identifier)
   (polyvar_identifier)
-] @constructor
-
-(polyvar_type_pattern "#" @constructor)
+] @constant
 
 (record_type_field (property_identifier) @property)
 (record_field (property_identifier) @property)
-(record_field (property_identifier (_) (value_identifier) @property))
 (object (field (property_identifier) @property))
 (object_type (field (property_identifier) @property))
 (member_expression (property_identifier) @property)
@@ -37,8 +29,8 @@
 ; Parameters
 ;----------------
 
-; (list_pattern (value_identifier) @parameter)
-; (spread_pattern (value_identifier) @parameter)
+(list_pattern (value_identifier) @parameter)
+(spread_pattern (value_identifier) @parameter)
 
 ; String literals
 ;----------------
@@ -61,23 +53,20 @@
 [
   (true)
   (false)
-] @boolean
+] @constant.builtin
 
 (number) @number
+(polyvar) @constant
+(polyvar_string) @constant
 
 ; Functions
 ;----------
 
 ; parameter(s) in parens
-; [
-;  (parameter (value_identifier))
-;  (labeled_parameter (value_identifier))
-;  ; single parameter with no parens
-;  (function parameter: (value_identifier))
-; ] @parameter
-
-(parameter (value_identifier) @parameter)
-(labeled_parameter (value_identifier) @parameter)
+[
+ (parameter (value_identifier))
+ (labeled_parameter (value_identifier))
+] @parameter
 
 ; single parameter with no parens
 (function parameter: (value_identifier) @parameter)
@@ -91,19 +80,16 @@
 ; Meta
 ;-----
 
-; (decorator "@" @attribute)
-(decorator_identifier) @attribute
+(decorator_identifier) @annotation
 
-
-[
-  "%"
-  (extension_identifier)
-] @prepoc
+(extension_identifier) @keyword
+("%") @keyword
 
 ; Misc
 ;-----
 
 (subscript_expression index: (string) @property)
+(polyvar_type_pattern "#" @constant)
 
 [
   ("include")
@@ -126,7 +112,6 @@
   "with"
   "lazy"
   "constraint"
-  "of"
 ] @keyword
 
 ((function "async" @keyword))

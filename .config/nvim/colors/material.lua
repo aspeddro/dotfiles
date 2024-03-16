@@ -176,11 +176,11 @@ M.treesitter = {
   ['@keyword.function'] = { fg = c.orange, italic = true },
   ['@keyword.return'] = { fg = c.purple, italic = true },
   ['@keyword.operator'] = { link = 'Keyword' },
-  ['@method'] = { fg = c.blue, italic = true },
+  ['@function.method'] = { fg = c.blue, italic = true },
   ['@annotation'] = { fg = c.pink },
   ['@attribute'] = { fg = c.pink },
   ['@constructor'] = { fg = c.orange },
-  ['@prepoc'] = { link = 'PreProc' },
+  ['@keyword.directive'] = { link = 'PreProc' },
   ['@constant'] = { link = 'Constant' },
   ['@constant.comment'] = {
     --[[ c.orange ]]
@@ -190,35 +190,47 @@ M.treesitter = {
   ['@constant.builtin'] = { --[[ fg = c.red  ]]
     link = '@constant',
   },
-  ['@field'] = { fg = '#ffdfb6' }, -- For fields. -- TEST: #FFD7A3
-  -- ['@property'] = { link = '@field' },
+  ['@variable.member'] = { fg = '#ffdfb6' }, -- For fields. -- TEST: #FFD7A3
+  ['@property'] = { link = '@variable.member' },
   -- TODO: fund a color for @amespace
-  ['@namespace'] = { --[[ fg = '#FFECB3' ]]
+  ['@module'] = { --[[ fg = '#FFECB3' ]]
     fg = '#F5A191',
   },
-  ['@parameter'] = { fg = c.none },
+  ['@variable.parameter'] = { fg = c.none },
   -- ['@parameter.reference'] = { link = '@parameter' },
   ['@punctuation.bracket'] = { link = 'Keyword' },
-  ['@punctuation.special'] = { fg = c.cyan },
+  -- ['@punctuation.special'] = { fg = c.cyan },
   -- ['@punctuation.delimiter'] = { fg = c.cyan },
-  ['@string.regex'] = { fg = c.blue },
+  ['@string.regexp'] = { fg = c.blue },
   ['@string.escape'] = { fg = c.gray },
-  ['@symbol'] = { fg = c.yellow },
+  ['@string.special.symbol'] = { fg = c.yellow },
   ['@type.builtin'] = { fg = c.red, italic = true },
+
   ['@tag'] = { fg = '#ff7597' },
   ['@tag.delimiter'] = { fg = c.cyan },
   ['@tag.attribute'] = { fg = c.yellow },
-  ['@text.title'] = { link = 'Title' },
+
+  ['@markup.heading'] = { link = 'Title' },
+  ['@markup.string'] = { bold = true },
+  ['@markup.list'] = { fg = c.cyan },
+  ['@markup.raw'] = { fg = c.yellow },
+  ['@markup.raw.block'] = { link = 'Variable' },
+  ['@markup.link.label'] = { fg = c.orange },
+  ['@markup.link.url'] = { italic = true },
+  -- ['@markup.link'] = { link = 'Underlined' },
   ['@text.math'] = { fg = c.blue },
-  ['@text.reference'] = { fg = '#ff6c92', italic = true },
+  ['@markup.link'] = { fg = '#ff6c92', italic = true },
   ['@text.literal'] = { fg = '#6bffb5' },
   ['@text.uri.comment'] = { italic = true },
-  ['@text.uri'] = { italic = true, fg = c.red },
-  ['@text.note'] = { link = 'Todo' },
+  ['@string.special.path'] = { italic = true, fg = c.red },
+  ['@comment.todo'] = { link = 'Todo' },
   ['@text.danger'] = { link = 'Todo' },
 
   -- css
-  ['@property.css'] = { link = '@field' },
+  ['@property.css'] = { link = '@variable.member' },
+
+  -- python
+  ['@variable.parameter.python'] = { fg = c.yellow },
 }
 
 ---@see h lsp-highlight
@@ -233,9 +245,9 @@ M.lsp = {
 
 M.tokens = {
   -- semantic tokens
-  ['@lsp.type.property'] = { link = '@field' },
-  ['@lsp.type.namespace'] = { link = '@namespace' },
-  ['@lsp.type.member'] = { link = '@field' },
+  ['@lsp.type.property'] = { link = '@variable.member' },
+  ['@lsp.type.namespace'] = { link = '@module' },
+  ['@lsp.type.member'] = { link = '@variable.member' },
   ['@lsp.typemod.enum.declaration'] = { link = 'Type' },
   ['@lsp.typemod.struct.declaration'] = { link = 'Type' },
 
