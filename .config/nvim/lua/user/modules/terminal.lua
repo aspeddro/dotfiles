@@ -11,15 +11,15 @@ local DIRECTIONS = { 'right', 'bottom' }
 local terminals = function()
   return vim.tbl_filter(function(buffer)
     --TODO: see h depreacted use jobpid
-    return buffer.variables and buffer.variables.termplugin
+    return buffer.variables and buffer.variables.term_plugin
   end, vim.fn.getbufinfo())
 end
 
 ---@param buf? number
 ---@return boolean
-local is_term = function(buf)
+local is_term_plugin_buf = function(buf)
   local ok, is_term_plugin =
-    pcall(vim.api.nvim_buf_get_var, buf or 0, 'termplugin')
+    pcall(vim.api.nvim_buf_get_var, buf or 0, 'term_plugin')
   return ok and is_term_plugin
 end
 
@@ -28,7 +28,7 @@ end
 M.get_direction = function(dir)
   local choice = dir == 'right' and { 'vsplit' } or { 'split' }
 
-  if not is_term(vim.api.nvim_get_current_buf()) then
+  if not is_term_plugin_buf(vim.api.nvim_get_current_buf()) then
     local width = math.ceil(vim.o.columns * 0.35)
     local height = math.ceil(vim.o.lines * 0.25)
     vim.list_extend(
@@ -77,13 +77,14 @@ M.new = function(opts)
   local bufnr = vim.api.nvim_create_buf(false, false)
 
   --NOTE: To identify terminal created by this module
-  vim.api.nvim_buf_set_var(bufnr, 'termplugin', true)
-  vim.api.nvim_buf_set_option(bufnr, 'filetype', 'term')
+  vim.api.nvim_buf_set_var(bufnr, 'term_plugin', true)
+  vim.api.nvim_set_option_value('filetype', 'term', { buf = bufnr })
 
   vim.api.nvim_win_set_buf(winr, bufnr)
+  vim.api.nvim_set_option_value('winfixbuf', true, { win = winr })
 
   local job_id = vim.fn.termopen(vim.o.shell, {
-    cwd = vim.loop.cwd(),
+    cwd = vim.uv.cwd(),
     on_exit = function()
       if vim.api.nvim_buf_is_valid(bufnr) then
         vim.api.nvim_buf_delete(bufnr, { force = true })
@@ -142,17 +143,16 @@ vim.keymap.set({ 'n', 't' }, '<a-t>', function()
   toggles {
     direction = (vim.tbl_isempty(terms) or #terms == 1) and 'bottom' or 'right',
   }
-end)
+end, { desc = 'Toggle Term' })
 
 -- TODO: When a terminal buffer (:term) is closed go to last listed buffer
 vim.api.nvim_create_autocmd('TermClose', {
   group = vim.api.nvim_create_augroup('OnTermClose', { clear = true }),
   pattern = '*',
   callback = function(arg)
-    local ok, is_term_plugin =
-      pcall(vim.api.nvim_buf_get_var, arg.buf, 'termplugin')
+    local is_term_buf = is_term_plugin_buf(arg.buf)
 
-    if ok and is_term_plugin then
+    if is_term_buf then
       return
     end
 
@@ -164,11 +164,17 @@ vim.api.nvim_create_autocmd('TermClose', {
 
     local last_buffer = buffers[2]
 
+    -- TODO: Go to other buffer when winfixbuf is true raise a error
+    -- Get current window and disable winfixbuf
+    -- vim.api.nvim_set_option_value('winfixbuf', false, { win = 0 })
+
     if last_buffer then
       vim.cmd.buffer(last_buffer.bufnr)
     end
     -- Delete term buffer
-    vim.cmd('bd! ' .. arg.buf)
+    if vim.api.nvim_buf_is_valid(arg.buf) then
+      vim.cmd('bd! ' .. arg.buf)
+    end
   end,
 })
 

@@ -33,6 +33,9 @@ M.base = {
   FoldColumn = { fg = c.blue, bg = c.bg },
   LineNr = { fg = c.comment },
 
+  WinBar = { link = 'Normal' },
+  WinBarNC = { link = 'Normal' },
+
   WinSeparator = { fg = c.gray },
 
   CursorLine = { bg = c.bg },

@@ -1,9 +1,12 @@
+---@diagnostic disable: missing-parameter
 return {
+
   'nvim-lua/plenary.nvim',
 
   {
     'rcarriga/nvim-notify',
     config = function()
+      ---@diagnostic disable-next-line: missing-fields
       require('notify').setup {
         timeout = 400,
         stages = 'slide',
@@ -50,20 +53,12 @@ return {
     end,
     dependencies = {
       -- { 'nvim-treesitter/nvim-treesitter-textobjects' },
-      -- { 'mrjones2014/nvim-ts-rainbow' },
-      { url = 'https://gitlab.com/HiPhish/nvim-ts-rainbow2.git' },
+      -- { url = 'https://gitlab.com/HiPhish/nvim-ts-rainbow2.git' },
       { 'RRethy/nvim-treesitter-textsubjects' },
       -- { 'RRethy/nvim-treesitter-endwise' },
       { 'windwp/nvim-ts-autotag' },
       -- { 'm-demare/hlargs.nvim' },
     },
-  },
-
-  {
-    'JoosepAlviste/nvim-ts-context-commentstring',
-    config = function()
-      require('ts_context_commentstring').setup { enable_autocmd = false }
-    end,
   },
 
   {
@@ -98,23 +93,9 @@ return {
   },
 
   {
-    'lvimuser/lsp-inlayhints.nvim',
-    config = function()
-      require('lsp-inlayhints').setup {
-        inlay_hints = {
-          parameter_hints = {
-            show = false,
-          },
-          highlight = 'LspSignatureActiveParameter',
-        },
-      }
-    end,
-  },
-
-  {
     'dnlhc/glance.nvim',
     config = function()
-      require('glance').setup {}
+      require('glance').setup()
     end,
   },
 
@@ -130,17 +111,19 @@ return {
       { 'saadparwaiz1/cmp_luasnip' },
       -- { 'hrsh7th/cmp-emoji' },
       { 'petertriho/cmp-git' },
-      { 'hrsh7th/cmp-cmdline' },
+      -- { 'hrsh7th/cmp-cmdline' },
       {
         'aspeddro/cmp-pandoc.nvim',
         dev = true,
       },
-      { 'onsails/lspkind-nvim' },
+      -- { 'onsails/lspkind-nvim' },
     },
   },
 
   {
     'L3MON4D3/LuaSnip',
+    version = 'v2.*',
+    build = 'make install_jsregexp',
     config = function()
       require 'user.plugins.luasnip'
     end,
@@ -148,6 +131,7 @@ return {
 
   {
     'nvim-telescope/telescope.nvim',
+    branch = '0.1.x',
     config = function()
       require 'user.plugins.telescope'
     end,
@@ -169,20 +153,21 @@ return {
   },
 
   -- {
-  --   'kyazdani42/nvim-tree.lua',
+  --   'tamago324/lir.nvim',
+  --   dependencies = {
+  --     'nvim-lua/plenary.nvim',
+  --     'kyazdani42/nvim-web-devicons',
+  --   },
   --   config = function()
-  --     require 'user.plugins.nvimtree'
+  --     -- require 'user.plugins.lir'
   --   end,
   -- },
 
   {
-    'tamago324/lir.nvim',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'kyazdani42/nvim-web-devicons',
-    },
+    'stevearc/oil.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
-      require 'user.plugins.lir'
+      require 'user.plugins.oil'
     end,
   },
 
@@ -194,10 +179,10 @@ return {
   },
 
   {
-    'NvChad/nvim-colorizer.lua',
-    config = function()
-      require 'user.plugins.colorizer'
-    end,
+    'brenoprata10/nvim-highlight-colors',
+    -- config = function()
+    --   require 'user.plugins.highlight-colors'
+    -- end,
   },
 
   {
@@ -225,13 +210,6 @@ return {
     'windwp/nvim-autopairs',
     config = function()
       require 'user.plugins.autopairs'
-    end,
-  },
-
-  {
-    'numToStr/Comment.nvim',
-    config = function()
-      require 'user.plugins.comment'
     end,
   },
 
@@ -272,14 +250,6 @@ return {
     'nacro90/numb.nvim',
     config = function()
       require('numb').setup()
-    end,
-  },
-
-  {
-    'toppair/peek.nvim',
-    build = 'deno task --quiet build:fast',
-    config = function()
-      require('peek').setup()
     end,
   },
 
@@ -324,21 +294,32 @@ return {
   -- {
   --   'sourcegraph/sg.nvim',
   --   dependencies = { 'nvim-lua/plenary.nvim' },
-
   --   -- If you have a recent version of lazy.nvim, you don't need to add this!
   --   build = 'nvim -l build/init.lua',
   -- },
 
   -- Langs support
 
-  -- 'ii14/emmylua-nvim',
+  { 'Bilal2453/luvit-meta', lazy = true }, -- optional `vim.uv` typings
+  {
+    'folke/lazydev.nvim',
+    ft = 'lua',
+    config = function()
+      require('lazydev').setup {
+        library = {
+          vim.env.VIMRUNTIME,
+          'luvit-meta/library',
+          words = { 'vim%.uv' },
+        },
+      }
+    end,
+  },
 
-  { 'folke/neodev.nvim', opts = {} },
-
-  { 'rescript-lang/vim-rescript' },
+  { 'rescript-lang/vim-rescript', ft = 'rescript' },
 
   {
     'aspeddro/rescript-tools.nvim',
+    ft = 'rescript',
     dev = true,
   },
 

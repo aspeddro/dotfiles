@@ -1,4 +1,7 @@
-local lspconfig = require 'lspconfig'
+local ok, lspconfig = pcall(require, 'lspconfig')
+if not ok then
+  return
+end
 local util = lspconfig.util
 
 require 'user.lsp.handlers'
@@ -9,17 +12,22 @@ require 'user.lsp.commands'
 vim.diagnostic.config {
   virtual_text = true,
   signs = false,
-  underline = false,
+  underline = true,
   update_in_insert = false,
   severity_sort = true,
   float = {
     show_header = true,
     border = 'single',
     focusable = true,
+    ---@diagnostic disable-next-line: assign-type-mismatch
     source = 'always',
   },
 }
 
+local METHODS = vim.lsp.protocol.Methods
+
+---@param client vim.lsp.Client
+---@param bufnr number
 local on_attach = function(client, bufnr)
   local keymap_set = function(key, fn, opts)
     return vim.keymap.set(
@@ -31,12 +39,14 @@ local on_attach = function(client, bufnr)
   end
 
   -- Enable completion triggered by <c-x><c-o>
-  -- vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+  -- vim.api.nvim_set_option_value('omnifunc', 'v:lua.vim.lsp.omnifunc', {buf = 0})
   if vim.tbl_contains({ 'lua_ls', 'tsserver', 'rescriptls' }, client.name) then
     client.server_capabilities.semanticTokensProvider = nil
   end
 
-  if client.server_capabilities.documentFormattingProvider then
+  if
+    client.supports_method(METHODS.textDocument_formatting, { bufnr = bufnr })
+  then
     keymap_set('<space>f', function()
       vim.lsp.buf.format {
         timeout_ms = 2000,
@@ -45,7 +55,12 @@ local on_attach = function(client, bufnr)
     end, { desc = 'Format' })
   end
 
-  if client.server_capabilities.documentHighlightProvider then
+  if
+    client.supports_method(
+      METHODS.textDocument_documentHighlight,
+      { bufnr = bufnr }
+    )
+  then
     local group =
       vim.api.nvim_create_augroup('LSP/documentHighlight', { clear = false })
 
@@ -63,23 +78,33 @@ local on_attach = function(client, bufnr)
     })
   end
 
-  if client.server_capabilities.inlayHintProvider then
-    require('lsp-inlayhints').on_attach(client, bufnr)
+  if
+    client.supports_method(METHODS.textDocument_inlayHint, { bufnr = bufnr })
+  then
+    keymap_set('<space>th', function()
+      ---@diagnostic disable-next-line: missing-parameter
+      vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+    end, { desc = 'Toggle Inlay Hint' })
   end
 
-  if client.server_capabilities.codeLensProvider then
-    local group = vim.api.nvim_create_augroup('LSP/CodeLens', { clear = true })
+  -- if client.server_capabilities.codeLensProvider then
+  --   local group = vim.api.nvim_create_augroup('LSP/CodeLens', { clear = true })
+  --
+  --   vim.api.nvim_clear_autocmds { group = group, buffer = bufnr }
+  --
+  --   vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'CursorHold' }, {
+  --     group = group,
+  --     callback = vim.lsp.codelens.refresh,
+  --     buffer = bufnr,
+  --   })
+  -- end
 
-    vim.api.nvim_clear_autocmds { group = group, buffer = bufnr }
-
-    vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'CursorHold' }, {
-      group = group,
-      callback = vim.lsp.codelens.refresh,
-      buffer = bufnr,
-    })
-  end
-
-  if client.server_capabilities.signatureHelpProvider then
+  if
+    client.supports_method(
+      METHODS.textDocument_signatureHelp,
+      { bufnr = bufnr }
+    )
+  then
     require('lsp_signature').on_attach({
       hint_enable = true,
       floating_window = false,
@@ -89,7 +114,12 @@ local on_attach = function(client, bufnr)
     }, bufnr)
   end
 
-  if client.server_capabilities.documentSymbolProvider then
+  if
+    client.supports_method(
+      METHODS.textDocument_documentSymbol,
+      { bufnr = bufnr }
+    )
+  then
     require('nvim-navic').attach(client, bufnr)
   end
 
@@ -100,7 +130,8 @@ local on_attach = function(client, bufnr)
     require('glance').open 'definitions'
   end, { desc = 'Definition' })
 
-  keymap_set('K', vim.lsp.buf.hover, { desc = 'Hover' })
+  -- Default in v0.10
+  -- keymap_set('K', vim.lsp.buf.hover, { desc = 'Hover' })
 
   keymap_set('gi', function()
     -- vim.lsp.buf.implementation
@@ -152,6 +183,12 @@ local on_attach = function(client, bufnr)
     { desc = 'Document Symbol' }
   )
 
+  keymap_set(
+    '<space>ws',
+    require('telescope.builtin').lsp_document_symbols,
+    { desc = 'Workspace Symbol' }
+  )
+
   keymap_set('<space>wl', function()
     vim.notify(
       '[LSP Workspace Folders]: '
@@ -182,7 +219,7 @@ end
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 
 -- Completion configuration
-vim.tbl_deep_extend(
+capabilities = vim.tbl_deep_extend(
   'force',
   capabilities,
   require('cmp_nvim_lsp').default_capabilities()
@@ -194,21 +231,17 @@ capabilities.textDocument.colorProvider = {
   dynamicRegistration = true,
 }
 
--- PERF: didChangeWatchedFiles is too slow
+-- Disable in v0.10, see :h news
+-- PERF: didChangeWatchedFiles is too slow on Linux
 -- https://github.com/neovim/neovim/issues/23291#issuecomment-1686709265
-capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
+-- capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
 
-require('neodev').setup {
-  library = {
-    plugins = false,
-  },
-}
 lspconfig.lua_ls.setup {
   on_init = function(client)
     local path = client.workspace_folders[1].name
     if
-      not vim.loop.fs_stat(path .. '/.luarc.json')
-      and not vim.loop.fs_stat(path .. '/.luarc.jsonc')
+      not vim.uv.fs_stat(path .. '/.luarc.json')
+      and not vim.uv.fs_stat(path .. '/.luarc.jsonc')
     then
       client.config.settings =
         vim.tbl_deep_extend('force', client.config.settings, {
@@ -251,6 +284,13 @@ lspconfig.lua_ls.setup {
     end
     return true
   end,
+  settings = {
+    Lua = {
+      hint = {
+        enable = true,
+      },
+    },
+  },
   on_attach = on_attach,
   capabilities = capabilities,
 }
@@ -258,29 +298,29 @@ lspconfig.lua_ls.setup {
 lspconfig.tsserver.setup {
   on_attach = on_attach,
   capabilities = capabilities,
-  root_dir = lspconfig.util.root_pattern('tsconfig.json', 'jsconfig.json'),
+  root_dir = util.root_pattern('tsconfig.json', 'jsconfig.json'),
   single_file_support = true,
   settings = {
     typescript = {
       inlayHints = {
         includeInlayParameterNameHints = 'all',
-        includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-        includeInlayFunctionParameterTypeHints = false,
-        includeInlayVariableTypeHints = false,
-        includeInlayPropertyDeclarationTypeHints = false,
-        includeInlayFunctionLikeReturnTypeHints = false,
-        includeInlayEnumMemberValueHints = false,
+        includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+        includeInlayFunctionParameterTypeHints = true,
+        includeInlayVariableTypeHints = true,
+        includeInlayPropertyDeclarationTypeHints = true,
+        includeInlayFunctionLikeReturnTypeHints = true,
+        includeInlayEnumMemberValueHints = true,
       },
     },
     javascript = {
       inlayHints = {
         includeInlayParameterNameHints = 'all',
-        includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-        includeInlayFunctionParameterTypeHints = false,
-        includeInlayVariableTypeHints = false,
-        includeInlayPropertyDeclarationTypeHints = false,
-        includeInlayFunctionLikeReturnTypeHints = false,
-        includeInlayEnumMemberValueHints = false,
+        includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+        includeInlayFunctionParameterTypeHints = true,
+        includeInlayVariableTypeHints = true,
+        includeInlayPropertyDeclarationTypeHints = true,
+        includeInlayFunctionLikeReturnTypeHints = true,
+        includeInlayEnumMemberValueHints = true,
       },
     },
   },
@@ -294,30 +334,30 @@ lspconfig.r_language_server.setup {
 lspconfig.rescriptls.setup {
   on_attach = on_attach,
   capabilities = capabilities,
-  root_dir = function(fname)
-    -- Neovim dont send the real cwd to lsp
-    -- TODO:
-    -- 1. Check if exists and bsconfig.json and package.json at root
-    -- 2. If bsconfig.json extist check if exists pinned-deps
-    -- 3. If exists pinned-deps read package.json and check if exists workspaces field
-    -- If has an bsconfig.json with pinned deps and an package.json with workspaces then make
-    -- root_dir = vim.loop.cwd()
+  -- root_dir = function(fname)
+  --   -- Neovim dont send the real cwd to lsp
+  --   -- TODO:
+  --   -- 1. Check if exists and bsconfig.json and package.json at root
+  --   -- 2. If bsconfig.json extist check if exists pinned-deps
+  --   -- 3. If exists pinned-deps read package.json and check if exists workspaces field
+  --   -- If has an bsconfig.json with pinned deps and an package.json with workspaces then make
+  --   -- root_dir = vim.uv.cwd()
 
-    local has_pinned_deps = (function()
-      if vim.fn.filereadable 'bsconfig.json' == 1 then
-        local bsconfig = table.concat(vim.fn.readfile 'bsconfig.json', '\n')
-        local json = vim.json.decode(bsconfig)
-        if not vim.tbl_isempty(json) then
-          local pinned = json['pinned-dependencies']
-          return pinned and not vim.tbl_isempty(pinned)
-        end
-      end
-      return false
-    end)()
+  --   local has_pinned_deps = (function()
+  --     if vim.fn.filereadable 'bsconfig.json' == 1 then
+  --       local bsconfig = table.concat(vim.fn.readfile 'bsconfig.json', '\n')
+  --       local json = vim.json.decode(bsconfig)
+  --       if not vim.tbl_isempty(json) then
+  --         local pinned = json['pinned-dependencies']
+  --         return pinned and not vim.tbl_isempty(pinned)
+  --       end
+  --     end
+  --     return false
+  --   end)()
 
-    return has_pinned_deps and vim.loop.cwd()
-      or util.root_pattern('bsconfig.json', '.git')(fname)
-  end,
+  --   return has_pinned_deps and vim.uv.cwd()
+  --     or util.root_pattern('bsconfig.json', '.git')(fname)
+  -- end,
   cmd = (function()
     local isDev = false
     if isDev then
@@ -344,7 +384,7 @@ lspconfig.rescriptls.setup {
         enable = true,
       },
       inlayHints = {
-        enable = false,
+        enable = true,
       },
       incrementalTypechecking = {
         enabled = true,

@@ -19,6 +19,7 @@ npairs.add_rules {
   Rule('(', ')'):with_pair(is_valid_cond),
   Rule('{', '}'):with_pair(is_valid_cond),
   Rule('[', ']'):with_pair(is_valid_cond),
+  Rule("'", "'"):with_pair(is_valid_cond),
 
   Rule('$', '$', { 'markdown', 'rmd' }),
 

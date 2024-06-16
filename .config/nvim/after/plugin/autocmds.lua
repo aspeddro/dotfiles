@@ -14,5 +14,14 @@ vim.api.nvim_create_autocmd('TermOpen', {
   callback = function()
     vim.opt_local.number = false
     vim.opt_local.relativenumber = false
+    vim.opt_local.winfixbuf = true
+  end,
+})
+
+vim.api.nvim_create_autocmd('TermClose', {
+  group = vim.api.nvim_create_augroup('OnTermClose', { clear = true }),
+  pattern = '*',
+  callback = function()
+    vim.opt_local.winfixbuf = false
   end,
 })

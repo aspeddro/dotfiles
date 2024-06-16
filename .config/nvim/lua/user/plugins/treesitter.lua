@@ -16,9 +16,9 @@ parser_config.rescript = {
 }
 
 local disable = function(lang, bufnr)
-  -- if vim.tbl_contains({ 'rescript' }, lang) then
-  --   return true
-  -- end
+  if vim.tbl_contains({ 'rescript' }, lang) then
+    return true
+  end
 
   local name = vim.api.nvim_buf_get_name(bufnr)
 
@@ -118,11 +118,11 @@ require('nvim-treesitter.configs').setup {
   },
   indent = {
     enable = { 'r' },
-    disable = { 'rescript', 'ocaml', 'javascript', 'typescript' },
+    disable = { 'rescript', 'ocaml', 'javascript', 'typescript', 'yaml' },
   },
-  rainbow = {
-    enable = false,
-  },
+  -- rainbow = {
+  --   enable = false,
+  -- },
   -- autotag = {
   --   enable = true,
   -- },
@@ -130,9 +130,6 @@ require('nvim-treesitter.configs').setup {
   --   enable = true,
   -- },
   query_linter = {
-    enable = true,
-  },
-  playground = {
     enable = true,
   },
   incremental_selection = {
@@ -154,17 +151,3 @@ require('nvim-treesitter.configs').setup {
     },
   },
 }
-
--- require'treesitter-context'.setup{
---   patterns = {
---     rescript = {
---       "module_declaration"
---     }
---   }
--- }
-
--- highlight argument
--- require('hlargs').setup {
---   color = color.yellow,
--- }
--- require('hlargs').enable()

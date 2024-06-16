@@ -50,7 +50,7 @@ M.close = function(bufnr)
   end
 
   vim.cmd.buffer(last_used_buffer.bufnr)
-  vim.cmd.bd(bufnr)
+  pcall(vim.cmd.bd, bufnr)
 end
 
 M.go_to = function(idx)

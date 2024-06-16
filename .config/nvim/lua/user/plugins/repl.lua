@@ -64,7 +64,10 @@ require('repl').setup {
     },
     builtin.python.with {
       pre_start = function(repl)
-        repl:send 'source .venv/bin/activate'
+        local bin = 'venv/bin/activate'
+        if vim.fn.executable(bin) == 1 then
+          repl:send 'source .venv/bin/activate'
+        end
       end,
       mappings = {
         n = {
@@ -90,6 +93,9 @@ require('repl').setup {
                 'type_alias_statement',
               },
             }
+            if block == nil then
+              return
+            end
             -- TODO: config with tab
             local lines = vim.split(block, '\n')
 

@@ -1,3 +1,3 @@
 # Neovim configuration
 
-- Neovim 0.9
+- Neovim 0.10

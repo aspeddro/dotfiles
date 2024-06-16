@@ -12,5 +12,9 @@ diffview.setup {
     view_opened = function()
       vim.keymap.set('n', 'q', diffview.close, { buffer = true })
     end,
+    diff_buf_read = function(bufnr)
+      -- Change local options in diff buffers
+      vim.treesitter.stop(bufnr)
+    end,
   },
 }

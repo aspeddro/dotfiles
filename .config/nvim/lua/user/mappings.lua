@@ -44,14 +44,9 @@ for _, direction in ipairs { 'left', 'right', 'down', 'up' } do
 end
 
 -- Buffer navigation
--- vim.keymap.set('n', '<leader>v', bufferhandler.split)
--- vim.keymap.set('n', '<leader>x', function()
---   bufferhandler.split { side = false }
--- end)
 vim.keymap.set('n', '<leader>t', buffer.new)
 vim.keymap.set('n', '<leader>w', function()
   buffer.close()
-  -- vim.cmd 'bd!'
 end)
 
 for i = 1, 9, 1 do
@@ -70,9 +65,5 @@ vim.keymap.set('n', '<leader>q', function()
 end)
 
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)
-
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
-
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
-
+--
 vim.cmd 'map q <Nop>'

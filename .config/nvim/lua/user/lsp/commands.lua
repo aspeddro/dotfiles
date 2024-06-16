@@ -5,12 +5,12 @@ local terminal = require 'user.modules.terminal'
 local rust_analyser = function(params)
   local workspace = params.arguments[1].args.workspaceRoot
 
-  local command = vim.tbl_flatten {
-    'cargo',
-    params.arguments[1].args.cargoArgs,
-  }
+  local command = vim
+    .iter({ 'cargo', params.arguments[1].args.cargoArgs })
+    :flatten(2)
+    :totable()
 
-  if vim.loop.cwd() ~= workspace then
+  if vim.uv.cwd() ~= workspace then
     vim.list_extend(command, { '--manifest-path', workspace .. '/Cargo.toml' })
   end
 

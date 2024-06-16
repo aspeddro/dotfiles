@@ -1,4 +1,4 @@
-local herline = require 'heirline'
+local heirline = require 'heirline'
 local conditions = require 'heirline.conditions'
 local u = require 'heirline.utils'
 
@@ -28,7 +28,7 @@ local colors = {
   normal_fg = u.get_highlight('Normal').fg,
 }
 
-require('heirline').load_colors(colors)
+heirline.load_colors(colors)
 
 local Align = { provider = '%=' }
 local Space = { provider = ' ' }
@@ -122,23 +122,23 @@ local ViMode = {
   end,
 }
 
-local FileName = {
-  provider = function()
-    local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ':.')
-    if filename == '' then
-      return EMPTY_FILENAME
-    end
-    -- if not conditions.width_percent_below(filename:len(), 0.25) then
-    --   return vim.fn.pathshorten(filename)
-    -- end
-    return filename
-  end,
-  hl = { fg = 'gray' },
-}
+-- local FileName = {
+--   provider = function()
+--     local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ':.')
+--     if filename == '' then
+--       return EMPTY_FILENAME
+--     end
+--     -- if not conditions.width_percent_below(filename:len(), 0.25) then
+--     --   return vim.fn.pathshorten(filename)
+--     -- end
+--     return filename
+--   end,
+--   hl = { fg = 'gray' },
+-- }
 
 -- local WorkDir = {
 --   provider = function()
---     local wd = vim.loop.cwd()
+--     local wd = vim.uv.cwd()
 --     if not conditions.width_percent_below(wd:len(), 0.25) then
 --       return
 --     end
@@ -253,7 +253,7 @@ local LSPActive = {
   provider = function()
     local names = vim.tbl_map(function(client)
       return client.name
-    end, vim.lsp.get_active_clients { bufnr = 0 })
+    end, vim.lsp.get_clients { bufnr = 0 })
     return ' [' .. table.concat(names, ' ') .. ']'
   end,
   hl = { fg = 'gray' },
@@ -266,6 +266,7 @@ local Navic = {
   update = 'CursorMoved',
   provider = function()
     local location = require('nvim-navic').get_location()
+    location = string.gsub(location, ' > ', ' ')
     return string.len(location) > 0 and ' ' .. location or nil
   end,
   hl = { fg = 'comment' },
@@ -475,16 +476,22 @@ local TablineFileNameBlock = {
 
 -- a nice "x" button to close the buffer
 local TablineCloseButton = {
+  condition = function(self)
+    if vim.bo[self.bufnr].buftype == 'terminal' then
+      return false
+    end
+    return not vim.api.nvim_get_option_value('modified', { buf = self.bufnr })
+  end,
   Space,
   {
     provider = '󱎘',
     hl = { fg = 'gray' },
     on_click = {
       callback = function(_, minwid)
-        vim.api.nvim_buf_delete(minwid, { force = false })
-
-        -- Force redraw
-        vim.cmd.redrawtabline()
+        vim.schedule(function()
+          vim.api.nvim_buf_delete(minwid, { force = false })
+          vim.cmd.redrawtabline()
+        end)
       end,
       minwid = function(self)
         return self.bufnr
@@ -544,12 +551,7 @@ local TabLineOffset = {
     local bufnr = vim.api.nvim_win_get_buf(win)
     self.winid = win
 
-    if
-      vim.tbl_contains(
-        { 'NvimTree', 'mind', 'DiffviewFiles' },
-        vim.bo[bufnr].filetype
-      )
-    then
+    if vim.tbl_contains({ 'DiffviewFiles' }, vim.bo[bufnr].filetype) then
       self.title = ''
       return true
     end
@@ -579,24 +581,29 @@ local WinBars = {
   Space,
   Space,
   {
-    condition = function()
-      return not vim.tbl_contains({ 'term' }, vim.bo.filetype)
-    end,
+    -- condition = function()
+    --   return not vim.tbl_contains({ 'term' }, vim.bo.filetype)
+    -- end,
     provider = function()
       local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ':.')
-      if filename == '' then
-        return nil
-      end
-      return string.gsub(filename, '%/', ' ')
+      -- local filetype = vim.bo[0].filetype
+      return filename
+      -- if filetype == 'oil' then
+      --   filename = string.gsub(filename, '%oil:%///', '')
+      -- end
+      -- if filename == '' then
+      --   return nil
+      -- end
+      -- return string.gsub(filename, '%/', ' ')
     end,
-    hl = { fg = 'comment' },
+    hl = { fg = 'gray' },
   },
   Navic,
   Align,
   BufferWindow,
 }
 
-herline.setup {
+heirline.setup {
   statusline = StatusLine,
   winbar = WinBars,
   tabline = TabLine,
@@ -605,16 +612,16 @@ herline.setup {
     -- the args parameter corresponds to the table argument passed to autocommand callbacks. :h nvim_lua_create_autocmd()
     disable_winbar_cb = function(args)
       local buf = args.buf
+      if vim.bo[buf].filetype == 'lir' then
+        return false
+      end
       local buftype = vim.tbl_contains(
-        { 'prompt', 'nofile', 'help', 'quickfix', 'term', 'terminal' },
+        { 'prompt', 'help', 'nofile', 'quickfix', 'term', 'terminal' },
         vim.bo[buf].buftype
       )
       local filetype = vim.tbl_contains({
         'gitcommit',
         'fugitive',
-        'Trouble',
-        'packer',
-        'NvimTree',
         'DiffviewFiles',
       }, vim.bo[buf].filetype)
       return buftype or filetype

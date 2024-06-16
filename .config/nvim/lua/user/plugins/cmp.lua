@@ -1,5 +1,34 @@
 local cmp = require 'cmp'
 
+-- from lspkind.nvim
+local LSP_KIND_ICONS = {
+  Text = '',
+  Method = '',
+  Function = '',
+  Constructor = '',
+  Field = '',
+  Variable = '',
+  Class = '',
+  Interface = '',
+  Module = '',
+  Property = '',
+  Unit = '',
+  Value = '',
+  Enum = '',
+  Keyword = '',
+  Snippet = '',
+  Color = '',
+  File = '',
+  Reference = '',
+  Folder = '',
+  EnumMember = '',
+  Constant = '',
+  Struct = '',
+  Event = '',
+  Operator = '',
+  TypeParameter = '',
+}
+
 cmp.setup {
   window = {
     documentation = {
@@ -42,7 +71,7 @@ cmp.setup {
       })[entry.source.name]
 
       vim_item.menu = vim_item.kind .. (menu ~= nil and ' ' .. menu or '')
-      vim_item.kind = require('lspkind').presets.codicons[vim_item.kind] or ''
+      vim_item.kind = LSP_KIND_ICONS[vim_item.kind] or ''
       return vim_item
     end,
   },
@@ -95,7 +124,7 @@ cmp.setup.filetype({ 'sql', 'mysql', 'plsql' }, {
 --   },
 -- })
 
--- Somethis completion not work
+-- somethis completion not work
 -- cmp.setup.cmdline(':', {
 --   mapping = cmp.mapping.preset.cmdline(),
 --   sources = cmp.config.sources {

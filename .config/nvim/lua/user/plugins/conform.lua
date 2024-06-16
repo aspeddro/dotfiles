@@ -1,23 +1,41 @@
 local conform = require 'conform'
 local util = require 'conform.util'
 
-conform.formatters.sqlfmt = {
-  command = 'sqlfmt',
-  args = { '-' },
-}
+---@param paths string[]
+---@param fallback string
+local find_local_executable = function(paths, fallback)
+  local cwd = vim.uv.cwd()
+
+  for _, path in ipairs(paths) do
+    local bin_path = vim.fs.joinpath(cwd, path)
+    if vim.fn.executable(bin_path) == 1 then
+      paths = { bin_path }
+      break
+    end
+  end
+
+  return util.find_executable(paths, fallback)
+end
 
 conform.setup {
   formatters = {
     ruff_format = {
-      command = util.find_executable({ '.venv/bin/ruff' }, 'ruff'),
+      command = find_local_executable({ '.venv/bin/ruff' }, 'ruff'),
+    },
+    sqlfmt = {
+      command = find_local_executable({ '.venv/bin/sqlfmt' }, 'sqlfmt'),
+    },
+    yamlfix = {
+      command = find_local_executable({ '.venv/bin/yamlfix' }, 'yamlfix'),
     },
   },
   formatters_by_ft = {
     lua = { 'stylua' },
     python = { { 'ruff_format', 'black' } },
     javascript = { 'prettier' },
-    sql = { { 'sqlfmt', 'sql_formatter' } },
+    sql = { { 'sqlfmt' } },
     markdown = { 'prettier' },
+    yaml = { 'yamlfix' },
   },
   -- Disable
   format_on_save = false,
