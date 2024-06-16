@@ -155,5 +155,5 @@
     
     "git.openRepositoryInParentFolders": "never",
     "extensions.ignoreRecommendations": true,
-    "workbench.sideBar.location": "right",
+    "workbench.sideBar.location": "right"
 }
